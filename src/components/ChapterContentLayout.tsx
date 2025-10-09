@@ -42,6 +42,28 @@ export default function ChapterContentLayout({
   const { fontSize, theme, width } = useSettings();
   const router = useRouter();
 
+  // --- Lưu scroll với debounce ---
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+
+    const handleScroll = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const saved = localStorage.getItem("readPositions");
+        const obj = saved ? JSON.parse(saved) : {};
+        obj[chapterLink] = window.scrollY;
+        localStorage.setItem("readPositions", JSON.stringify(obj));
+      }, 300); // debounce 300ms
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
+  }, [chapterLink]);
+
+  // --- Load nội dung ---
   useEffect(() => {
     if (!chapterLink) return;
 
@@ -54,14 +76,29 @@ export default function ChapterContentLayout({
       .catch(console.error);
   }, [chapterLink]);
 
+  // --- Scroll tới vị trí đã lưu sau khi content load ---
+  useEffect(() => {
+    if (!content) return;
+
+    const saved = localStorage.getItem("readPositions");
+    const obj = saved ? JSON.parse(saved) : {};
+    const scrollY = obj[chapterLink] || 0;
+
+    requestAnimationFrame(() => {
+      window.scrollTo(0, scrollY);
+    });
+  }, [chapterLink, content]);
+
   return (
-    <Layout theme={theme} className="">
+    <Layout theme={theme}>
       <Settings nextLink={nextLink} prevLink={prevLink} />
       <Banner
         backgroundUrl={`/kinh-phat${metadata?.slug}/horizontal.jpg`}
         title={metadata?.title || "Kinh Phật"}
-        subtitle={metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0]?.title || `Chương ${currentChapter}`}
-
+        subtitle={
+          metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0]
+            ?.title || `Chương ${currentChapter}`
+        }
       />
       <Content className="py-12" fontSize={fontSize} width={width}>
         {content.split("\n").map((paragraph, idx) => (
@@ -73,16 +110,18 @@ export default function ChapterContentLayout({
 
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!prevLink ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
+            !prevLink ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={!prevLink}
           onClick={() => prevLink && router.push(prevLink)}
         >
           Chương Trước
         </button>
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!nextLink ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
+            !nextLink ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={!nextLink}
           onClick={() => nextLink && router.push(nextLink)}
         >
