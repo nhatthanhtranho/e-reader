@@ -14,21 +14,27 @@ type Theme = "light" | "dark" | "orange";
 type Settings = {
   theme: Theme;
   fontSize: number;
+  width: number;
   alignment: "left" | "center" | "right";
   setTheme: (theme: Theme) => void;
   increaseFont: () => void;
   decreaseFont: () => void;
   setAlignment: (align: "left" | "center" | "right") => void;
+  increaseWidth: () => void;
+  decreaseWidth: () => void;
 };
 
 const defaultSettings: Settings = {
   theme: "light",
   fontSize: 16,
+  width: 80,
   alignment: "left",
   setTheme: () => {},
   increaseFont: () => {},
   decreaseFont: () => {},
   setAlignment: () => {},
+  increaseWidth: () => {},
+  decreaseWidth: () => {},
 };
 
 const SettingsContext = createContext<Settings>(defaultSettings);
@@ -46,6 +52,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       return Number(localStorage.getItem("fontSize")) || 16;
     }
     return 16;
+  });
+
+  const [width, setWidth] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      return Number(localStorage.getItem("width")) || 80;
+    }
+    return 80;
   });
 
   const [alignment, setAlignment] = useState<"left" | "center" | "right">(
@@ -70,6 +83,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   }, [fontSize]);
 
   useEffect(() => {
+    localStorage.setItem("width", width.toString());
+  }, [width]);
+
+  useEffect(() => {
     localStorage.setItem("alignment", alignment);
   }, [alignment]);
 
@@ -78,11 +95,14 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       value={{
         theme,
         fontSize,
+        width,
         alignment,
         setTheme,
         increaseFont: () => setFontSize((s) => s + 1),
         decreaseFont: () => setFontSize((s) => s - 1),
         setAlignment,
+        increaseWidth: () => setWidth((w) => w + 5),
+        decreaseWidth: () => setWidth((w) => w - 5),
       }}
     >
       {children}

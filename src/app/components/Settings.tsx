@@ -11,6 +11,9 @@ export default function Settings() {
     increaseFont,
     decreaseFont,
     alignment,
+    width,
+    increaseWidth,
+    decreaseWidth,
     setAlignment,
   } = useSettings();
 
@@ -89,34 +92,60 @@ export default function Settings() {
           {/* Cỡ chữ */}
           <div className="mb-3">
             <h3 className="text-lg font-bold mb-3">Cỡ chữ</h3>
-            <div className="flex gap-2">
-              <div className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded">
+            <div className="flex gap-2 items-center">
+              <div
+                className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
+                onClick={increaseFont}
+              >
                 <Image
                   width={25}
                   height={25}
-                  src="/icons/up.svg"
+                  src="/icons/add.svg"
                   alt="Tăng cỡ"
                 />
               </div>
-              <div className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded">
+              <div className="font-bold text-base text-gray-700 px-4 py-3 bg-gray-100">
+                {fontSize}
+              </div>
+              <div
+                className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
+                onClick={decreaseFont}
+              >
                 <Image
                   width={25}
                   height={25}
-                  src="/icons/down.svg"
+                  src="/icons/minus.svg"
                   alt="Giảm cỡ"
                 />
               </div>
             </div>
           </div>
           <div className="mb-3">
-            <h3 className="text-lg font-bold mb-3">Căn lề</h3>
-            <div className="flex gap-2">
-              <div className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded">
+            <h3 className="text-lg font-bold mb-3">Chiều Ngang</h3>
+            <div className="flex gap-2 items-center">
+              <div
+                className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
+                onClick={increaseWidth}
+              >
                 <Image
                   width={25}
                   height={25}
-                  src="/icons/align.svg"
+                  src="/icons/add.svg"
                   alt="Tăng cỡ"
+                />
+              </div>
+              <div className="font-bold text-base text-gray-700 px-4 py-3 bg-gray-100">
+                {width}%
+              </div>
+              <div
+                className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
+                onClick={decreaseWidth}
+              >
+                <Image
+                  width={25}
+                  height={25}
+                  src="/icons/minus.svg"
+                  alt="Giảm cỡ"
                 />
               </div>
             </div>
