@@ -1,9 +1,11 @@
 import { useSettings } from "@/context/SettingContext";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Settings() {
   const [isOpenMainSettings, setIsOpenMainSettings] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null); // ref for settings panel
+
   const {
     theme,
     setTheme,
@@ -17,13 +19,36 @@ export default function Settings() {
     setAlignment,
   } = useSettings();
 
+  // Close panel when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        panelRef.current &&
+        !panelRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenMainSettings(false);
+      }
+    };
+
+    if (isOpenMainSettings) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpenMainSettings]);
+
   return (
     <>
-      <div
-        onClick={() => setIsOpenMainSettings(true)}
-        className="bg-white p-3 shadow cursor-pointer fixed left-0 top-1/2 -translate-y-1/2 z-20"
-      >
-        <div className="hover:bg-gray-100 p-2 mb-2 rounded">
+      {/* Floating buttons */}
+      <div className="bg-white p-3 shadow cursor-pointer fixed left-0 top-25 z-20">
+        <div
+          className="hover:bg-gray-100 p-2 mb-2 rounded"
+          onClick={() => setIsOpenMainSettings(true)}
+        >
           <Image
             width={25}
             height={25}
@@ -31,10 +56,27 @@ export default function Settings() {
             alt="Cài đặt"
           />
         </div>
+        <div className="hover:bg-gray-100 p-2 mb-2 rounded">
+          <Image
+            width={25}
+            height={25}
+            src="/icons/episodes.svg"
+            alt="Cài đặt"
+          />
+        </div>
+        <div className="hover:bg-gray-100 p-2 mb-2 rounded">
+          <Image
+            width={25}
+            height={25}
+            src="/icons/bookmark-a.svg"
+            alt="Cài đặt"
+          />
+        </div>
       </div>
 
       {/* Panel cài đặt */}
       <div
+        ref={panelRef}
         className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${
           isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
         }`}
@@ -95,20 +137,6 @@ export default function Settings() {
             <div className="flex gap-2 items-center">
               <div
                 className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
-                onClick={increaseFont}
-              >
-                <Image
-                  width={25}
-                  height={25}
-                  src="/icons/add.svg"
-                  alt="Tăng cỡ"
-                />
-              </div>
-              <div className="font-bold text-base text-gray-700 px-4 py-3 bg-gray-100">
-                {fontSize}
-              </div>
-              <div
-                className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
                 onClick={decreaseFont}
               >
                 <Image
@@ -118,14 +146,12 @@ export default function Settings() {
                   alt="Giảm cỡ"
                 />
               </div>
-            </div>
-          </div>
-          <div className="mb-3">
-            <h3 className="text-lg font-bold mb-3">Chiều Ngang</h3>
-            <div className="flex gap-2 items-center">
+              <div className="font-bold text-base text-gray-700 px-4 py-3 bg-gray-100">
+                {fontSize}
+              </div>
               <div
                 className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
-                onClick={increaseWidth}
+                onClick={increaseFont}
               >
                 <Image
                   width={25}
@@ -134,9 +160,13 @@ export default function Settings() {
                   alt="Tăng cỡ"
                 />
               </div>
-              <div className="font-bold text-base text-gray-700 px-4 py-3 bg-gray-100">
-                {width}%
-              </div>
+            </div>
+          </div>
+
+          {/* Chiều ngang */}
+          <div className="mb-3">
+            <h3 className="text-lg font-bold mb-3">Chiều Ngang</h3>
+            <div className="flex gap-2 items-center">
               <div
                 className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
                 onClick={decreaseWidth}
@@ -146,6 +176,20 @@ export default function Settings() {
                   height={25}
                   src="/icons/minus.svg"
                   alt="Giảm cỡ"
+                />
+              </div>
+              <div className="font-bold text-base text-gray-700 px-4 py-3 bg-gray-100">
+                {width}
+              </div>
+              <div
+                className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
+                onClick={increaseWidth}
+              >
+                <Image
+                  width={25}
+                  height={25}
+                  src="/icons/add.svg"
+                  alt="Tăng cỡ"
                 />
               </div>
             </div>

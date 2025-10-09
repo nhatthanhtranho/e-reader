@@ -36,11 +36,28 @@ export default function Home() {
   }, []);
 
   return (
-    <Layout theme={theme}>
-      <Content fontSize={fontSize} width={width}>
+    <Layout theme={theme} className="py-12">
+      <Settings />
+
+      <div className="mx-auto flex gap-4 items-center justify-center">
+        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
+          Chương Trước
+        </button>
+        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
+          Chương Sau
+        </button>
+      </div>
+      <Content className="py-12" fontSize={fontSize} width={width}>
         {content}
       </Content>
-      <Settings />
+      <div className="mx-auto flex gap-4 items-center justify-center">
+        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
+          Chương Trước
+        </button>
+        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
+          Chương Sau
+        </button>
+      </div>
     </Layout>
   );
 }
