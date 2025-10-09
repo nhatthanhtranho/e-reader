@@ -20,8 +20,7 @@ type Settings = {
   increaseFont: () => void;
   decreaseFont: () => void;
   setAlignment: (align: "left" | "center" | "right") => void;
-  increaseWidth: () => void;
-  decreaseWidth: () => void;
+  setWidth: (width: number) => void;
 };
 
 const defaultSettings: Settings = {
@@ -33,8 +32,7 @@ const defaultSettings: Settings = {
   increaseFont: () => {},
   decreaseFont: () => {},
   setAlignment: () => {},
-  increaseWidth: () => {},
-  decreaseWidth: () => {},
+  setWidth: () => {},
 };
 
 const SettingsContext = createContext<Settings>(defaultSettings);
@@ -101,8 +99,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         increaseFont: () => setFontSize((s) => s + 1),
         decreaseFont: () => setFontSize((s) => s - 1),
         setAlignment,
-        increaseWidth: () => setWidth((w) => w + 5),
-        decreaseWidth: () => setWidth((w) => w - 5),
+        setWidth: (s) => setWidth(s),
       }}
     >
       {children}
