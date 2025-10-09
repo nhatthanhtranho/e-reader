@@ -9,12 +9,13 @@ export interface PropTypes {
   content?: string;
   dichGia?: string;
   date?: string;
+  urlPrefix?: string;
 }
 
-const PostCardWithDescription: React.FC<PropTypes> = ({ title, url, content, date, dichGia }) => {
+const PostCardWithDescription: React.FC<PropTypes> = ({ title, url, content, date, dichGia, urlPrefix }) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push(formatLink(url));
+    router.push(formatLink(`${urlPrefix}${url}`));
   };
   const bannerURL = `/kinh-phat${url}/banner.webp`;
 
