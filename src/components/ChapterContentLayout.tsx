@@ -13,7 +13,6 @@ const Layout = styled.div<{ theme: "light" | "dark" | string }>`
   background-color: ${(props) =>
     props.theme === "dark" ? "#1a1a1a" : "#fafafa"};
   color: ${(props) => (props.theme === "dark" ? "#f3f4f6" : "#1e2939")};
-  padding: 1rem;
   border-radius: 0.5rem;
 `;
 
@@ -56,10 +55,10 @@ export default function ChapterContentLayout({
   }, [chapterLink]);
 
   return (
-    <Layout theme={theme} className="py-12">
+    <Layout theme={theme} className="">
       <Settings nextLink={nextLink} prevLink={prevLink} />
       <Banner
-        backgroundUrl={`/kinh-phat${metadata?.slug}/banner.webp`}
+        backgroundUrl={`/kinh-phat${metadata?.slug}/horizontal.jpg`}
         title={metadata?.title || "Kinh Phật"}
         subtitle={metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0]?.title || `Chương ${currentChapter}`}
 
