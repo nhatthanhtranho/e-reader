@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSettings } from "@/context/SettingContext";
 import Settings from "@/app/components/Settings";
+import { useRouter } from "next/navigation";
+import Banner from "./Banner";
 
 // Outer wrapper for background & padding
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
@@ -22,16 +25,23 @@ const Content = styled.div<{ fontSize: number; width: number }>`
 `;
 
 interface ChapterContentLayoutProps {
+  metadata: any;
   chapterLink: string;
-  canGoPrev?: boolean;
-  canGoNext?: boolean;
+  nextLink?: string | null;
+  prevLink?: string | null;
+  currentChapter?: number;
 }
 
 export default function ChapterContentLayout({
   chapterLink,
+  nextLink,
+  prevLink,
+  metadata,
+  currentChapter
 }: ChapterContentLayoutProps) {
   const [content, setContent] = useState<string>("");
   const { fontSize, theme, width } = useSettings();
+  const router = useRouter();
 
   useEffect(() => {
     if (!chapterLink) return;
@@ -47,8 +57,13 @@ export default function ChapterContentLayout({
 
   return (
     <Layout theme={theme} className="py-12">
-      <Settings />
+      <Settings nextLink={nextLink} prevLink={prevLink} />
+      <Banner
+        backgroundUrl={`/kinh-phat${metadata?.slug}/banner.webp`}
+        title={metadata?.title || "Kinh Phật"}
+        subtitle={metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0]?.title || `Chương ${currentChapter}`}
 
+      />
       <Content className="py-12" fontSize={fontSize} width={width}>
         {content.split("\n").map((paragraph, idx) => (
           <p className="mb-5" key={idx}>
@@ -58,10 +73,20 @@ export default function ChapterContentLayout({
       </Content>
 
       <div className="mx-auto flex gap-4 items-center justify-center">
-        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
+        <button
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!prevLink ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          disabled={!prevLink}
+          onClick={() => prevLink && router.push(prevLink)}
+        >
           Chương Trước
         </button>
-        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
+        <button
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!nextLink ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          disabled={!nextLink}
+          onClick={() => nextLink && router.push(nextLink)}
+        >
           Chương Sau
         </button>
       </div>

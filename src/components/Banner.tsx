@@ -28,6 +28,7 @@ const Banner: React.FC<BannerProps> = ({
           fill
           className="object-cover object-center brightness-75"
           priority
+
         />
         <div className="absolute inset-0 bg-black/10" />
       </div>
