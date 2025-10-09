@@ -4,7 +4,8 @@
 
 import Image from 'next/image';
 import ChapterList from './ChapterList';
-import { metadata } from '@/app/layout';
+import { Article } from '../../types/Article';
+import PostCardWithDescription from './PostCard';
 
 interface BookCardProps {
   title: string;
@@ -16,6 +17,7 @@ interface BookCardProps {
   onGoToChapters?: () => void;
   chapterPath?: string
   chapterList?: any[]
+  series?: Article[]
 }
 
 export default function PostDetailLayout({
@@ -26,6 +28,7 @@ export default function PostDetailLayout({
   imageSrc,
   chapterPath,
   chapterList,
+  series,
   onReadFromStart,
   onGoToChapters,
 }: BookCardProps) {
@@ -89,6 +92,32 @@ export default function PostDetailLayout({
           };
         })) || []} />
       </div>
+
+      {
+        series && series.length > 0 && (
+          <div className="container mx-auto">
+            <div className="mt-8">
+              <h2 className="uppercase text-xl">Kinh TRONG BỘ</h2>
+              <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
+              <div className="grid lg:grid-cols-4 gap-12">
+
+                {series?.map((article: Article, id) => (
+                  <div className="lg:col-span-1" key={article.slug + id}>
+                    <PostCardWithDescription
+                      urlPrefix={'/kinh-phat'}
+                      title={article.title}
+                      url={`${article.slug}`}
+                      content={article.content}
+                      dichGia={article.dichGia}
+                      date={article.createdAt}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      }
     </div>
   );
 }

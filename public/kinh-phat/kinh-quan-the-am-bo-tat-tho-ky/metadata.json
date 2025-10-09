@@ -10,6 +10,22 @@
     "Quán Thế Âm Bồ Tát"
   ],
   "maxChapter": 7,
+  "series": [
+    {
+      "title": "Kinh Quán Thế Âm Bồ Tát Thọ Ký Tập 1",
+      "dichGia": "Thích Tâm Châu",
+      "content": "Kinh Quán Thế Âm Bồ Tát Thọ Ký là một kinh Phật giáo thuộc truyền thống Đại Thừa, mô tả về việc Quán Thế Âm Bồ Tát chứng nhận và ban phước cho những người xuất gia hoặc tại gia chí tâm tu tập. Kinh trình bày cảnh giới từ bi vô lượng của Bồ Tát Quán Thế Âm, nhấn mạnh đến sự hộ trì, gia trì và thọ ký – tức là xác nhận và khích lệ người tu hành sẽ thành tựu đạo quả trong tương lai.",
+      "slug": "/kinh-quan-the-am-bo-tat-tho-ky",
+      "createdAt": "10/10/2025"
+    },
+    {
+      "title": "Kinh Quán Thế Âm Bồ Tát Thọ Ký Tập 2",
+      "dichGia": "Thích Tâm Châu",
+      "content": "Kinh Quán Thế Âm Bồ Tát Thọ Ký là một kinh Phật giáo thuộc truyền thống Đại Thừa, mô tả về việc Quán Thế Âm Bồ Tát chứng nhận và ban phước cho những người xuất gia hoặc tại gia chí tâm tu tập. Kinh trình bày cảnh giới từ bi vô lượng của Bồ Tát Quán Thế Âm, nhấn mạnh đến sự hộ trì, gia trì và thọ ký – tức là xác nhận và khích lệ người tu hành sẽ thành tựu đạo quả trong tương lai.",
+      "slug": "/kinh-quan-the-am-bo-tat-tho-ky",
+      "createdAt": "10/10/2025"
+    }
+  ],
   "chapters": [
     {
       "name": "Chương 1",

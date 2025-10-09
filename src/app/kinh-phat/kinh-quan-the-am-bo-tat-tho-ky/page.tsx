@@ -23,6 +23,7 @@ export default function Page() {
         description={metadata?.content || "Không có mô tả"}
         chapterList={metadata?.chapters || []}
         chapterPath={"/kinh-phat/kinh-quan-the-am-bo-tat-tho-ky"}
+        series={metadata?.series || []}
       />
     </>
   );
