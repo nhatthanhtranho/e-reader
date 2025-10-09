@@ -18,7 +18,7 @@ export default function Settings() {
     <>
       <div
         onClick={() => setIsOpenMainSettings(true)}
-        className="bg-white p-3 shadow cursor-pointer absolute left-0 top-0 z-20"
+        className="bg-white p-3 shadow cursor-pointer fixed left-0 top-1/2 -translate-y-1/2 z-20"
       >
         <div className="hover:bg-gray-100 p-2 mb-2 rounded">
           <Image
@@ -30,21 +30,13 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* Overlay làm tối nền khi mở menu */}
-      {isOpenMainSettings && (
-        <div
-          onClick={() => setIsOpenMainSettings(false)}
-          className="fixed inset-0 bg-black/30 z-10"
-        ></div>
-      )}
-
       {/* Panel cài đặt */}
       <div
-        className={`fixed top-0 left-0 h-full w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${
           isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="relative h-full overflow-y-auto">
+        <div className="relative overflow-y-auto">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Cài đặt</h2>
           <button
             onClick={() => setIsOpenMainSettings(false)}
@@ -60,9 +52,7 @@ export default function Settings() {
               {/* Light theme */}
               <div
                 className={`p-2 bg-white shadow rounded-full cursor-pointer border-3 ${
-                  theme === "light"
-                    ? "border-blue-300"
-                    : "border-gray-200"
+                  theme === "light" ? "border-blue-300" : "border-gray-200"
                 }`}
                 onClick={() => setTheme("light")}
               >
@@ -72,9 +62,7 @@ export default function Settings() {
               {/* Dark theme */}
               <div
                 className={`p-2 bg-gray-600 shadow rounded-full cursor-pointer border-3 ${
-                  theme === "dark"
-                    ? "border-blue-300"
-                    : "border-gray-200"
+                  theme === "dark" ? "border-blue-300" : "border-gray-200"
                 }`}
                 onClick={() => setTheme("dark")}
               >
@@ -84,9 +72,7 @@ export default function Settings() {
               {/* Orange theme */}
               <div
                 className={`p-2 bg-orange-800 shadow rounded-full cursor-pointer border-3 ${
-                  theme === "orange"
-                    ? "border-blue-300"
-                    : "border-gray-200"
+                  theme === "orange" ? "border-blue-300" : "border-gray-200"
                 }`}
                 onClick={() => setTheme("orange")}
               >
