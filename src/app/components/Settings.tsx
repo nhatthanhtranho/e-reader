@@ -1,10 +1,17 @@
+"use client";
+
 import { useSettings } from "@/context/SettingContext";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 
+const threshold = 50;
+const mobileBreakpoint = 768;
+
 export default function Settings() {
   const [isOpenMainSettings, setIsOpenMainSettings] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null); // ref for settings panel
+  const [showToolbar, setShowToolbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const {
     theme,
@@ -32,8 +39,6 @@ export default function Settings() {
 
     if (isOpenMainSettings) {
       document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
@@ -41,47 +46,101 @@ export default function Settings() {
     };
   }, [isOpenMainSettings]);
 
+  // Scroll handler for mobile only
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (window.innerWidth > mobileBreakpoint) return;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+
+          if (currentScrollY - lastScrollY > threshold) {
+            setShowToolbar(false); // scroll down
+            setLastScrollY(currentScrollY);
+          } else if (
+            lastScrollY - currentScrollY > threshold ||
+            currentScrollY < threshold
+          ) {
+            setShowToolbar(true); // scroll up or near top
+            setLastScrollY(currentScrollY);
+          }
+
+          ticking = false;
+        });
+
+        ticking = true;
+      }
+    };
+
+    const handleResize = () => {
+      if (window.innerWidth > mobileBreakpoint) {
+        setShowToolbar(true); // always show on desktop
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [lastScrollY]);
+
   return (
     <>
-      {/* Floating buttons */}
-      <div className="bg-white p-3 shadow cursor-pointer fixed left-0 top-25 z-20">
+      {/* Floating toolbar */}
+      <div
+        className={`bg-white gap-6 bottom-0 md:top-52 md:bottom-auto w-full items-center justify-center left-0 px-3 py-4 shadow flex md:flex-col md:w-auto cursor-pointer fixed z-20 transition-transform duration-300 ${
+          showToolbar ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-2">
+          <Image
+            fill
+            className="object-cover"
+            src="/icons/left.svg"
+            alt="Trái"
+          />
+        </div>
         <div
-          className="hover:bg-gray-100 p-2 mb-2 rounded"
+          className="hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative"
           onClick={() => setIsOpenMainSettings(true)}
         >
           <Image
-            width={25}
-            height={25}
+            fill
+            className="object-cover"
             src="/icons/settings.svg"
             alt="Cài đặt"
           />
         </div>
-        <div className="hover:bg-gray-100 p-2 mb-2 rounded">
-          <Image
-            width={25}
-            height={25}
-            src="/icons/episodes.svg"
-            alt="Cài đặt"
-          />
+        <div className="hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative">
+          <Image fill src="/icons/episodes.svg" alt="Episodes" />
         </div>
-        <div className="hover:bg-gray-100 p-2 mb-2 rounded">
+        <div className="hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative">
+          <Image fill src="/icons/bookmark-a.svg" alt="Bookmark" />
+        </div>
+        <div className="hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3">
           <Image
-            width={25}
-            height={25}
-            src="/icons/bookmark-a.svg"
-            alt="Cài đặt"
+            fill
+            className="object-cover"
+            src="/icons/right.svg"
+            alt="Phải"
           />
         </div>
       </div>
 
-      {/* Panel cài đặt */}
+      {/* Panel settings */}
       <div
         ref={panelRef}
         className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${
           isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="relative overflow-y-auto">
+        <div className="relative overflow-y-auto h-full">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Cài đặt</h2>
           <button
             onClick={() => setIsOpenMainSettings(false)}
@@ -90,11 +149,10 @@ export default function Settings() {
             <Image width={25} height={25} src="/icons/close.svg" alt="Đóng" />
           </button>
 
-          {/* Giao diện */}
+          {/* Theme */}
           <div className="mb-3">
             <h3 className="text-lg mb-3 font-bold">Giao diện</h3>
             <div className="flex gap-2">
-              {/* Light theme */}
               <div
                 className={`p-2 bg-white shadow rounded-full cursor-pointer border-3 ${
                   theme === "light" ? "border-blue-300" : "border-gray-200"
@@ -103,8 +161,6 @@ export default function Settings() {
               >
                 <Image width={25} height={25} src="/icons/sun.svg" alt="Sáng" />
               </div>
-
-              {/* Dark theme */}
               <div
                 className={`p-2 bg-gray-600 shadow rounded-full cursor-pointer border-3 ${
                   theme === "dark" ? "border-blue-300" : "border-gray-200"
@@ -113,8 +169,6 @@ export default function Settings() {
               >
                 <Image width={25} height={25} src="/icons/moon.svg" alt="Tối" />
               </div>
-
-              {/* Orange theme */}
               <div
                 className={`p-2 bg-orange-800 shadow rounded-full cursor-pointer border-3 ${
                   theme === "orange" ? "border-blue-300" : "border-gray-200"
@@ -131,7 +185,7 @@ export default function Settings() {
             </div>
           </div>
 
-          {/* Cỡ chữ */}
+          {/* Font size */}
           <div className="mb-3">
             <h3 className="text-lg font-bold mb-3">Cỡ chữ</h3>
             <div className="flex gap-2 items-center">
@@ -163,9 +217,9 @@ export default function Settings() {
             </div>
           </div>
 
-          {/* Chiều ngang */}
+          {/* Width */}
           <div className="mb-3">
-            <h3 className="text-lg font-bold mb-3">Chiều Ngang</h3>
+            <h3 className="text-lg font-bold mb-3">Chiều ngang</h3>
             <div className="flex gap-2 items-center">
               <div
                 className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
@@ -175,7 +229,7 @@ export default function Settings() {
                   width={25}
                   height={25}
                   src="/icons/minus.svg"
-                  alt="Giảm cỡ"
+                  alt="Giảm"
                 />
               </div>
               <div className="font-bold text-base text-gray-700 px-4 py-3 bg-gray-100">
@@ -185,12 +239,7 @@ export default function Settings() {
                 className="p-2 hover:bg-gray-100 cursor-pointer bg-white shadow rounded"
                 onClick={increaseWidth}
               >
-                <Image
-                  width={25}
-                  height={25}
-                  src="/icons/add.svg"
-                  alt="Tăng cỡ"
-                />
+                <Image width={25} height={25} src="/icons/add.svg" alt="Tăng" />
               </div>
             </div>
           </div>

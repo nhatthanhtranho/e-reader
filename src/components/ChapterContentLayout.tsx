@@ -8,7 +8,7 @@ import Settings from "@/app/components/Settings";
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
   margin: 0 auto;
   background-color: ${(props) =>
-        props.theme === "dark" ? "#1a1a1a" : "#fafafa"};
+    props.theme === "dark" ? "#1a1a1a" : "#fafafa"};
   color: ${(props) => (props.theme === "dark" ? "#f3f4f6" : "#1e2939")};
   padding: 1rem;
   border-radius: 0.5rem;
@@ -22,52 +22,49 @@ const Content = styled.div<{ fontSize: number; width: number }>`
 `;
 
 interface ChapterContentLayoutProps {
-    chapterLink: string;
-    canGoPrev?: boolean;
-    canGoNext?: boolean;
+  chapterLink: string;
+  canGoPrev?: boolean;
+  canGoNext?: boolean;
 }
 
-export default function ChapterContentLayout({ chapterLink }: ChapterContentLayoutProps) {
-    const [content, setContent] = useState<string>("");
-    const { fontSize, theme, width } = useSettings();
+export default function ChapterContentLayout({
+  chapterLink,
+}: ChapterContentLayoutProps) {
+  const [content, setContent] = useState<string>("");
+  const { fontSize, theme, width } = useSettings();
 
-    useEffect(() => {
-        if (!chapterLink) return;
+  useEffect(() => {
+    if (!chapterLink) return;
 
-        fetch(chapterLink)
-            .then((res) => {
-                if (!res.ok) throw new Error("Chapter not found");
-                return res.text();
-            })
-            .then((text) => setContent(text))
-            .catch(console.error);
-    }, [chapterLink]);
+    fetch(chapterLink)
+      .then((res) => {
+        if (!res.ok) throw new Error("Chapter not found");
+        return res.text();
+      })
+      .then((text) => setContent(text))
+      .catch(console.error);
+  }, [chapterLink]);
 
-    return (
-        <Layout theme={theme} className="py-12">
-            <Settings />
+  return (
+    <Layout theme={theme} className="py-12">
+      <Settings />
 
-            <div className="mx-auto flex gap-4 items-center justify-center">
-                <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
-                    Chương Trước
-                </button>
-                <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
-                    Chương Sau
-                </button>
-            </div>
+      <Content className="py-12" fontSize={fontSize} width={width}>
+        {content.split("\n").map((paragraph, idx) => (
+          <p className="mb-5" key={idx}>
+            {paragraph}
+          </p>
+        ))}
+      </Content>
 
-            <Content className="py-12" fontSize={fontSize} width={width}>
-                {content}
-            </Content>
-
-            <div className="mx-auto flex gap-4 items-center justify-center">
-                <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
-                    Chương Trước
-                </button>
-                <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
-                    Chương Sau
-                </button>
-            </div>
-        </Layout>
-    );
+      <div className="mx-auto flex gap-4 items-center justify-center">
+        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
+          Chương Trước
+        </button>
+        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
+          Chương Sau
+        </button>
+      </div>
+    </Layout>
+  );
 }
