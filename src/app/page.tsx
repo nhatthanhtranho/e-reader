@@ -1,63 +1,41 @@
 "use client";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import Settings from "./components/Settings";
-import { useSettings } from "@/context/SettingContext";
-
-// Outer wrapper for background & padding
-const Layout = styled.div<{ theme: "light" | "dark" | string }>`
-  margin: 0 auto;
-  background-color: ${(props) =>
-    props.theme === "dark" ? "#1a1a1a" : "#fafafa"};
-  color: ${(props) => (props.theme === "dark" ? "#f3f4f6" : "#1e2939")};
-  padding: 1rem;
-  border-radius: 0.5rem;
-`;
-
-// Content block with dynamic width & font size
-const Content = styled.div<{ fontSize: number; width: number }>`
-  width: ${(props) => props.width}%;
-  margin: 0 auto;
-  font-size: ${(props) => props.fontSize}px;
-`;
+import Banner from "@/components/Banner";
+import PostCardWithDescription from "@/components/PostCard";
+import articles from "@/data/posts.json"
+import { Article } from "../../types/Article";
 
 export default function Home() {
-  const [content, setContent] = useState<string>("");
-  const { fontSize, theme, width } = useSettings();
-
-  useEffect(() => {
-    fetch("/kinh-phat/kinh-quan-the-am-bo-tat-tho-ky/chapter_1.txt")
-      .then((res) => {
-        if (!res.ok) throw new Error("Chapter not found");
-        return res.text();
-      })
-      .then((text) => setContent(text))
-      .catch(console.error);
-  }, []);
-
-  return (
-    <Layout theme={theme} className="py-12">
-      <Settings />
-
-      <div className="mx-auto flex gap-4 items-center justify-center">
-        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
-          Chương Trước
-        </button>
-        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
-          Chương Sau
-        </button>
-      </div>
-      <Content className="py-12" fontSize={fontSize} width={width}>
-        {content}
-      </Content>
-      <div className="mx-auto flex gap-4 items-center justify-center">
-        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
-          Chương Trước
-        </button>
-        <button className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black">
-          Chương Sau
-        </button>
-      </div>
-    </Layout>
-  );
+    return (
+        <>
+            <Banner
+                backgroundUrl="/banner.jpg"
+                title="THANH TỊNH TẠNG"
+                subtitle="Kho lưu trữ kinh điển Phật Giáo Việt Nam"
+                ctaSecondary={{ label: 'Tư Vấn Ngay', link: 'tel:0913673661' }}
+                ctaPrimary={{ label: 'Các Gói Dịch Vụ', link: '#products' }}
+            />
+            <div className="container mx-auto">
+                <div className="mt-8">
+                    <h2 className="uppercase text-3xl">Đề xuất mới</h2>
+                    <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
+                    <div className="grid lg:grid-cols-4">
+                        <div className="lg:col-span-1">
+                             {articles.map((article: Article) => (
+                            <div className="mb-6" key={article.slug}>
+                                <PostCardWithDescription
+                                    urlPrefix={'/kinh-phat'}
+                                    title={article.title}
+                                    url={`${article.slug}`}
+                                    content={article.content}
+                                    dichGia={article.dichGia}
+                                    date={article.createdAt}
+                                />
+                            </div>
+                        ))} 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
 }

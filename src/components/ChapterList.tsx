@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface Chapter {
@@ -9,10 +10,10 @@ interface Chapter {
 
 interface ChapterListProps {
     chapters: Chapter[];
-    onSelectChapter?: (chapter: Chapter) => void;
 }
 
-export default function ChapterList({ chapters, onSelectChapter }: ChapterListProps) {
+export default function ChapterList({ chapters }: ChapterListProps) {
+    const router = useRouter()
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredChapters = chapters.filter((chapter, index) => {
@@ -42,7 +43,7 @@ export default function ChapterList({ chapters, onSelectChapter }: ChapterListPr
                         <li
                             key={index}
                             className="p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition"
-                            onClick={() => onSelectChapter?.(chapter)}
+                            onClick={() =>router.push(chapter.link || '#') }
                         >
                             <div className="font-semibold">
                                 {chapter.name}

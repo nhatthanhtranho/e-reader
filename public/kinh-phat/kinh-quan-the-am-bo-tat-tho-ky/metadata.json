@@ -12,31 +12,31 @@
   "chapters": [
     {
       "name": "Chương 1",
-      "fileName": "chapter_1.txt"
+      "fileName": "chuong-1"
     },
     {
       "name": "Chương 2",
-      "fileName": "chapter_2.txt"
+      "fileName": "chuong-2"
     },
     {
       "name": "Chương 3",
-      "fileName": "chapter_3.txt"
+      "fileName": "chuong-3"
     },
     {
       "name": "Chương 4",
-      "fileName": "chapter_4.txt"
+      "fileName": "chuong-4"
     },
     {
       "name": "Chương 5",
-      "fileName": "chapter_5.txt"
+      "fileName": "chuong-5"
     },
     {
       "name": "Chương 6",
-      "fileName": "chapter_6.txt"
+      "fileName": "chuong-6"
     },
     {
       "name": "Chương 7",
-      "fileName": "chapter_7.txt"
+      "fileName": "chhuong-7"
     }
   ]
 }
