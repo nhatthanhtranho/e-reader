@@ -23,8 +23,9 @@ export default function Home() {
                              {articles.map((article: Article) => (
                             <div className="mb-6" key={article.slug}>
                                 <PostCardWithDescription
+                                    urlPrefix={'/kinh-phat'}
                                     title={article.title}
-                                    url={article.slug}
+                                    url={`${article.slug}`}
                                     content={article.content}
                                     dichGia={article.dichGia}
                                     date={article.createdAt}
