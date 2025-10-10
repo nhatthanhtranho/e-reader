@@ -68,18 +68,18 @@ export default function PostDetailLayout({
           <p className="text-gray-700 max-w-4xl">{description}</p>
 
           {/* Buttons */}
-          <div className="flex gap-4 mt-4">
+          <div className="flex gap-2 mt-4">
             <button
               onClick={onReadFromStart}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
             >
               Đọc từ đầu
             </button>
             <button
               onClick={onGoToChapters}
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition cursor-pointer"
             >
-              Tới danh sách chương
+              Đọc tiếp
             </button>
           </div>
         </div>
