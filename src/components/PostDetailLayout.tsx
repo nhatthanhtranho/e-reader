@@ -85,6 +85,8 @@ export default function PostDetailLayout({
         </div>
       </div>
       <div className='mt-10 '>
+        <h2 className="uppercase text-xl">DANH SÁCH CHƯƠNG </h2>
+        <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
         <ChapterList chapters={(chapterList?.map(item => {
           return {
             name: item.name,
@@ -97,7 +99,7 @@ export default function PostDetailLayout({
         series && series.length > 0 && (
           <div className="container mx-auto">
             <div className="mt-8">
-              <h2 className="uppercase text-xl">Kinh TRONG BỘ</h2>
+              <h2 className="uppercase text-xl">TUYỂN TẬP </h2>
               <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
               <div className="grid lg:grid-cols-4 gap-12">
 
