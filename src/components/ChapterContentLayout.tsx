@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import styled from "styled-components";
+
 import { useSettings } from "@/context/SettingContext";
 import Settings from "@/app/components/Settings";
 import { useRouter } from "next/navigation";
 import Banner from "./Banner";
 import ListOfChapter from "@/app/components/ListOfChapter";
-import { Metadata } from "../../types/Metadata";
 
 // Outer wrapper for background & padding
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
@@ -25,47 +26,61 @@ const Content = styled.div<{ fontSize: number; width: number }>`
   font-size: ${(props) => props.fontSize}px;
 `;
 
-interface ChapterContentLayoutProps {
-  metadata: Metadata;
-  name: string;
-  chapterLink: string;
-  nextLink?: string | null;
-  prevLink?: string | null;
-  currentChapter?: number;
-}
+export default function ChapterContentLayout() {
+  const params = useParams();
+  const chapter = params?.chapter as string;
+  const slug = params?.slug as string;
 
-export default function ChapterContentLayout({
-  chapterLink,
-  nextLink,
-  prevLink,
-  metadata,
-  name,
-  currentChapter,
-}: ChapterContentLayoutProps) {
+  const TOTAL_CHAPTER = 7;
+
+  // Lấy số chương từ slug (hỗ trợ nhiều chữ số)
+  const currentChapter = Number(chapter?.slice(-1)); // lấy ký tự cuối và parse sang number
+
+  const chapterPath = `/kinh-phat/${slug}/${chapter}.txt`;
+
+  // Tính next và prev paths
+  const canGoPrev = currentChapter > 1;
+  const canGoNext = currentChapter < TOTAL_CHAPTER;
+
+  const prevPath = canGoPrev
+    ? `/kinh-phat/${slug}/chuong-${currentChapter - 1}`
+    : null;
+
+  const nextPath = canGoNext
+    ? `/kinh-phat/${slug}/chuong-${currentChapter + 1}`
+    : null;
   const [content, setContent] = useState<string>("");
   const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
   const { fontSize, theme, width } = useSettings();
   const router = useRouter();
 
+  const [metadata, setMetadata] = useState<any>(null);
+
   useEffect(() => {
-    localStorage.setItem(name, `chuong-${currentChapter}`);
-  }, [name, currentChapter]);
+    fetch(`/kinh-phat/${slug}/metadata.json`)
+      .then((res) => res.json())
+      .then((data) => setMetadata(data));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(slug, `chuong-${currentChapter}`);
+  }, [slug, currentChapter]);
   // --- Load nội dung ---
   useEffect(() => {
-    if (!chapterLink) return;
+    if (!slug) return;
     let timer: NodeJS.Timeout;
     const handleScroll = () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         const saved = localStorage.getItem("readPositions");
         const obj = saved ? JSON.parse(saved) : {};
-        obj[chapterLink] = window.scrollY;
+        obj[slug] = window.scrollY;
         localStorage.setItem("readPositions", JSON.stringify(obj));
       }, 300); // debounce 300ms
     };
     window.addEventListener("scroll", handleScroll);
 
-    fetch(chapterLink)
+    fetch(slug)
       .then((res) => {
         if (!res.ok) throw new Error("Chapter not found");
         return res.text();
@@ -77,7 +92,7 @@ export default function ChapterContentLayout({
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(timer);
     };
-  }, [chapterLink]);
+  }, [slug]);
 
   // --- Scroll tới vị trí đã lưu sau khi content load ---
   useEffect(() => {
@@ -85,17 +100,26 @@ export default function ChapterContentLayout({
 
     const saved = localStorage.getItem("readPositions");
     const obj = saved ? JSON.parse(saved) : {};
-    const scrollY = obj[chapterLink] || 0;
+    const scrollY = obj[slug] || 0;
 
     requestAnimationFrame(() => {
       window.scrollTo(0, scrollY);
     });
-  }, [chapterLink, content]);
+  }, [slug, content]);
 
   return (
     <Layout theme={theme}>
-      <Settings nextLink={nextLink} prevLink={prevLink} setIsOpenListOfChapter={setIsOpenListOfChapter} />
-      <ListOfChapter chapters={metadata?.chapters} slug={metadata?.slug} isOpen={isOpenListOfChapter} setIsOpen={setIsOpenListOfChapter}/>
+      <Settings
+        nextLink={nextPath}
+        prevLink={prevPath}
+        setIsOpenListOfChapter={setIsOpenListOfChapter}
+      />
+      <ListOfChapter
+        chapters={metadata?.chapters}
+        slug={metadata?.slug}
+        isOpen={isOpenListOfChapter}
+        setIsOpen={setIsOpenListOfChapter}
+      />
       <Banner
         backgroundUrl={`/kinh-phat${metadata?.slug}/horizontal.png`}
         title={metadata?.title || "Kinh Phật"}
@@ -115,19 +139,19 @@ export default function ChapterContentLayout({
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
           className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
-            !prevLink ? "opacity-50 cursor-not-allowed" : ""
+            !prevPath ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={!prevLink}
-          onClick={() => prevLink && router.push(prevLink)}
+          disabled={!prevPath}
+          onClick={() => prevPath && router.push(prevPath)}
         >
           Chương Trước
         </button>
         <button
           className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
-            !nextLink ? "opacity-50 cursor-not-allowed" : ""
+            !nextPath ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={!nextLink}
-          onClick={() => nextLink && router.push(nextLink)}
+          disabled={!nextPath}
+          onClick={() => nextPath && router.push(nextPath)}
         >
           Chương Sau
         </button>
