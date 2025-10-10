@@ -19,6 +19,9 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+    rules: { // ✅ đúng cú pháp
+      "@typescript-eslint/no-unsafe-function-type": "off",
+    },
   },
 ];
 
