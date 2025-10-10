@@ -43,6 +43,7 @@ export default function ChapterContentLayout({
   currentChapter,
 }: ChapterContentLayoutProps) {
   const [content, setContent] = useState<string>("");
+  const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
   const { fontSize, theme, width } = useSettings();
   const router = useRouter();
 
@@ -93,13 +94,14 @@ export default function ChapterContentLayout({
 
   return (
     <Layout theme={theme}>
-      <Settings nextLink={nextLink} prevLink={prevLink} />
-      <ListOfChapter chapters={metadata?.chapters}/>
+      <Settings nextLink={nextLink} prevLink={prevLink} setIsOpenListOfChapter={setIsOpenListOfChapter} />
+      <ListOfChapter chapters={metadata?.chapters} slug={metadata?.slug} isOpen={isOpenListOfChapter} setIsOpen={setIsOpenListOfChapter}/>
       <Banner
         backgroundUrl={`/kinh-phat${metadata?.slug}/horizontal.png`}
         title={metadata?.title || "Kinh Phật"}
         subtitle={
-          metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0].name || `Chương ${currentChapter}`
+          metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0].name ||
+          `Chương ${currentChapter}`
         }
       />
       <Content className="py-12" fontSize={fontSize} width={width}>
