@@ -19,14 +19,14 @@ const Banner: React.FC<BannerProps> = ({
   ctaSecondary,
 }) => {
   return (
-    <section className="relative w-full h-[30vh] md:h-[40vh] flex items-center justify-center">
+    <section className="relative w-full h-[30vh] md:h-[50vh] flex items-center justify-center">
       {/* Background */}
       <div className="absolute inset-0">
         <Image
           src={backgroundUrl}
           alt="Banner background"
           fill
-          className="object-cover object-center brightness-75"
+          className="object-cover object-bottom brightness-75"
           priority
 
         />

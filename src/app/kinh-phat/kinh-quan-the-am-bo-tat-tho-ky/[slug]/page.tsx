@@ -39,6 +39,7 @@ export default function ChapterSlugPage() {
             chapterLink={chapterPath}
             nextLink={nextPath}
             prevLink={prevPath}
+            name="kinh-quan-the-am-bo-tat-tho-k"
             currentChapter={slugNumber}
         />
     );

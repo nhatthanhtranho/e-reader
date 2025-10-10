@@ -25,6 +25,7 @@ const Content = styled.div<{ fontSize: number; width: number }>`
 
 interface ChapterContentLayoutProps {
   metadata: any;
+  name: string;
   chapterLink: string;
   nextLink?: string | null;
   prevLink?: string | null;
@@ -36,7 +37,8 @@ export default function ChapterContentLayout({
   nextLink,
   prevLink,
   metadata,
-  currentChapter
+  name,
+  currentChapter,
 }: ChapterContentLayoutProps) {
   const [content, setContent] = useState<string>("");
   const { fontSize, theme, width } = useSettings();
@@ -45,6 +47,8 @@ export default function ChapterContentLayout({
   // --- Lưu scroll với debounce ---
   useEffect(() => {
     let timer: NodeJS.Timeout;
+    console.log(name, chapterLink);
+    localStorage.setItem(name, chapterLink);
 
     const handleScroll = () => {
       clearTimeout(timer);
@@ -93,7 +97,7 @@ export default function ChapterContentLayout({
     <Layout theme={theme}>
       <Settings nextLink={nextLink} prevLink={prevLink} />
       <Banner
-        backgroundUrl={`/kinh-phat${metadata?.slug}/horizontal.jpg`}
+        backgroundUrl={`/kinh-phat${metadata?.slug}/horizontal.png`}
         title={metadata?.title || "Kinh Phật"}
         subtitle={
           metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0]

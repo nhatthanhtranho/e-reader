@@ -104,7 +104,7 @@ export default function Settings({ nextLink, prevLink }: SettingsProps) {
         }`}
       >
         <div
-          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-2 ${
+          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${
             prevLink ? "" : "opacity-50 cursor-not-allowed"
           }`}
           onClick={() => prevLink && router.push(prevLink)}
@@ -116,8 +116,9 @@ export default function Settings({ nextLink, prevLink }: SettingsProps) {
             alt="Trái"
           />
         </div>
+
         <div
-          className="hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative"
+          className="hover:bg-gray-100 md:order-2 p-2 rounded w-[30px] h-[30px] relative"
           onClick={() => setIsOpenMainSettings(true)}
         >
           <Image
@@ -127,10 +128,18 @@ export default function Settings({ nextLink, prevLink }: SettingsProps) {
             alt="Cài đặt"
           />
         </div>
-        <div className="hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative">
+        <div className="hover:bg-gray-100 md:order-1 p-2 rounded w-[30px] h-[30px] relative">
+          <Image
+            fill
+            className="object-cover"
+            src="/icons/home.svg"
+            alt="Trang chủ"
+          />
+        </div>
+        <div className="hover:bg-gray-100 md:order-2 p-2 rounded w-[30px] h-[30px] relative">
           <Image fill src="/icons/episodes.svg" alt="Episodes" />
         </div>
-        <div className="hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative">
+        <div className="hover:bg-gray-100 p-2 md:order-2 rounded w-[30px] h-[30px] relative">
           <Image fill src="/icons/bookmark-a.svg" alt="Bookmark" />
         </div>
         <div
