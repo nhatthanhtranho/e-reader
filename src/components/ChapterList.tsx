@@ -67,7 +67,7 @@ export default function ChapterList({ chapters }: ChapterListProps) {
               className="p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition"
               onClick={() => router.push(chapter.link || "#")}
             >
-              <div className="font-semibold">{chapter.name}</div>
+              <div className="line-clamp-1">{chapter.name}</div>
             </li>
           ))}
         </ul>
@@ -82,7 +82,7 @@ export default function ChapterList({ chapters }: ChapterListProps) {
             className={`px-4 py-2 rounded border ${
               currentPage === 1
                 ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                : "hover:bg-gray-100 border-gray-300"
+                : "hover:bg-gray-100 border-gray-300 cursor-pointer"
             }`}
           >
             Trang trước
@@ -98,7 +98,7 @@ export default function ChapterList({ chapters }: ChapterListProps) {
             className={`px-4 py-2 rounded border ${
               currentPage === totalPages
                 ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                : "hover:bg-gray-100 border-gray-300"
+                : "hover:bg-gray-100 border-gray-300 cursor-pointer"
             }`}
           >
             Trang sau
