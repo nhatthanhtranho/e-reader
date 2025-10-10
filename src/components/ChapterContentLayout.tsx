@@ -6,6 +6,8 @@ import { useSettings } from "@/context/SettingContext";
 import Settings from "@/app/components/Settings";
 import { useRouter } from "next/navigation";
 import Banner from "./Banner";
+import ListOfChapter from "@/app/components/ListOfChapter";
+import { Metadata } from "../../types/Metadata";
 
 // Outer wrapper for background & padding
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
@@ -24,7 +26,7 @@ const Content = styled.div<{ fontSize: number; width: number }>`
 `;
 
 interface ChapterContentLayoutProps {
-  metadata: any;
+  metadata: Metadata;
   name: string;
   chapterLink: string;
   nextLink?: string | null;
@@ -46,7 +48,7 @@ export default function ChapterContentLayout({
 
   useEffect(() => {
     localStorage.setItem(name, `chuong-${currentChapter}`);
-  }, [name, currentChapter])
+  }, [name, currentChapter]);
   // --- Load nội dung ---
   useEffect(() => {
     if (!chapterLink) return;
@@ -61,7 +63,6 @@ export default function ChapterContentLayout({
       }, 300); // debounce 300ms
     };
     window.addEventListener("scroll", handleScroll);
-
 
     fetch(chapterLink)
       .then((res) => {
@@ -93,12 +94,12 @@ export default function ChapterContentLayout({
   return (
     <Layout theme={theme}>
       <Settings nextLink={nextLink} prevLink={prevLink} />
+      <ListOfChapter chapters={metadata?.chapters}/>
       <Banner
         backgroundUrl={`/kinh-phat${metadata?.slug}/horizontal.png`}
         title={metadata?.title || "Kinh Phật"}
         subtitle={
-          metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0]
-            ?.title || `Chương ${currentChapter}`
+          metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0].name || `Chương ${currentChapter}`
         }
       />
       <Content className="py-12" fontSize={fontSize} width={width}>
@@ -111,16 +112,18 @@ export default function ChapterContentLayout({
 
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!prevLink ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
+            !prevLink ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={!prevLink}
           onClick={() => prevLink && router.push(prevLink)}
         >
           Chương Trước
         </button>
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!nextLink ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
+            !nextLink ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={!nextLink}
           onClick={() => nextLink && router.push(nextLink)}
         >
