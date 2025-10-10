@@ -36,7 +36,7 @@ export default function PostDetailLayout({
 
   return (
     <div className='flex flex-col container mx-auto'>
-      <div className="flex flex-col md:flex-row shadow-lg rounded-lg overflow-hidden min-h-[50vh]">
+      <div className="flex flex-col md:flex-row md:shadow-lg rounded-lg overflow-hidden min-h-[50vh]">
         {/* Hình ảnh bên trái */}
         <div className="md:w-1/3 w-full relative h-64 md:h-auto">
           <Image
@@ -48,7 +48,7 @@ export default function PostDetailLayout({
         </div>
 
         {/* Nội dung bên phải */}
-        <div className="md:w-2/3 w-full p-6 flex flex-col gap-4">
+        <div className="md:w-2/3 w-full p-6 px-4 flex flex-col gap-3 md:gap-4">
           {/* Tag */}
           <div className="flex flex-wrap gap-2">
             {tags.map((tag, index) => (
@@ -73,20 +73,20 @@ export default function PostDetailLayout({
           <div className="flex gap-2 mt-4">
             <button
               onClick={() => router.push(`${chapterPath}/${chapterList?.[0]?.fileName}`)}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
+              className="bg-yellow-500 shadow text-gray-50 w-32 py-2 rounded hover:bg-yellow-600 transition cursor-pointer"
             >
               Đọc từ đầu
             </button>
             <button
               onClick={() => router.push(`${chapterPath}/${latestRead}`)}
-              className={`bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition cursor-pointer ${latestRead == null ? 'hidden' : ''}`}>
+              className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${latestRead == null ? 'hidden' : ''}`}>
 
               Đọc tiếp
             </button>
           </div>
         </div>
       </div>
-      <div className='mt-10 '>
+      <div className='md:mt-10 px-4'>
         <h2 className="uppercase text-xl">DANH SÁCH CHƯƠNG </h2>
         <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
         <ChapterList chapters={(chapterList?.map(item => {
@@ -99,9 +99,9 @@ export default function PostDetailLayout({
 
       {
         series && series.length > 0 && (
-          <div className="container mx-auto">
+          <div className="container mx-auto px-4">
             <div className="mt-8">
-              <h2 className="uppercase text-xl">TUYỂN TẬP </h2>
+              <h2 className="uppercase text-xl font-bold">TUYỂN TẬP </h2>
               <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
               <div className="grid lg:grid-cols-4 gap-12">
 
