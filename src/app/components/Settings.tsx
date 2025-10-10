@@ -99,14 +99,12 @@ export default function Settings({ nextLink, prevLink }: SettingsProps) {
     <>
       {/* Floating toolbar */}
       <div
-        className={`bg-white gap-6 bottom-0 md:top-52 md:bottom-auto w-full items-center justify-center left-0 px-3 py-4 shadow flex md:flex-col md:w-auto cursor-pointer fixed z-20 transition-transform duration-300 ${
-          showToolbar ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={`bg-white gap-6 bottom-0 md:top-52 md:bottom-auto w-full items-center justify-center left-0 px-3 py-4 shadow flex md:flex-col md:w-auto cursor-pointer fixed z-20 transition-transform duration-300 ${showToolbar ? "translate-y-0" : "translate-y-full"
+          }`}
       >
         <div
-          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${
-            prevLink ? "" : "opacity-50 cursor-not-allowed"
-          }`}
+          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${prevLink ? "" : "opacity-50 cursor-not-allowed"
+            }`}
           onClick={() => prevLink && router.push(prevLink)}
         >
           <Image
@@ -128,7 +126,7 @@ export default function Settings({ nextLink, prevLink }: SettingsProps) {
             alt="Cài đặt"
           />
         </div>
-        <div className="hover:bg-gray-100 md:order-1 p-2 rounded w-[30px] h-[30px] relative">
+        <div className="hover:bg-gray-100 md:order-1 p-2 rounded w-[30px] h-[30px] relative" onClick={() => router.push("/")}>
           <Image
             fill
             className="object-cover"
@@ -139,13 +137,12 @@ export default function Settings({ nextLink, prevLink }: SettingsProps) {
         <div className="hover:bg-gray-100 md:order-2 p-2 rounded w-[30px] h-[30px] relative">
           <Image fill src="/icons/episodes.svg" alt="Episodes" />
         </div>
-        <div className="hover:bg-gray-100 p-2 md:order-2 rounded w-[30px] h-[30px] relative">
+        <div className="hover:bg-gray-100 p-2 md:order-2 rounded w-[30px] h-[30px] relative hidden">
           <Image fill src="/icons/bookmark-a.svg" alt="Bookmark" />
         </div>
         <div
-          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${
-            nextLink ? "" : "opacity-50 cursor-not-allowed"
-          }`}
+          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${nextLink ? "" : "opacity-50 cursor-not-allowed"
+            }`}
           onClick={() => nextLink && router.push(nextLink)}
         >
           <Image
@@ -160,9 +157,8 @@ export default function Settings({ nextLink, prevLink }: SettingsProps) {
       {/* Panel settings */}
       <div
         ref={panelRef}
-        className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${
-          isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="relative overflow-y-auto h-full">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Cài đặt</h2>
@@ -178,25 +174,22 @@ export default function Settings({ nextLink, prevLink }: SettingsProps) {
             <h3 className="text-lg mb-3 font-bold">Giao diện</h3>
             <div className="flex gap-2">
               <div
-                className={`p-2 bg-white shadow rounded-full cursor-pointer border-3 ${
-                  theme === "light" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-white shadow rounded-full cursor-pointer border-3 ${theme === "light" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("light")}
               >
                 <Image width={25} height={25} src="/icons/sun.svg" alt="Sáng" />
               </div>
               <div
-                className={`p-2 bg-gray-600 shadow rounded-full cursor-pointer border-3 ${
-                  theme === "dark" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-gray-600 shadow rounded-full cursor-pointer border-3 ${theme === "dark" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("dark")}
               >
                 <Image width={25} height={25} src="/icons/moon.svg" alt="Tối" />
               </div>
               <div
-                className={`p-2 bg-orange-800 shadow rounded-full cursor-pointer border-3 ${
-                  theme === "orange" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-orange-800 shadow rounded-full cursor-pointer border-3 ${theme === "orange" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("orange")}
               >
                 <Image
