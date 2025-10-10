@@ -1,0 +1,1 @@
+export const DOCUMENT_PATH='/kinh-phat'

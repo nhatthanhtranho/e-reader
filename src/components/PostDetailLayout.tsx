@@ -10,6 +10,8 @@ import ChapterList from "./ChapterList";
 import { Article } from "../../types/Article";
 import PostCardWithDescription from "./PostCard";
 import { Metadata } from "../../types/Metadata";
+import { DOCUMENT_PATH } from "@/constants";
+import { fetchMetadata } from "@/utils";
 
 export default function PostDetailLayout() {
   const { slug } = useParams(); // Lấy slug từ URL
@@ -21,19 +23,7 @@ export default function PostDetailLayout() {
   // Fetch metadata từ public/kinh-phat/[slug]/metadata.json
   useEffect(() => {
     if (!slug) return;
-
-    const fetchMetadata = async () => {
-      try {
-        const res = await fetch(`/kinh-phat/${slug}/metadata.json`);
-        if (!res.ok) throw new Error("Không tìm thấy metadata");
-        const data = await res.json();
-        setMetadata(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchMetadata();
+    fetchMetadata(slug as string, setMetadata);
   }, [slug]);
 
   // Lấy latestRead từ localStorage (chỉ client-side)
@@ -51,7 +41,7 @@ export default function PostDetailLayout() {
         {/* Hình ảnh bên trái */}
         <div className="md:w-1/3 w-full relative h-64 md:h-auto">
           <Image
-            src="" // Bạn có thể bind src từ metadata nếu có
+            src={`/kinh-phat${metadata?.slug}/banner.webp`} // Bạn có thể bind src từ metadata nếu có
             alt={metadata?.title ?? "Kinh Phật"}
             fill
             className="object-cover"
@@ -81,7 +71,7 @@ export default function PostDetailLayout() {
           </p>
 
           {/* Description */}
-          <p className="text-gray-700 max-w-4xl">{metadata?.description}</p>
+          <p className="text-gray-700 max-w-4xl">{metadata?.content}</p>
 
           {/* Buttons */}
           <div className="flex gap-2 mt-4">
@@ -98,9 +88,8 @@ export default function PostDetailLayout() {
             </button>
 
             <button
-              className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${
-                latestRead == null ? "hidden" : ""
-              }`}
+              className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${latestRead == null ? "hidden" : ""
+                }`}
               onClick={() => {
                 if (latestRead) router.push(`/kinh-phat/${slug}/${latestRead}`);
               }}
