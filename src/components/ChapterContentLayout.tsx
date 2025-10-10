@@ -44,12 +44,13 @@ export default function ChapterContentLayout({
   const { fontSize, theme, width } = useSettings();
   const router = useRouter();
 
-  // --- Lưu scroll với debounce ---
   useEffect(() => {
+    localStorage.setItem(name, `chuong-${currentChapter}`);
+  }, [name, currentChapter])
+  // --- Load nội dung ---
+  useEffect(() => {
+    if (!chapterLink) return;
     let timer: NodeJS.Timeout;
-    console.log(name, chapterLink);
-    localStorage.setItem(name, chapterLink);
-
     const handleScroll = () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
@@ -59,17 +60,8 @@ export default function ChapterContentLayout({
         localStorage.setItem("readPositions", JSON.stringify(obj));
       }, 300); // debounce 300ms
     };
-
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timer);
-    };
-  }, [chapterLink]);
 
-  // --- Load nội dung ---
-  useEffect(() => {
-    if (!chapterLink) return;
 
     fetch(chapterLink)
       .then((res) => {
@@ -78,6 +70,11 @@ export default function ChapterContentLayout({
       })
       .then((text) => setContent(text))
       .catch(console.error);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
   }, [chapterLink]);
 
   // --- Scroll tới vị trí đã lưu sau khi content load ---
@@ -114,18 +111,16 @@ export default function ChapterContentLayout({
 
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
-            !prevLink ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!prevLink ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           disabled={!prevLink}
           onClick={() => prevLink && router.push(prevLink)}
         >
           Chương Trước
         </button>
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
-            !nextLink ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!nextLink ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           disabled={!nextLink}
           onClick={() => nextLink && router.push(nextLink)}
         >

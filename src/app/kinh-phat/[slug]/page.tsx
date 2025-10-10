@@ -35,6 +35,7 @@ export default function Page() {
       title={metadata?.title}
       tags={metadata?.tags || []}
       translator={metadata?.dichGia}
+      slug={slug as string}
       imageSrc={`/kinh-phat/${slug}/banner.webp`}
       description={metadata?.content || "Không có mô tả"}
       chapterList={metadata?.chapters || []}

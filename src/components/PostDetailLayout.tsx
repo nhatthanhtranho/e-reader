@@ -6,15 +6,15 @@ import Image from 'next/image';
 import ChapterList from './ChapterList';
 import { Article } from '../../types/Article';
 import PostCardWithDescription from './PostCard';
+import { useRouter } from 'next/navigation';
 
 interface BookCardProps {
   title: string;
   tags: string[];
   translator: string;
+  slug: string;
   description: string;
   imageSrc: string;
-  onReadFromStart?: () => void;
-  onGoToChapters?: () => void;
   chapterPath?: string
   chapterList?: any[]
   series?: Article[]
@@ -29,9 +29,11 @@ export default function PostDetailLayout({
   chapterPath,
   chapterList,
   series,
-  onReadFromStart,
-  onGoToChapters,
+  slug,
 }: BookCardProps) {
+  const router = useRouter();
+  const latestRead = localStorage.getItem(slug);
+
   return (
     <div className='flex flex-col container mx-auto'>
       <div className="flex flex-col md:flex-row shadow-lg rounded-lg overflow-hidden min-h-[50vh]">
@@ -70,15 +72,15 @@ export default function PostDetailLayout({
           {/* Buttons */}
           <div className="flex gap-2 mt-4">
             <button
-              onClick={onReadFromStart}
+              onClick={() => router}
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
             >
               Đọc từ đầu
             </button>
             <button
-              onClick={onGoToChapters}
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition cursor-pointer"
-            >
+              onClick={() => router.push(`${chapterPath}/${latestRead}`)}
+              className={`bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition cursor-pointer ${latestRead == null ? 'hidden' : ''}`}>
+
               Đọc tiếp
             </button>
           </div>
