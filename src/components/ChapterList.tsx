@@ -4,6 +4,7 @@ import { getLocalStorageObjectValue } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
+import { formatLink } from "../../utils/formatLink";
 
 interface Chapter {
   name: string;
@@ -85,7 +86,7 @@ export default function ChapterList({ chapters, slug }: ChapterListProps) {
                 <div className="absolute right-2 w-[25px] h-[25px]">
                   <Image
                     fill
-                    src={`/icons/${isRead ? "complete" : "not-complete"}.png`}
+                    src={isRead ? formatLink("/icons/complete.png") : formatLink("/icons/not-complete.png")}
                     alt="read status"
                   />
                 </div>
