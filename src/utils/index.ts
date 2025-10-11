@@ -29,3 +29,10 @@ export const getChapterPath = (slug: string, maxChapter: number, currentChapter:
     }
 
 }
+
+export const formatLink = (url: string) => {
+    if (process.env.NEXT_PUBLIC_ENV === 'PRODUCTION') {
+        return `${process.env.NEXT_PUBLIC_IMG_PATH}${url}`
+    }
+    return url
+}

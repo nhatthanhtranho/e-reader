@@ -4,6 +4,7 @@ import { useSettings } from "@/context/SettingContext";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { formatLink } from "../../../utils/formatLink";
 
 const threshold = 50;
 const mobileBreakpoint = 768;
@@ -96,20 +97,18 @@ export default function Settings({
     <>
       {/* Floating toolbar */}
       <div
-        className={`bg-white gap-6 bottom-0 md:top-52 md:bottom-auto w-full items-center justify-center left-0 px-3 py-4 shadow flex md:flex-col md:w-auto cursor-pointer fixed z-20 transition-transform duration-300 ${
-          showToolbar ? "translate-y-0" : "translate-y-full"
-        }`}
+        className={`bg-white gap-6 bottom-0 md:top-52 md:bottom-auto w-full items-center justify-center left-0 px-3 py-4 shadow flex md:flex-col md:w-auto cursor-pointer fixed z-20 transition-transform duration-300 ${showToolbar ? "translate-y-0" : "translate-y-full"
+          }`}
       >
         <div
-          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${
-            prevLink ? "" : "opacity-50 cursor-not-allowed"
-          }`}
+          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${prevLink ? "" : "opacity-50 cursor-not-allowed"
+            }`}
           onClick={() => prevLink && router.push(prevLink)}
         >
           <Image
             fill
             className="object-cover"
-            src="/icons/left.svg"
+            src={formatLink('/icons/left.svg')}
             alt="Trái"
           />
         </div>
@@ -121,7 +120,7 @@ export default function Settings({
           <Image
             fill
             className="object-cover"
-            src="/icons/settings.svg"
+            src={formatLink("/icons/settings.svg")}
             alt="Cài đặt"
           />
         </div>
@@ -132,7 +131,7 @@ export default function Settings({
           <Image
             fill
             className="object-cover"
-            src="/icons/home.svg"
+            src={formatLink("/icons/home.svg")}
             alt="Trang chủ"
           />
         </div>
@@ -140,21 +139,20 @@ export default function Settings({
           className="hover:bg-gray-100 md:order-2 p-2 rounded w-[30px] h-[30px] relative"
           onClick={() => setIsOpenListOfChapter?.(true)}
         >
-          <Image fill src="/icons/episodes.svg" alt="Episodes" />
+          <Image fill src={formatLink("/icons/episodes.svg")} alt="Episodes" />
         </div>
         <div className="hover:bg-gray-100 p-2 md:order-2 rounded w-[30px] h-[30px] relative hidden">
-          <Image fill src="/icons/bookmark-a.svg" alt="Bookmark" />
+          <Image fill src={formatLink("/icons/bookmark-a.svg")} alt="Bookmark" />
         </div>
         <div
-          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${
-            nextLink ? "" : "opacity-50 cursor-not-allowed"
-          }`}
+          className={`hover:bg-gray-100 p-2 rounded w-[30px] h-[30px] relative md:order-3 ${nextLink ? "" : "opacity-50 cursor-not-allowed"
+            }`}
           onClick={() => nextLink && router.push(nextLink)}
         >
           <Image
             fill
             className="object-cover"
-            src="/icons/right.svg"
+            src={formatLink("/icons/right.svg")}
             alt="Phải"
           />
         </div>
@@ -163,9 +161,8 @@ export default function Settings({
       {/* Panel settings */}
       <div
         ref={panelRef}
-        className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${
-          isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="relative overflow-y-auto h-full">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Cài đặt</h2>
@@ -173,7 +170,7 @@ export default function Settings({
             onClick={() => setIsOpenMainSettings(false)}
             className="absolute top-0 right-2 cursor-pointer transition hover:opacity-70"
           >
-            <Image width={25} height={25} src="/icons/close.svg" alt="Đóng" />
+            <Image width={25} height={25} src={formatLink("/icons/close.svg")} alt="Đóng" />
           </button>
 
           {/* Theme */}
@@ -181,31 +178,28 @@ export default function Settings({
             <h3 className="text-lg mb-3 font-bold">Giao diện</h3>
             <div className="flex gap-2">
               <div
-                className={`p-2 bg-white shadow rounded-full cursor-pointer border-3 ${
-                  theme === "light" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-white shadow rounded-full cursor-pointer border-3 ${theme === "light" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("light")}
               >
-                <Image width={25} height={25} src="/icons/sun.svg" alt="Sáng" />
+                <Image width={25} height={25} src={formatLink("/icons/sun.svg")} alt="Sáng" />
               </div>
               <div
-                className={`p-2 bg-gray-600 shadow rounded-full cursor-pointer border-3 ${
-                  theme === "dark" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-gray-600 shadow rounded-full cursor-pointer border-3 ${theme === "dark" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("dark")}
               >
-                <Image width={25} height={25} src="/icons/moon.svg" alt="Tối" />
+                <Image width={25} height={25} src={formatLink("/icons/moon.svg")} alt="Tối" />
               </div>
               <div
-                className={`p-2 bg-orange-800 shadow rounded-full cursor-pointer border-3 ${
-                  theme === "orange" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-orange-800 shadow rounded-full cursor-pointer border-3 ${theme === "orange" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("orange")}
               >
                 <Image
                   width={25}
                   height={25}
-                  src="/icons/cloud.svg"
+                  src={formatLink("/icons/cloud.svg")}
                   alt="Cam"
                 />
               </div>
@@ -223,7 +217,7 @@ export default function Settings({
                 <Image
                   width={25}
                   height={25}
-                  src="/icons/minus.svg"
+                  src={formatLink("/icons/minus.svg")}
                   alt="Giảm cỡ"
                 />
               </div>
@@ -237,7 +231,7 @@ export default function Settings({
                 <Image
                   width={25}
                   height={25}
-                  src="/icons/add.svg"
+                  src={formatLink("/icons/add.svg")}
                   alt="Tăng cỡ"
                 />
               </div>
@@ -255,7 +249,7 @@ export default function Settings({
                 <Image
                   width={30}
                   height={25}
-                  src="/icons/layout-big.svg"
+                  src={formatLink("/icons/layout-big.svg")}
                   alt="Giảm"
                 />
               </div>
@@ -266,7 +260,7 @@ export default function Settings({
                 <Image
                   width={25}
                   height={25}
-                  src="/icons/layout-medium.svg"
+                  src={formatLink("/icons/layout-medium.svg")}
                   alt="Giảm"
                 />
               </div>
@@ -277,7 +271,7 @@ export default function Settings({
                 <Image
                   width={20}
                   height={25}
-                  src="/icons/layout-small.svg"
+                  src={formatLink("/icons/layout-small.svg")}
                   alt="Giảm"
                 />
               </div>

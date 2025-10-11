@@ -12,6 +12,7 @@ import PostCardWithDescription from "./PostCard";
 import { Metadata } from "../../types/Metadata";
 import { DOCUMENT_PATH } from "@/constants";
 import { fetchMetadata } from "@/utils";
+import { formatLink } from "../../utils/formatLink";
 
 export default function PostDetailLayout() {
   const { slug } = useParams(); // Lấy slug từ URL
@@ -41,7 +42,7 @@ export default function PostDetailLayout() {
         {/* Hình ảnh bên trái */}
         <div className="md:w-1/3 w-full relative h-64 md:h-auto">
           <Image
-            src={`/kinh-phat${metadata?.slug}/banner.webp`} // Bạn có thể bind src từ metadata nếu có
+            src={formatLink(`/kinh-phat${metadata?.slug}/banner.webp`)} // Bạn có thể bind src từ metadata nếu có
             alt={metadata?.title ?? "Kinh Phật"}
             fill
             className="object-cover"
