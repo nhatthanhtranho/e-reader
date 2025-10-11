@@ -80,3 +80,18 @@ export function addToLocalStorageArray(
     console.error(`❌ Failed to add to ${key}.${objectKey}:`, error);
   }
 }
+
+export function getLocalStorageObjectValue<T = any>(key: string, objectKey: string): T | null {
+  try {
+    const item = localStorage.getItem(key);
+    if (!item) return null;
+
+    const parsed = JSON.parse(item);
+    if (typeof parsed !== "object" || parsed === null) return null;
+    console.log(parsed[objectKey])
+    return parsed[objectKey] ?? null;
+  } catch (error) {
+    console.error(`Error reading key "${objectKey}" from localStorage item "${key}":`, error);
+    return null;
+  }
+}

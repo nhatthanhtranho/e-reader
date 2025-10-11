@@ -9,7 +9,7 @@ import ChapterList from "./ChapterList";
 import { Article } from "../../types/Article";
 import PostCardWithDescription from "./PostCard";
 import { Metadata } from "../../types/Metadata";
-import { fetchMetadata } from "@/utils";
+import { fetchMetadata, getLocalStorageObjectValue } from "@/utils";
 import { formatLink } from "../../utils/formatLink";
 import Footer from "./Footer";
 
@@ -30,9 +30,8 @@ export default function PostDetailLayout() {
   useEffect(() => {
     if (!slug) return;
     if (typeof window === "undefined") return;
-
-    const saved = localStorage.getItem(slug as string);
-    setLatestRead(saved);
+    const latestRead = getLocalStorageObjectValue(slug as string, "latestRead");
+    setLatestRead(latestRead);
   }, [slug]);
 
   return (
@@ -68,7 +67,8 @@ export default function PostDetailLayout() {
 
             {/* Dịch giả */}
             <p className="text-gray-600">
-              <span className="font-semibold">Dịch giả:</span> {metadata?.dichGia}
+              <span className="font-semibold">Dịch giả:</span>{" "}
+              {metadata?.dichGia}
             </p>
 
             {/* Description */}
@@ -89,10 +89,12 @@ export default function PostDetailLayout() {
               </button>
 
               <button
-                className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${latestRead == null ? "hidden" : ""
-                  }`}
+                className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${
+                  latestRead == null ? "hidden" : ""
+                }`}
                 onClick={() => {
-                  if (latestRead) router.push(`/kinh-phat/${slug}/${latestRead}`);
+                  if (latestRead)
+                    router.push(`/kinh-phat/${slug}/${latestRead}`);
                 }}
               >
                 Đọc tiếp
@@ -107,6 +109,7 @@ export default function PostDetailLayout() {
           <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
           {metadata?.chapters && metadata.chapters.length > 0 && (
             <ChapterList
+              slug={slug as string}
               chapters={metadata.chapters.map((item) => ({
                 name: item.name,
                 link: `/kinh-phat/${slug}/${item.fileName}`,
@@ -140,5 +143,6 @@ export default function PostDetailLayout() {
         )}
       </div>
       <Footer />
-    </div>);
+    </div>
+  );
 }

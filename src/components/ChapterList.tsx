@@ -1,8 +1,9 @@
 "use client";
 
+import { getLocalStorageObjectValue } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 interface Chapter {
   name: string;
@@ -11,14 +12,23 @@ interface Chapter {
 
 interface ChapterListProps {
   chapters: Chapter[];
+  slug: string;
 }
 
-export default function ChapterList({ chapters }: ChapterListProps) {
+export default function ChapterList({ chapters, slug }: ChapterListProps) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+  const [readChapters, setReadChapters] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 10;
+
+  useEffect(() => {
+    const reads = getLocalStorageObjectValue<string[]>(slug, "read");
+    if (reads) {
+      setReadChapters(reads);
+    }
+  }, [slug]);
 
   // Lọc chương theo từ khóa
   const filteredChapters = useMemo(() => {
@@ -62,18 +72,27 @@ export default function ChapterList({ chapters }: ChapterListProps) {
         <p className="text-center text-gray-500">Không tìm thấy chương nào.</p>
       ) : (
         <div>
-          {paginatedChapters.map((chapter, index) => (
-            <div
-              key={index}
-              className="p-4 border-b border-gray-200 cursor-pointer relative hover:bg-gray-50 transition"
-              onClick={() => router.push(chapter.link || "#")}
-            >
-              <div className="absolute right-2 w-[25px] h-[25px]">
-                <Image fill src="/icons/complete.png" alt=""/>
+          {paginatedChapters.map((chapter, index) => {
+            const isRead = readChapters.some(
+              (ch) => chapter.link?.includes(ch) ?? false
+            );
+            return (
+              <div
+                key={index}
+                className="p-4 border-b border-gray-200 cursor-pointer relative hover:bg-gray-50 transition"
+                onClick={() => router.push(chapter.link || "#")}
+              >
+                <div className="absolute right-2 w-[25px] h-[25px]">
+                  <Image
+                    fill
+                    src={`/icons/${isRead ? "complete" : "not-complete"}.png`}
+                    alt="read status"
+                  />
+                </div>
+                {chapter.name}
               </div>
-              {chapter.name}
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

@@ -88,7 +88,7 @@ export default function ChapterContentLayout() {
       clearTimeout(checkCompletedTimer);
       checkCompletedTimer = setTimeout(() => {
         if (documentHeight - scrollPosition < threshold) {
-          addToLocalStorageArray(slug, "completed", `chuong-${currentChapter}`);
+          addToLocalStorageArray(slug, "read", `chuong-${currentChapter}`);
         }
       }, 500);
     };

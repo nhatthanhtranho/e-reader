@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://<username>.github.io/e-reader",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "cross-env NEXT_PUBLIC_ENV=DEV next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
