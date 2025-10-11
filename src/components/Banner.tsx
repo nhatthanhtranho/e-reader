@@ -19,7 +19,7 @@ const Banner: React.FC<BannerProps> = ({
   ctaSecondary,
 }) => {
   return (
-    <section className="relative w-full h-[30vh] md:h-[50vh] flex items-center justify-center">
+    <section className="relative w-full h-[20vh] md:h-[30vh] lg:h-[40vh] flex items-center justify-center">
       {/* Background */}
       <div className="absolute inset-0">
         <Image
@@ -34,11 +34,11 @@ const Banner: React.FC<BannerProps> = ({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center px-4">
-        <h1 className="lg:text-5xl text-xl font-bold text-yellow-400  mb-4">
+      <div className="relative z-10 text-center">
+        <h1 className="text-3xl md:text-5xl font-bold text-yellow-400 mb-2 md:mb-4">
           {title}
         </h1>
-        <p className="lg:text-6xl text-lg uppercase font-bold text-yellow-400 mb-8">{subtitle}</p>
+        <p className="md:text-3xl text-lg tracking-wide font-bold text-yellow-400 mb-8">{subtitle}</p>
 
         <div className="flex justify-center gap-4">
           {ctaSecondary && (

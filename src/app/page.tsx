@@ -14,8 +14,8 @@ export default function Home() {
     <>
       <Banner
         backgroundUrl={formatLink("/banner.jpg")}
-        title="THANH TỊNH TẠNG"
-        subtitle="Kho lưu trữ kinh điển Phật Giáo"
+        title="Thanh Tịnh Tạng"
+        subtitle="Kho Lưu Trữ Kinh Điển Phật Giáo"
       />
 
       <div className="container mx-auto px-3 md:px-0">
