@@ -14,7 +14,6 @@ import {
   getChapterPath,
   saveObjectKeyToLocalStorage,
 } from "@/utils";
-import { formatLink } from "../../utils/formatLink";
 
 // Vị trí gần cuối trang để biết là đọc xong chapter
 const threshold = 200;
@@ -96,7 +95,7 @@ export default function ChapterContentLayout() {
 
     window.addEventListener("scroll", handleScroll);
 
-    fetch(formatLink(chapterLinks.currentPath))
+    fetch(chapterLinks.currentPath)
       .then((res) => {
         if (!res.ok) throw new Error("Chapter not found");
         return res.text();
