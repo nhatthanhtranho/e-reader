@@ -19,8 +19,8 @@ export default function ChapterBreaker() {
   useEffect(() => {
     (async () => {
       if (typeof window === "undefined") return;
-      // const lib = await import("pdfjs-dist/build/pdf");
-        const lib = ''
+      const lib = await import("pdfjs-dist/build/pdf");
+        // const lib = ''
       pdfjsLib = lib;
       pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.js";
     })();
@@ -127,7 +127,7 @@ export default function ChapterBreaker() {
     const zip = new JSZip();
     const mapping: Record<string, string> = {};
     chapters.forEach((ch, i) => {
-      const fileName = `chapter_${i + 1}.txt`;
+      const fileName = `chuong-${i + 1}.txt`;
       mapping[ch.title] = fileName;
       zip.file(fileName, ch.content);
     });

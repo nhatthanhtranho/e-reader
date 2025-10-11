@@ -8,6 +8,9 @@ export function generateStaticParams() {
     { slug: "kinh-niem-phat-ba-la-mat", },
     { slug: "kinh-duoc-su-luu-ly-bon-nguyen-cong-duc" },
     { slug: "kinh-bat-dai-nhan-giac" },
+    { slug: "kinh-bat-chu-tam-muoi" },
+    { slug: "kinh-dai-thua-duyen-sinh" },
+
   ];
 }
 

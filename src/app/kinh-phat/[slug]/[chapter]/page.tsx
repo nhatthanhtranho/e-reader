@@ -8,9 +8,8 @@ export function generateStaticParams() {
     { name: "kinh-niem-phat-ba-la-mat", chapter: 7 },
     { name: "kinh-duoc-su-luu-ly-bon-nguyen-cong-duc", chapter: 1 },
     { name: "kinh-bat-dai-nhan-giac", chapter: 1 },
-
-
-
+    { name: "kinh-bat-chu-tam-muoi", chapter: 18 },
+    { name: "kinh-dai-thua-duyen-sinh", chapter: 1 },
 
   ];
   const params = data.flatMap(({ name, chapter }) =>

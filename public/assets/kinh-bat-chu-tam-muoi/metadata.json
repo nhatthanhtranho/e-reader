@@ -1,0 +1,87 @@
+{
+  "title": "Kinh Bát Chu Tam Muội",
+  "dichGia": "HT.Thích Minh Lễ",
+  "content": "**Kinh Bát Chu Tam Muội** dạy về pháp tu “Tam muội” – trạng thái thiền định sâu giúp hành giả thấy chư Phật mười phương trong hiện tại. Kinh nhấn mạnh tâm thanh tịnh, không chấp ngã, không phân biệt, từ đó đạt trí tuệ giải thoát. Người tu giữ tâm không tán loạn, nhất tâm niệm Phật, quán Phật thường trụ, thân tâm hợp nhất với đạo. Nhờ đó, đạt cảnh giới bất thoái chuyển, chứng nhập Bồ-tát đạo và thấy Phật hiện tiền, trọn vẹn Bát Nhã và Đại Bi.",
+  "slug": "/kinh-bat-chu-tam-muoi",
+  "createdAt": "10/10/2025",
+  "tags": [
+    "Kinh Phật",
+    "Kinh Đại Thừa",
+    "Niệm Phật"
+  ],
+  "maxChapter": 18,
+  "chapters": [
+    {
+      "name": "Chương 1: Lời Tựa",
+      "fileName": "chuong-1"
+    },
+    {
+      "name": "Phẩm Thứ Nhất - Vấn Ðáp",
+      "fileName": "chuong-2"
+    },
+    {
+      "name": "Phẩm Thứ Hai - Tư Duy",
+      "fileName": "chuong-3"
+    },
+    {
+      "name": "Phẩm Thứ Ba - Tam Muội Hành",
+      "fileName": "chuong-4"
+    },
+    {
+      "name": "Phẩm Thứ Tư - Thấy Phật",
+      "fileName": "chuong-5"
+    },
+    {
+      "name": "Phẩm Thứ Năm",
+      "fileName": "chuong-6"
+    },
+    {
+      "name": "Phẩm Thứ Sáu - Quán Sát",
+      "fileName": "chuong-7"
+    },
+    {
+      "name": "Phẩm Thứ Bảy - Giới Hạnh Ðầy Ðủ",
+      "fileName": "chuong-8"
+    },
+    {
+      "name": "Phẩm Thứ Tám - Thọ Ký",
+      "fileName": "chuong-9"
+    },
+    {
+      "name": "Phẩm Thứ Chín - Công Ðức Thọ Trì",
+      "fileName": "chuong-10"
+    },
+    {
+      "name": "Phẩm Thứ Mười - Mau Chứng Bồ Ðề",
+      "fileName": "chuong-11"
+    },
+    {
+      "name": "Phẩm Thứ Mười Một - Ðầy Ðủ Năm Pháp",
+      "fileName": "chuong-12"
+    },
+    {
+      "name": "Phẩm Thứ Mười Hai - Xa Lìa Phân Biệt",
+      "fileName": "chuong-13"
+    },
+    {
+      "name": "Phẩm Thứ Mười Ba - Vô Tránh Hạnh",
+      "fileName": "chuong-14"
+    },
+    {
+      "name": "Phẩm Thứ Mười Bốn - Pháp Bất Cộng",
+      "fileName": "chuong-15"
+    },
+    {
+      "name": "Phẩm Thứ Mười Lăm - Công Ðức Tùy Hỷ",
+      "fileName": "chuong-16"
+    },
+    {
+      "name": "Phẩm Thứ Mười Sáu - Phụng Sự Pháp Sư",
+      "fileName": "chuong-17"
+    },
+    {
+      "name": "Phẩm Thứ Mười Bảy - Chúc Lụy",
+      "fileName": "chuong-18"
+    }
+  ]
+}
