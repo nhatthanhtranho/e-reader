@@ -26,7 +26,7 @@ const Banner: React.FC<BannerProps> = ({
           src={backgroundUrl}
           alt="Banner background"
           fill
-          className="object-cover object-bottom brightness-75"
+          className="object-cover object-center brightness-75"
           priority
 
         />
