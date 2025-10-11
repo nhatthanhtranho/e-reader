@@ -47,7 +47,7 @@ export default function Settings({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpenMainSettings]);
+  }, [isOpenMainSettings, setIsOpenListOfChapter]);
 
   // Scroll handler for mobile only
   useEffect(() => {
