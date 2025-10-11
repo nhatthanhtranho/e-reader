@@ -71,7 +71,7 @@ export default function ChapterContentLayout() {
     };
     window.addEventListener("scroll", handleScroll);
 
-    fetch(formatLink(chapterLinks.currentPath))
+    fetch(chapterLinks.currentPath)
       .then((res) => {
         if (!res.ok) throw new Error("Chapter not found");
         return res.text();
