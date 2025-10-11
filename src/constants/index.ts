@@ -1,1 +1,1 @@
-export const DOCUMENT_PATH='/kinh-phat'
+export const DOCUMENT_PATH='/assets'
