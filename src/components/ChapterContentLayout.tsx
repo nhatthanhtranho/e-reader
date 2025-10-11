@@ -48,6 +48,7 @@ export default function ChapterContentLayout() {
   const router = useRouter();
 
   const [metadata, setMetadata] = useState<any>(null);
+  const [progress, setProgress] = useState<number>(0);
 
   useEffect(() => {
     fetchMetadata(slug, setMetadata);
@@ -67,34 +68,48 @@ export default function ChapterContentLayout() {
 
   useEffect(() => {
     if (!slug) return;
-    let saveScrollTimer: NodeJS.Timeout;
-    let checkCompletedTimer: NodeJS.Timeout;
+
+    let scrollTimer: NodeJS.Timeout;
 
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
+      // Mỗi lần scroll, reset timer
+      clearTimeout(scrollTimer);
 
-      // --- Debounce lưu vị trí cuộn ---
-      clearTimeout(saveScrollTimer);
-      saveScrollTimer = setTimeout(() => {
+      // Debounce sau 300–500ms
+      scrollTimer = setTimeout(() => {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+
+        // --- Lưu vị trí cuộn ---
         saveObjectKeyToLocalStorage(
           slug,
           `chuong-${currentChapter}`,
           window.scrollY
         );
-      }, 500);
 
-      // --- Debounce kiểm tra đọc hết ---
-      clearTimeout(checkCompletedTimer);
-      checkCompletedTimer = setTimeout(() => {
+        // --- Kiểm tra đọc hết ---
         if (documentHeight - scrollPosition < threshold) {
           addToLocalStorageArray(slug, "read", `chuong-${currentChapter}`);
         }
-      }, 500);
+
+        // --- Tính progress của chương hiện tại ---
+        const chapterProgress = Math.round(
+          Math.min(
+            (window.scrollY + window.innerHeight) /
+              document.documentElement.scrollHeight,
+            1
+          ) * 100
+        );
+        setProgress(chapterProgress);
+        // 👉 Lưu hoặc hiển thị progress nếu cần:
+        // localStorage.setItem(`${slug}-progress`, chapterProgress.toFixed(2));
+        // setProgress(chapterProgress);
+      }, 100);
     };
 
     window.addEventListener("scroll", handleScroll);
 
+    // --- Fetch nội dung chương ---
     fetch(chapterLinks.currentPath)
       .then((res) => {
         if (!res.ok) throw new Error("Chapter not found");
@@ -105,8 +120,7 @@ export default function ChapterContentLayout() {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      clearTimeout(saveScrollTimer);
-      clearTimeout(checkCompletedTimer);
+      clearTimeout(scrollTimer);
     };
   }, [chapterLinks.currentPath, slug, currentChapter]);
 
@@ -143,7 +157,9 @@ export default function ChapterContentLayout() {
           </p>
         ))}
       </Content>
-
+      <div className="fixed flex items-center justify-center text-xs font-bold bg-gray-50 text-gray-800 top-2 right-2 w-10 h-10 rounded-full">
+        {progress}%
+      </div>{" "}
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
           className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
