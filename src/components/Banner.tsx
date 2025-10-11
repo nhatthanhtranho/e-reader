@@ -35,10 +35,10 @@ const Banner: React.FC<BannerProps> = ({
 
       {/* Content */}
       <div className="relative z-10 text-center px-4">
-        <h1 className="text-5xl font-bold text-yellow-400  mb-4">
+        <h1 className="lg:text-5xl text-lg font-bold text-yellow-400  mb-4">
           {title}
         </h1>
-        <p className="text-6xl uppercase font-bold text-yellow-400 mb-8">{subtitle}</p>
+        <p className="lg:text-6xl text-xl uppercase font-bold text-yellow-400 mb-8">{subtitle}</p>
 
         <div className="flex justify-center gap-4">
           {ctaSecondary && (

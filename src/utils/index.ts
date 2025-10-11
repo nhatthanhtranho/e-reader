@@ -16,13 +16,13 @@ export const getChapterPath = (slug: string, maxChapter: number, currentChapter:
     const canGoPrev = currentChapter > 1;
     const canGoNext = currentChapter < maxChapter;
     const prevPath = canGoPrev
-        ? `/kinh-phat/${slug}/chuong-${currentChapter - 1}`
+        ? formatLink(`/kinh-phat/${slug}/chuong-${currentChapter - 1}`)
         : null;
 
     const nextPath = canGoNext
-        ? `/kinh-phat/${slug}/chuong-${currentChapter + 1}`
+        ? formatLink(`/kinh-phat/${slug}/chuong-${currentChapter + 1}`)
         : null;
-    const currentPath = `${DOCUMENT_PATH}/${slug}/chuong-${currentChapter}.txt`;
+    const currentPath = formatLink(`${DOCUMENT_PATH}/${slug}/chuong-${currentChapter}.txt`);
     return {
         nextPath,
         prevPath,

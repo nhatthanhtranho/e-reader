@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Banner from "./Banner";
 import ListOfChapter from "@/app/components/ListOfChapter";
 import { fetchMetadata, getChapterPath } from "@/utils";
+import { formatLink } from "../../utils/formatLink";
 
 // Outer wrapper for background & padding
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
@@ -70,7 +71,7 @@ export default function ChapterContentLayout() {
     };
     window.addEventListener("scroll", handleScroll);
 
-    fetch(chapterLinks.currentPath)
+    fetch(formatLink(chapterLinks.currentPath))
       .then((res) => {
         if (!res.ok) throw new Error("Chapter not found");
         return res.text();
@@ -111,12 +112,12 @@ export default function ChapterContentLayout() {
         setIsOpen={setIsOpenListOfChapter}
       />
       <Banner
-        backgroundUrl={`/kinh-phat${metadata?.slug}/horizontal.png`}
-        title={metadata?.title || "Kinh Phật"}
-        subtitle={
-          metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0].name ||
-          `Chương ${currentChapter}`
-        }
+        backgroundUrl={formatLink(`/kinh-phat${metadata?.slug}/horizontal.png`)}
+      title={metadata?.title || "Kinh Phật"}
+      subtitle={
+        metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0].name ||
+        `Chương ${currentChapter}`
+      }
       />
       <Content className="py-12" fontSize={fontSize} width={width}>
         {content.split("\n").map((paragraph, idx) => (
