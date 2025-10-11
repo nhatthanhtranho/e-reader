@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // components/PostDetailLayout.tsx
 "use client";
 
@@ -10,7 +9,6 @@ import ChapterList from "./ChapterList";
 import { Article } from "../../types/Article";
 import PostCardWithDescription from "./PostCard";
 import { Metadata } from "../../types/Metadata";
-import { DOCUMENT_PATH } from "@/constants";
 import { fetchMetadata } from "@/utils";
 import { formatLink } from "../../utils/formatLink";
 

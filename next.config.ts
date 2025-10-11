@@ -1,10 +1,13 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NEXT_PUBLIC_ENV === "PRODUCTION";
+
 const nextConfig = {
-  output: "export", // Xuất static HTML
-  trailingSlash: true, // Đảm bảo tất cả URL có dấu "/"
-  assetPrefix: "", // Prefix cho assets
-  images: { unoptimized: true }, // Github Pages không hỗ trợ image optimization
-  experimental: { appDir: true }, // Nếu bạn dùng App Router
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+  basePath: isProd ? "/e-reader" : "",
+  assetPrefix: isProd ? "/e-reader/" : "",
 };
 
 export default nextConfig;
