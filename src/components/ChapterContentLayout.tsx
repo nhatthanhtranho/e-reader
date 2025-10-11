@@ -7,10 +7,8 @@ import styled from "styled-components";
 import { useSettings } from "@/context/SettingContext";
 import Settings from "@/app/components/Settings";
 import { useRouter } from "next/navigation";
-import Banner from "./Banner";
 import ListOfChapter from "@/app/components/ListOfChapter";
 import { fetchMetadata, getChapterPath } from "@/utils";
-import { formatLink } from "../../utils/formatLink";
 
 // Outer wrapper for background & padding
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
