@@ -6,6 +6,10 @@ export function generateStaticParams() {
     { name: "kinh-dai-bat-niet-ban-quyen-1", chapter: 23 },
     { name: "kinh-dai-bat-niet-ban-quyen-2", chapter: 9 },
     { name: "kinh-niem-phat-ba-la-mat", chapter: 7 },
+    { name: "kinh-duoc-su-luu-ly-bon-nguyen-cong-duc", chapter: 1 },
+    { name: "kinh-bat-dai-nhan-giac", chapter: 1 },
+
+
 
 
   ];
