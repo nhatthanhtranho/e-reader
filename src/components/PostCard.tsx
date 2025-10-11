@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { formatLink } from "../../utils/formatLink";
+import LikeBar from "./LikeBar"; // 👈 import component riêng
 
 export interface PropTypes {
   title: string;
@@ -21,16 +23,21 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   urlPrefix,
 }) => {
   const router = useRouter();
+  const [hovered, setHovered] = useState(false);
+
   const handleClick = () => {
     router.push(formatLink(`${urlPrefix}${url}`));
   };
+
   const bannerURL = `/kinh-phat${url}/banner.webp`;
 
   return (
     <div
-      className="flex flex-col gap-4 cursor-pointer rounded-2xl overflow-hidden shadow-lg 
-                 bg-gradient-to-b from-white to-gray-50 transition-transform hover:scale-105"
+      className="relative flex flex-col gap-4 cursor-pointer rounded-2xl overflow-hidden shadow-lg 
+                 bg-gradient-to-b from-white to-gray-50 transition-transform hover:scale-105 group"
       onClick={handleClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {/* Hình */}
       <div className="w-full h-60 relative flex-shrink-0 rounded-t-2xl overflow-hidden shadow-inner">
@@ -48,6 +55,9 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
           loading="lazy"
           className="object-cover"
         />
+
+        {/* 👇 Overlay LikeBar */}
+        <LikeBar visible={true} />
       </div>
 
       {/* Chữ */}
