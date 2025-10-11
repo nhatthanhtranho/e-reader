@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import styled from "styled-components";
 
@@ -9,6 +9,7 @@ import Settings from "@/app/components/Settings";
 import { useRouter } from "next/navigation";
 import Banner from "./Banner";
 import ListOfChapter from "@/app/components/ListOfChapter";
+import { fetchMetadata, getChapterPath } from "@/utils";
 
 // Outer wrapper for background & padding
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
@@ -31,24 +32,11 @@ export default function ChapterContentLayout() {
   const chapter = params?.chapter as string;
   const slug = params?.slug as string;
 
-  const TOTAL_CHAPTER = 7;
-
   // Lấy số chương từ slug (hỗ trợ nhiều chữ số)
   const currentChapter = Number(chapter?.slice(-1)); // lấy ký tự cuối và parse sang number
 
-  const chapterPath = `/kinh-phat/${slug}/${chapter}.txt`;
 
-  // Tính next và prev paths
-  const canGoPrev = currentChapter > 1;
-  const canGoNext = currentChapter < TOTAL_CHAPTER;
 
-  const prevPath = canGoPrev
-    ? `/kinh-phat/${slug}/chuong-${currentChapter - 1}`
-    : null;
-
-  const nextPath = canGoNext
-    ? `/kinh-phat/${slug}/chuong-${currentChapter + 1}`
-    : null;
   const [content, setContent] = useState<string>("");
   const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
   const { fontSize, theme, width } = useSettings();
@@ -57,11 +45,13 @@ export default function ChapterContentLayout() {
   const [metadata, setMetadata] = useState<any>(null);
 
   useEffect(() => {
-    fetch(`/kinh-phat/${slug}/metadata.json`)
-      .then((res) => res.json())
-      .then((data) => setMetadata(data));
-  }, []);
+    fetchMetadata(slug, setMetadata)
+  }, [slug]);
 
+
+  const chapterLinks = useMemo(() => {
+    return getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter);
+  }, [slug, metadata?.chapters?.length, currentChapter]);
   useEffect(() => {
     localStorage.setItem(slug, `chuong-${currentChapter}`);
   }, [slug, currentChapter]);
@@ -80,7 +70,7 @@ export default function ChapterContentLayout() {
     };
     window.addEventListener("scroll", handleScroll);
 
-    fetch(slug)
+    fetch(chapterLinks.currentPath)
       .then((res) => {
         if (!res.ok) throw new Error("Chapter not found");
         return res.text();
@@ -92,7 +82,7 @@ export default function ChapterContentLayout() {
       window.removeEventListener("scroll", handleScroll);
       clearTimeout(timer);
     };
-  }, [slug]);
+  }, [chapterLinks.currentPath, slug]);
 
   // --- Scroll tới vị trí đã lưu sau khi content load ---
   useEffect(() => {
@@ -110,8 +100,8 @@ export default function ChapterContentLayout() {
   return (
     <Layout theme={theme}>
       <Settings
-        nextLink={nextPath}
-        prevLink={prevPath}
+        nextLink={chapterLinks.nextPath}
+        prevLink={chapterLinks.prevPath}
         setIsOpenListOfChapter={setIsOpenListOfChapter}
       />
       <ListOfChapter
@@ -138,20 +128,18 @@ export default function ChapterContentLayout() {
 
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
-            !prevPath ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={!prevPath}
-          onClick={() => prevPath && router.push(prevPath)}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          disabled={!chapterLinks.prevPath}
+          onClick={() => chapterLinks.prevPath && router.push(chapterLinks.prevPath || '')}
         >
           Chương Trước
         </button>
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
-            !nextPath ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={!nextPath}
-          onClick={() => nextPath && router.push(nextPath)}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          disabled={!chapterLinks.nextPath}
+          onClick={() => chapterLinks.nextPath && router.push(chapterLinks.nextPath || '')}
         >
           Chương Sau
         </button>
