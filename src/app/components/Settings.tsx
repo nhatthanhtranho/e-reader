@@ -97,7 +97,7 @@ export default function Settings({
     <>
       {/* Floating toolbar */}
       <div
-        className={`bg-white gap-6 bottom-0 md:top-52 md:bottom-auto w-full items-center justify-center left-0 px-3 py-4 shadow flex md:flex-col md:w-auto cursor-pointer fixed z-20 transition-transform duration-300 ${showToolbar ? "translate-y-0" : "translate-y-full"
+        className={`bg-white gap-6 bottom-0 lg:top-52 lg:bottom-auto w-full items-center justify-center left-0 px-3 py-4 shadow flex lg:flex-col lg:w-auto cursor-pointer fixed z-20 transition-transform duration-300 ${showToolbar ? "translate-y-0" : "translate-y-full"
           }`}
       >
         <div
