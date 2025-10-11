@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
 
@@ -60,17 +61,20 @@ export default function ChapterList({ chapters }: ChapterListProps) {
       {paginatedChapters.length === 0 ? (
         <p className="text-center text-gray-500">Không tìm thấy chương nào.</p>
       ) : (
-        <ul>
+        <div>
           {paginatedChapters.map((chapter, index) => (
-            <li
+            <div
               key={index}
-              className="p-4 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition"
+              className="p-4 border-b border-gray-200 cursor-pointer relative hover:bg-gray-50 transition"
               onClick={() => router.push(chapter.link || "#")}
             >
-              <div className="line-clamp-1">{chapter.name}</div>
-            </li>
+              <div className="absolute right-2 w-[25px] h-[25px]">
+                <Image fill src="/icons/complete.png" alt=""/>
+              </div>
+              {chapter.name}
+            </div>
           ))}
-        </ul>
+        </div>
       )}
 
       {/* Phân trang */}

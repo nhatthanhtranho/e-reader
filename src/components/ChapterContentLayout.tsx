@@ -111,14 +111,6 @@ export default function ChapterContentLayout() {
         isOpen={isOpenListOfChapter}
         setIsOpen={setIsOpenListOfChapter}
       />
-      <Banner
-        backgroundUrl={formatLink(`/kinh-phat${metadata?.slug}/horizontal.png`)}
-      title={metadata?.title || "Kinh Phật"}
-      subtitle={
-        metadata?.chapters?.[currentChapter ? currentChapter - 1 : 0].name ||
-        `Chương ${currentChapter}`
-      }
-      />
       <Content className="py-12" fontSize={fontSize} width={width}>
         {content.split("\n").map((paragraph, idx) => (
           <p className="mb-5" key={idx}>
