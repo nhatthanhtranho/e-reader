@@ -2,6 +2,7 @@
   "name": "e-reader",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://<username>.github.io/e-reader",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",

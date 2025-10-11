@@ -17,7 +17,7 @@ try {
   console.log("📦 Deploy lên GitHub Pages...");
   execSync(`npx gh-pages -d out -t true`, { stdio: "inherit" });
 
-  console.log(`✅ Deploy thành công! Xem tại: https://<your-username>.github.io/${REPO}/`);
+  console.log(`✅ Deploy thành công! Xem tại: https://nhatthanhtranho.github.io/${REPO}/`);
 } catch (error) {
   console.error("❌ Lỗi deploy:", error.message);
   process.exit(1);
