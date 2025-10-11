@@ -1,8 +1,9 @@
 import { DOCUMENT_PATH } from "@/constants";
+import { formatLink } from "../../utils/formatLink";
 
 export const fetchMetadata = async (slug: string, callback: Function) => {
     try {
-        const res = await fetch(`${DOCUMENT_PATH}/${slug}/metadata.json`);
+        const res = await fetch(formatLink(`${DOCUMENT_PATH}/${slug}/metadata.json`));
         if (!res.ok) throw new Error("Không tìm thấy metadata");
         const data = await res.json();
         callback(data)
@@ -28,11 +29,4 @@ export const getChapterPath = (slug: string, maxChapter: number, currentChapter:
         currentPath
     }
 
-}
-
-export const formatLink = (url: string) => {
-    if (process.env.NEXT_PUBLIC_ENV === 'PRODUCTION') {
-        return `${process.env.NEXT_PUBLIC_IMG_PATH}${url}`
-    }
-    return url
 }

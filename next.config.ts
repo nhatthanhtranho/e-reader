@@ -1,10 +1,13 @@
+/** @type {import('next').NextConfig} */
+const isProd = process.env.NEXT_PUBLIC_ENV === "PRODUCTION";
+
 const nextConfig = {
   output: "export",
-  trailingSlash: true,
-  images: { unoptimized: true },
-  basePath: "",
-  assetPrefix: "",
-  experimental: { appDir: true },
+  images: {
+    unoptimized: true,
+  },
+  basePath: isProd ? "/e-reader" : "",
+  assetPrefix: isProd ? "/e-reader/" : "",
 };
 
 export default nextConfig;
