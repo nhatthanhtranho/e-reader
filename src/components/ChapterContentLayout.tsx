@@ -7,10 +7,17 @@ import styled from "styled-components";
 import { useSettings } from "@/context/SettingContext";
 import Settings from "@/app/components/Settings";
 import { useRouter } from "next/navigation";
-import Banner from "./Banner";
 import ListOfChapter from "@/app/components/ListOfChapter";
-import { fetchMetadata, getChapterPath } from "@/utils";
+import {
+  addToLocalStorageArray,
+  fetchMetadata,
+  getChapterPath,
+  saveObjectKeyToLocalStorage,
+} from "@/utils";
 import { formatLink } from "../../utils/formatLink";
+
+// Vị trí gần cuối trang để biết là đọc xong chapter
+const threshold = 200;
 
 // Outer wrapper for background & padding
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
@@ -36,8 +43,6 @@ export default function ChapterContentLayout() {
   // Lấy số chương từ slug (hỗ trợ nhiều chữ số)
   const currentChapter = Number(chapter?.slice(-1)); // lấy ký tự cuối và parse sang number
 
-
-
   const [content, setContent] = useState<string>("");
   const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
   const { fontSize, theme, width } = useSettings();
@@ -46,29 +51,49 @@ export default function ChapterContentLayout() {
   const [metadata, setMetadata] = useState<any>(null);
 
   useEffect(() => {
-    fetchMetadata(slug, setMetadata)
+    fetchMetadata(slug, setMetadata);
   }, [slug]);
 
-
   const chapterLinks = useMemo(() => {
-    return getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter);
+    return getChapterPath(
+      slug,
+      metadata?.chapters?.length || 1,
+      currentChapter
+    );
   }, [slug, metadata?.chapters?.length, currentChapter]);
+
   useEffect(() => {
-    localStorage.setItem(slug, `chuong-${currentChapter}`);
+    saveObjectKeyToLocalStorage(slug, "latestRead", `chuong-${currentChapter}`);
   }, [slug, currentChapter]);
-  // --- Load nội dung ---
+
   useEffect(() => {
     if (!slug) return;
-    let timer: NodeJS.Timeout;
+    let saveScrollTimer: NodeJS.Timeout;
+    let checkCompletedTimer: NodeJS.Timeout;
+
     const handleScroll = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        const saved = localStorage.getItem("readPositions");
-        const obj = saved ? JSON.parse(saved) : {};
-        obj[slug] = window.scrollY;
-        localStorage.setItem("readPositions", JSON.stringify(obj));
-      }, 300); // debounce 300ms
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      // --- Debounce lưu vị trí cuộn ---
+      clearTimeout(saveScrollTimer);
+      saveScrollTimer = setTimeout(() => {
+        saveObjectKeyToLocalStorage(
+          slug,
+          `chuong-${currentChapter}`,
+          window.scrollY
+        );
+      }, 500);
+
+      // --- Debounce kiểm tra đọc hết ---
+      clearTimeout(checkCompletedTimer);
+      checkCompletedTimer = setTimeout(() => {
+        if (documentHeight - scrollPosition < threshold) {
+          addToLocalStorageArray(slug, "completed", `chuong-${currentChapter}`);
+        }
+      }, 500);
     };
+
     window.addEventListener("scroll", handleScroll);
 
     fetch(formatLink(chapterLinks.currentPath))
@@ -81,9 +106,10 @@ export default function ChapterContentLayout() {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timer);
+      clearTimeout(saveScrollTimer);
+      clearTimeout(checkCompletedTimer);
     };
-  }, [chapterLinks.currentPath, slug]);
+  }, [chapterLinks.currentPath, slug, currentChapter]);
 
   // --- Scroll tới vị trí đã lưu sau khi content load ---
   useEffect(() => {
@@ -121,18 +147,24 @@ export default function ChapterContentLayout() {
 
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
+            !chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={!chapterLinks.prevPath}
-          onClick={() => chapterLinks.prevPath && router.push(chapterLinks.prevPath || '')}
+          onClick={() =>
+            chapterLinks.prevPath && router.push(chapterLinks.prevPath || "")
+          }
         >
           Chương Trước
         </button>
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
+            !chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={!chapterLinks.nextPath}
-          onClick={() => chapterLinks.nextPath && router.push(chapterLinks.nextPath || '')}
+          onClick={() =>
+            chapterLinks.nextPath && router.push(chapterLinks.nextPath || "")
+          }
         >
           Chương Sau
         </button>
