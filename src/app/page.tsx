@@ -26,7 +26,7 @@ export default function Home() {
             {articles.map((article: Article) => (
               <div className="lg:col-span-1" key={article.slug}>
                 <PostCardWithDescription
-                  urlPrefix="/kinh-phat"
+                  urlPrefix="/kinh-phat/"
                   title={article.title}
                   url={article.slug}
                   content={article.content}

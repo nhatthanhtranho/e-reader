@@ -40,7 +40,7 @@ export default function PostDetailLayout() {
         {/* Hình ảnh bên trái */}
         <div className="md:w-1/3 w-full relative h-64 md:h-auto">
           <Image
-            src={formatLink(`/kinh-phat${metadata?.slug}/banner.webp`)} // Bạn có thể bind src từ metadata nếu có
+            src={formatLink(`/assets${metadata?.slug}/banner.webp`)} // Bạn có thể bind src từ metadata nếu có
             alt={metadata?.title ?? "Kinh Phật"}
             fill
             className="object-cover"

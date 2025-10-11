@@ -29,7 +29,7 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
     router.push(formatLink(`${urlPrefix}${url}`));
   };
 
-  const bannerURL = `/kinh-phat${url}/banner.webp`;
+  const bannerURL = `/assets${url}/banner.webp`;
 
   return (
     <div
