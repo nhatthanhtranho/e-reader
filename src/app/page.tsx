@@ -4,12 +4,13 @@ import Banner from "@/components/Banner";
 import PostCardWithDescription from "@/components/PostCard";
 import articles from "@/data/posts.json";
 import { Article } from "../../types/Article";
+import { formatLink } from "../../utils/formatLink";
 
 export default function Home() {
     return (
         <>
             <Banner
-                backgroundUrl="/banner.jpg"
+                backgroundUrl={formatLink("/banner.jpg")}
                 title="THANH TỊNH TẠNG"
                 subtitle="Kho lưu trữ kinh điển Phật Giáo Việt Nam"
                 ctaSecondary={{ label: "Tư Vấn Ngay", link: "tel:0913673661" }}
