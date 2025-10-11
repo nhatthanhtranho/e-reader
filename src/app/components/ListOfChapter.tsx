@@ -39,6 +39,7 @@ export default function ListOfChapter({
         <div className="mx-auto w-16 border-gray-800 border-3 my-2"></div>
         <div className="p-2">
           <ChapterList
+            slug={slug}
             chapters={
               chapters?.map((item) => {
                 return {

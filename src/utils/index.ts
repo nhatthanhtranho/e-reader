@@ -81,7 +81,7 @@ export function addToLocalStorageArray(
   }
 }
 
-export function getLocalStorageObjectValue<T = any>(key: string, objectKey: string): T | null {
+export function getLocalStorageObjectValue<T = string | number | string[]>(key: string, objectKey: string): T | null {
   try {
     const item = localStorage.getItem(key);
     if (!item) return null;

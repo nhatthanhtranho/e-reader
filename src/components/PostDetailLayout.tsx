@@ -31,7 +31,7 @@ export default function PostDetailLayout() {
     if (!slug) return;
     if (typeof window === "undefined") return;
     const latestRead = getLocalStorageObjectValue(slug as string, "latestRead");
-    setLatestRead(latestRead);
+    setLatestRead(latestRead as string);
   }, [slug]);
 
   return (

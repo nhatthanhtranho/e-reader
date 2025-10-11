@@ -8,7 +8,7 @@ interface PropTypes {
   className?: string;
 }
 
-const Footer: React.FC<PropTypes> = _ => {
+const Footer: React.FC<PropTypes> = () => {
   return (
     <footer className="bg-[#303030] relative flex items-center justify-center overflow-hidden">
       {/* Trống đồng xoay */}

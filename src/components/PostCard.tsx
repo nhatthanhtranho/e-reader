@@ -23,7 +23,7 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   urlPrefix,
 }) => {
   const router = useRouter();
-  const [hovered, setHovered] = useState(false);
+  const [_hovered, setHovered] = useState(false);
 
   const handleClick = () => {
     router.push(formatLink(`${urlPrefix}${url}`));
