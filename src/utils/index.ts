@@ -41,8 +41,8 @@ export const getChapterPath = (
 export function saveObjectKeyToLocalStorage(
   key: string,
   objectKey: string,
-  objectValue: any
-) {
+  objectValue: string | number
+): void {
   try {
     const existing = localStorage.getItem(key);
     const data = existing ? JSON.parse(existing) : {};
@@ -61,8 +61,8 @@ export function saveObjectKeyToLocalStorage(
 export function addToLocalStorageArray(
   key: string,
   objectKey: string,
-  value: any
-) {
+  value: string | number
+): void {
   try {
     const existing = localStorage.getItem(key);
     const data = existing ? JSON.parse(existing) : {};
