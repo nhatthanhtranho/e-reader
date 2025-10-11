@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { formatLink } from '../../utils/formatLink';
 
 interface PropTypes {
   className?: string;
@@ -13,7 +14,7 @@ const Footer: React.FC<PropTypes> = _ => {
       {/* Trống đồng xoay */}
       <div className="absolute left-1/2 top-1/2 w-[1800px] h-[1800px] -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none">
         <Image
-          src="/trongdong.png"
+          src={formatLink('/trongdong.png')}
           alt="Trống đồng quay"
           fill
           className="rotate opacity-15"
