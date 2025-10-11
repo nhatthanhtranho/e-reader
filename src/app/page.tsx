@@ -17,27 +17,27 @@ export default function Home() {
                 ctaPrimary={{ label: "Các Gói Dịch Vụ", link: "#products" }}
             />
 
-            <div className="container mx-auto">
-                <div className="mt-8">
-                    <h2 className="uppercase text-3xl">Đề xuất mới</h2>
-                    <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
+      <div className="container mx-auto">
+        <div className="mt-8 mb-8">
+          <h2 className="uppercase text-3xl font-bold">Khám phá</h2>
+          <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
 
-                    <div className="grid lg:grid-cols-4 gap-10">
-                        {articles.map((article: Article) => (
-                            <div className="lg:col-span-1" key={article.slug}>
-                                <PostCardWithDescription
-                                    urlPrefix="/kinh-phat"
-                                    title={article.title}
-                                    url={article.slug}
-                                    content={article.content}
-                                    dichGia={article.dichGia}
-                                    date={article.createdAt}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+          <div className="grid lg:grid-cols-4 gap-10">
+            {articles.map((article: Article) => (
+              <div className="lg:col-span-1" key={article.slug}>
+                <PostCardWithDescription
+                  urlPrefix="/kinh-phat"
+                  title={article.title}
+                  url={article.slug}
+                  content={article.content}
+                  dichGia={article.dichGia}
+                  date={article.createdAt}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
