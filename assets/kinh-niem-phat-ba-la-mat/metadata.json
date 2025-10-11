@@ -1,0 +1,44 @@
+{
+    "title": "Kinh Niệm Phật Bà La Mật",
+    "dichGia": "Thích Thiền Tâm",
+    "content": "Kinh Niệm Phật Ba La Mật là pháp bảo vô thượng của Phật Thích Ca Mâu Ni, được Ngài giảng tại thành Vương Xá, Ấn Độ. Kinh này nêu rõ công đức và lợi ích của việc niệm danh hiệu Nam Mô A Di Đà Phật, cũng như phương pháp niệm Phật để đạt được sự an lạc và giải thoát. Kinh khuyến khích người tu hành phát tâm Bồ Đề, thực hành niệm Phật một cách chuyên cần và chí thành, từ đó có thể tiêu trừ phiền não, tăng trưởng trí tuệ và đạt được quả vị Phật.",
+    "slug": "/kinh-niem-phat-ba-la-mat",
+    "createdAt": "11/10/2025",
+    "tags": [
+      "Kinh Phật",
+      "Kinh Đại Thừa",
+      "Niệm Phật"
+    ],
+    "maxChapter": 7,
+    "chapters": [
+      {
+        "name": "Phẩm Thứ 1: DUYÊN KHỞI",
+        "fileName": "chuong-1.txt"
+      },
+      {
+        "name": "Phẩm Thứ 2: MƯỜI TÂM THÙ THẮNG",
+        "fileName": "chuong-2.txt"
+      },
+      {
+        "name": "Phẩm Thứ 3: NIỆM PHẬT CÔNG ĐỨC",
+        "fileName": "chuong-3.txt"
+      },
+      {
+        "name": "Phẩm Thứ 4: XƯNG TÁN DANH HIỆU",
+        "fileName": "chuong-4.txt"
+      },
+      {
+        "name": "Phẩm Thứ 5: QUÁN THẾ ÂM BỒ TÁT NIỆM PHẬT VIÊN THÔNG",
+        "fileName": "chuong-5.txt"
+      },
+      {
+        "name": "Phẩm Thứ 6: NĂNG LỰC BẤT TƯ NGHÌ CỦA DANH HIỆU PHẬT",
+        "fileName": "chuong-6.txt"
+      },
+      {
+        "name": "Phẩm Thứ 7: KHUYẾN PHÁT NIỆM PHẬT VÀ ĐỌC TỤNG CHƠN NGÔN",
+        "fileName": "chuong-7.txt"
+      }
+    ]
+  }
+  
