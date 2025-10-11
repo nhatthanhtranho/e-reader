@@ -43,7 +43,7 @@ export default function CustomSwiper({
           {/* Nút Next */}
           <div
             ref={nextRef}
-            className="swiper-button-next w-[40px] h-[40px] translate-x-6 -translate-y-6"
+            className="swiper-button-next w-[40px] h-[40px] translate-x-4 -translate-y-2"
           >
             <svg
               className="w-full h-full text-[#EFBF04] bg-white rounded-full 
@@ -61,7 +61,7 @@ export default function CustomSwiper({
           {/* Nút Prev */}
           <div
             ref={prevRef}
-            className="swiper-button-prev w-[40px] h-[40px] -translate-x-6 -translate-y-6"
+            className="swiper-button-prev w-[40px] h-[40px] -translate-x-4 -translate-y-2"
           >
             <svg
               className="w-full h-full text-[#EFBF04] bg-white rounded-full 

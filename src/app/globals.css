@@ -24,3 +24,40 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* Dots container */
+.swiper-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  /* khoảng cách giữa dots */
+}
+
+/* Dot mặc định */
+.swiper-pagination .custom-dot {
+  width: 5px;
+  height: 5px;
+  background-color: #cfd6db;
+  /* vàng */
+  border-radius: 50%;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Dot active */
+.swiper-pagination .swiper-pagination-bullet-active.custom-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ff6347;
+  /* đỏ */
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.rotate {
+  animation: spin 100s linear infinite;
+  transform-origin: center;
+  will-change: transform;
+}

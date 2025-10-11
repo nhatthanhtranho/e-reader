@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { formatLink } from "../../utils/formatLink";
-import LikeBar from "./LikeBar"; // 👈 import component riêng
+import LikeBar from "./LikeBar";
 
 export interface PropTypes {
   title: string;
@@ -33,8 +33,9 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
 
   return (
     <div
-      className="relative flex flex-col gap-4 cursor-pointer rounded-2xl overflow-hidden shadow-lg 
-                 bg-gradient-to-b from-white to-gray-50 transition-transform hover:scale-105 group"
+      className="relative flex flex-col cursor-pointer rounded-2xl overflow-hidden shadow-lg
+                 bg-gradient-to-b from-white to-gray-50 transition-transform hover:scale-[1.02]
+                 group h-full min-h-[480px]" // 👈 đảm bảo chiều cao tối thiểu
       onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -56,22 +57,27 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
           className="object-cover"
         />
 
-        {/* 👇 Overlay LikeBar */}
+        {/* Overlay LikeBar */}
         <LikeBar visible={true} />
       </div>
 
-      {/* Chữ */}
-      <div className="flex flex-col justify-start flex-1 text-gray-700 w-full p-4">
-        <h3 className="font-bold text-xl leading-snug line-clamp-2 text-gray-900">
-          {title}
-        </h3>
+      {/* Nội dung */}
+      <div className="flex flex-col justify-between flex-1 p-4 text-gray-700">
+        <div>
+          <h3 className="font-bold text-xl leading-snug line-clamp-2 text-gray-900">
+            {title}
+          </h3>
 
-        <div className="flex items-center mt-2 gap-2 text-gray-500 text-xs">
-          {dichGia && <p>Dịch giả: {dichGia}</p>}
-          <p className="ml-auto">{date}</p>
+          <div className="flex items-center mt-2 gap-2 text-gray-500 text-xs">
+            {dichGia && <p>Dịch giả: {dichGia}</p>}
+            <p className="ml-auto">{date}</p>
+          </div>
+
+          <p className="text-gray-700 text-base line-clamp-4 mt-3">{content}</p>
         </div>
 
-        <p className="text-gray-700 text-base line-clamp-4 mt-3">{content}</p>
+        {/* 👇 Thêm khoảng đệm cuối để các card cân bằng */}
+        <div className="mt-4" />
       </div>
     </div>
   );
