@@ -2,11 +2,13 @@
   "name": "e-reader",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://<username>.github.io/e-reader",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy": "npx gh-pages -d out"
   },
   "dependencies": {
     "file-saver": "^2.0.5",
