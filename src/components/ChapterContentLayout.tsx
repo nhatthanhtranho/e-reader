@@ -7,14 +7,15 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 
 import { useSettings } from "@/context/SettingContext";
-import Settings from "@/app/components/Settings";
-import ListOfChapter from "@/app/components/ListOfChapter";
+import Settings from "@/components/Settings";
+import ListOfChapter from "@/components/ListOfChapter";
 import {
   addToLocalStorageArray,
   fetchMetadata,
   getChapterPath,
   saveObjectKeyToLocalStorage,
 } from "@/utils";
+import { ProgressBar } from "@/components/ProgressBar";
 
 // --- Threshold to consider chapter as read ---
 const threshold = 200;
@@ -56,7 +57,11 @@ export default function ChapterContentLayout() {
 
   // --- Compute chapter links ---
   const chapterLinks = useMemo(() => {
-    return getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter);
+    return getChapterPath(
+      slug,
+      metadata?.chapters?.length || 1,
+      currentChapter
+    );
   }, [slug, metadata?.chapters?.length, currentChapter]);
 
   // --- Save latest read chapter ---
@@ -79,7 +84,11 @@ export default function ChapterContentLayout() {
         const scrollableHeight = documentHeight - viewportHeight;
 
         // Save scroll position
-        saveObjectKeyToLocalStorage(slug, `chuong-${currentChapter}`, scrollTop);
+        saveObjectKeyToLocalStorage(
+          slug,
+          `chuong-${currentChapter}`,
+          scrollTop
+        );
 
         // Mark chapter as read
         if (scrollableHeight - scrollTop < threshold) {
@@ -88,7 +97,9 @@ export default function ChapterContentLayout() {
 
         // Calculate progress (0-100%)
         const chapterProgress =
-          scrollableHeight > 0 ? Math.round((scrollTop / scrollableHeight) * 100) : 100;
+          scrollableHeight > 0
+            ? Math.round((scrollTop / scrollableHeight) * 100)
+            : 100;
         setProgress(chapterProgress);
       }, 50);
     };
@@ -123,7 +134,11 @@ export default function ChapterContentLayout() {
 
       const documentHeight = document.documentElement.scrollHeight;
       const scrollableHeight = documentHeight - window.innerHeight;
-      setProgress(scrollableHeight > 0 ? Math.round((scrollY / scrollableHeight) * 100) : 100);
+      setProgress(
+        scrollableHeight > 0
+          ? Math.round((scrollY / scrollableHeight) * 100)
+          : 100
+      );
     });
   }, [slug, content]);
 
@@ -149,8 +164,8 @@ export default function ChapterContentLayout() {
       </Content>
 
       {/* Progress indicator */}
-      <div className="fixed flex items-center justify-center text-xs font-bold bg-gray-50 text-gray-800 top-2 right-2 w-10 h-10 rounded-full">
-        {progress}%
+      <div className="w-36 fixed top-3 right-3">
+        <ProgressBar progress={progress}/>
       </div>
 
       {/* Navigation buttons */}

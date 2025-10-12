@@ -82,22 +82,24 @@ export function addToLocalStorageArray(
   }
 }
 
-export function getLocalStorageObjectValue<T = string | number | string[]>(key: string, objectKey: string): T | null {
+export function getLocalStorageObjectValue<T = string | number | string[]>(
+  key: string,
+  objectKey: string
+): T | null {
   try {
     const item = localStorage.getItem(key);
     if (!item) return null;
-
     const parsed = JSON.parse(item);
     if (typeof parsed !== "object" || parsed === null) return null;
-    console.log(parsed[objectKey])
     return parsed[objectKey] ?? null;
   } catch (error) {
-    console.error(`Error reading key "${objectKey}" from localStorage item "${key}":`, error);
+    console.error(
+      `Error reading key "${objectKey}" from localStorage item "${key}":`,
+      error
+    );
     return null;
   }
 }
-
-
 
 export function getReadingBooks(): ReadingBook[] {
   if (typeof window === "undefined") return [];
@@ -131,7 +133,9 @@ export function updateReadingBooks(bookItem: ReadingBook) {
       return;
     }
 
-    const index = data.findIndex((item: ReadingBook) => item.slug === bookItem.slug);
+    const index = data.findIndex(
+      (item: ReadingBook) => item.slug === bookItem.slug
+    );
     if (index !== -1) {
       // cập nhật sách có sẵn
       data[index] = { ...data[index], ...bookItem };

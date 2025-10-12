@@ -1,6 +1,6 @@
 import ChapterList from "@/components/ChapterList";
 import Image from "next/image";
-import { formatLink } from "../../../utils/formatLink";
+import { formatLink } from "../../utils/formatLink";
 
 interface ListOfChapterProps {
   slug: string;
