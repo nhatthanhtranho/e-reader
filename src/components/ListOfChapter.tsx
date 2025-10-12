@@ -33,7 +33,7 @@ export default function ListOfChapter({
             alt="Đóng"
           />
         </button>
-        <h2 className="text-2xl pt-2 font-bold text-gray-800 text-center w-[85%] mx-auto">
+        <h2 className="text-2xl pt-2 font-bold text-black text-center w-[85%] mx-auto">
           Danh sách chương
         </h2>
         <div className="mx-auto w-16 border-gray-800 border-3 my-2"></div>
