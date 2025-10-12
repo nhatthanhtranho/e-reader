@@ -20,12 +20,16 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   content,
   date,
   dichGia,
-  urlPrefix,
+  urlPrefix = "",
 }) => {
   const router = useRouter();
-  const [_hovered, setHovered] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Nếu click bắt nguồn từ nút Like → không chuyển trang
+    const target = e.target as HTMLElement;
+    if (target.closest(".like-button")) return;
+
     router.push(formatLink(`${urlPrefix}${url}`));
   };
 
@@ -35,12 +39,12 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
     <div
       className="relative flex flex-col cursor-pointer rounded-2xl overflow-hidden shadow-lg
                  bg-gradient-to-b from-white to-gray-50 transition-transform hover:scale-[1.02]
-                 group h-full min-h-[480px]" // 👈 đảm bảo chiều cao tối thiểu
+                 group h-full min-h-[480px]"
       onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Hình */}
+      {/* Ảnh banner */}
       <div className="w-full h-60 relative flex-shrink-0 rounded-t-2xl overflow-hidden shadow-inner">
         <div className="absolute top-0 right-3 z-20 flex flex-col items-center">
           <div className="bg-gray-50 text-gray-600 font-bold p-2 flex items-center justify-center">
@@ -57,7 +61,6 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
           className="object-cover"
         />
 
-        {/* Overlay LikeBar */}
         <LikeBar visible={true} />
       </div>
 
@@ -75,8 +78,6 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
 
           <p className="text-gray-700 text-base line-clamp-4 mt-3">{content}</p>
         </div>
-
-        {/* 👇 Thêm khoảng đệm cuối để các card cân bằng */}
         <div className="mt-4" />
       </div>
     </div>
