@@ -9,7 +9,11 @@ import ChapterList from "./ChapterList";
 import { Article } from "../../types/Article";
 import PostCardWithDescription from "./PostCard";
 import { Metadata } from "../../types/Metadata";
-import { fetchMetadata, getLocalStorageObjectValue, updateReadingBooks } from "@/utils";
+import {
+  fetchMetadata,
+  getLocalStorageObjectValue,
+  updateReadingBooks,
+} from "@/utils";
 import { formatLink } from "../../utils/formatLink";
 import Footer from "./Footer";
 
@@ -79,7 +83,14 @@ export default function PostDetailLayout() {
               <button
                 className="bg-yellow-500 shadow text-gray-50 w-32 py-2 rounded hover:bg-yellow-600 transition cursor-pointer"
                 onClick={() => {
-                  updateReadingBooks({ content: metadata?.content || "", dichGia: metadata?.dichGia || "", slug: metadata?.slug || "", title: metadata?.title || "", createdAt: metadata?.createdAt || "" })
+                  updateReadingBooks({
+                    content: metadata?.content || "",
+                    dichGia: metadata?.dichGia || "",
+                    slug: metadata?.slug || "",
+                    title: metadata?.title || "",
+                    createdAt: metadata?.createdAt || "",
+                    maxChapter: metadata?.maxChapter || 1,
+                  });
                   if (!metadata?.chapters) return;
                   const firstChapter = metadata.chapters[0]?.fileName;
                   if (firstChapter)
@@ -90,11 +101,19 @@ export default function PostDetailLayout() {
               </button>
 
               <button
-                className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${latestRead == null ? "hidden" : ""
-                  }`}
+                className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${
+                  latestRead == null ? "hidden" : ""
+                }`}
                 onClick={() => {
                   if (latestRead)
-                    updateReadingBooks({ content: metadata?.content || "", dichGia: metadata?.dichGia || "", slug: metadata?.slug || "", title: metadata?.title || "", createdAt: metadata?.createdAt || "" })
+                    updateReadingBooks({
+                      content: metadata?.content || "",
+                      dichGia: metadata?.dichGia || "",
+                      slug: metadata?.slug || "",
+                      title: metadata?.title || "",
+                      createdAt: metadata?.createdAt || "",
+                      maxChapter: metadata?.maxChapter || 1,
+                    });
                   router.push(`/kinh-phat/${slug}/${latestRead}`);
                 }}
               >

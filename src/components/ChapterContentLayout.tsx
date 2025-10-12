@@ -165,7 +165,7 @@ export default function ChapterContentLayout() {
 
       {/* Progress indicator */}
       <div className="w-36 fixed top-3 right-3">
-        <ProgressBar progress={progress}/>
+        <ProgressBar progress={progress} />
       </div>
 
       {/* Navigation buttons */}

@@ -12,6 +12,7 @@ export interface PropTypes {
   dichGia?: string;
   date?: string;
   urlPrefix?: string;
+  progress?: number;
 }
 
 const PostCardWithDescription: React.FC<PropTypes> = ({
@@ -21,6 +22,7 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   date,
   dichGia,
   urlPrefix,
+  progress,
 }) => {
   const router = useRouter();
   const [_hovered, setHovered] = useState(false);
@@ -35,19 +37,21 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
     <div
       className="relative flex flex-col cursor-pointer rounded-2xl overflow-hidden shadow-lg
                  bg-gradient-to-b from-white to-gray-50 transition-transform hover:scale-[1.02]
-                 group h-full min-h-[480px]" // 👈 đảm bảo chiều cao tối thiểu
+                 group h-full min-h-[480px]"
       onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Hình */}
       <div className="w-full h-60 relative flex-shrink-0 rounded-t-2xl overflow-hidden shadow-inner">
-        <div className="absolute top-0 right-3 z-20 flex flex-col items-center">
-          <div className="bg-gray-50 text-gray-600 font-bold p-2 flex items-center justify-center">
-            70%
+        {progress && (
+          <div className="absolute top-2 right-2 z-20 flex flex-col items-center animate-fade-in">
+            {/* Label */}
+            <div className="relative bg-gray-50 text-gray-700 font-semibold px-2 py-1 rounded-md shadow-md text-sm sm:text-base">
+              {progress}%{/* Triangle pointer */}
+            </div>
           </div>
-          <div className="w-0 h-0 border-l-[24px] border-r-[24px] border-t-[12px] border-l-transparent border-r-transparent border-t-gray-50"></div>
-        </div>
+        )}
 
         <Image
           fill

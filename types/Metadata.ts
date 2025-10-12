@@ -9,5 +9,6 @@ export interface Metadata {
   createdAt: string;
   description: string;
   tags: string[];
+  maxChapter: number;
   chapters: Array<{ name: string; fileName: string }>;
 }

@@ -1,3 +1,5 @@
 import { Article } from "./Article";
 
-export type ReadingBook = Article
+export type ReadingBook = Article & {
+  maxChapter: number;
+};
