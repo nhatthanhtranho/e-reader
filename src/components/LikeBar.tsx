@@ -4,7 +4,7 @@ import Image from "next/image";
 import { formatLink } from "../../utils/formatLink";
 
 interface LikeBarProps {
-  visible?: boolean; // cho phép điều khiển hiển thị từ ngoài (hover)
+  visible?: boolean;
 }
 
 const LikeBar: React.FC<LikeBarProps> = ({ visible = true }) => {
@@ -12,11 +12,9 @@ const LikeBar: React.FC<LikeBarProps> = ({ visible = true }) => {
   const [animating, setAnimating] = useState(false);
 
   const handleLikeClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Ngăn click lan ra ngoài
     setLiked(!liked);
     setAnimating(true);
-
-    // reset animation state để có thể lặp lại khi click lại
     setTimeout(() => setAnimating(false), 400);
   };
 
@@ -24,14 +22,13 @@ const LikeBar: React.FC<LikeBarProps> = ({ visible = true }) => {
     <div
       className={`absolute bottom-0 left-0 right-0 h-16 flex items-center justify-end px-4
                   bg-gradient-to-t from-black/60 to-transparent text-white 
-                  transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"
-        }`}
+                  transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"}`}
       onClick={(e) => e.stopPropagation()}
     >
       {/* ❤️ Like button */}
       <div
         onClick={handleLikeClick}
-        className={`relative w-10 h-10 flex items-center justify-center rounded-full 
+        className={`like-button relative w-10 h-10 flex items-center justify-center rounded-full 
                     cursor-pointer transition-transform duration-200
                     ${animating ? "scale-125" : "scale-100"}`}
       >
@@ -40,11 +37,10 @@ const LikeBar: React.FC<LikeBarProps> = ({ visible = true }) => {
           alt="Like"
           width={26}
           height={26}
-          className={`transition-transform duration-300 ${animating ? "animate-pingOnce" : ""
-            }`}
+          className={`transition-transform duration-300 ${animating ? "animate-pingOnce" : ""}`}
         />
 
-        {/* Hiệu ứng glow khi like */}
+        {/* Hiệu ứng glow */}
         {liked && (
           <span
             className="absolute inset-0 rounded-full bg-red-500/40 blur-md animate-pulseOnce pointer-events-none"
@@ -53,7 +49,6 @@ const LikeBar: React.FC<LikeBarProps> = ({ visible = true }) => {
         )}
       </div>
 
-      {/* Custom keyframes for ping / pulse */}
       <style jsx>{`
         @keyframes pingOnce {
           0% {
