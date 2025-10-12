@@ -11,6 +11,7 @@ export function generateStaticParams() {
     { name: "kinh-bat-chu-tam-muoi", chapter: 18 },
     { name: "kinh-dai-thua-duyen-sinh", chapter: 1 },
     { name: "kinh-phat-danh-ton-thang-da-la-ni", chapter: 3 },
+    { name: "kinh-phap-hoa", chapter: 28 },
 
   ];
   const params = data.flatMap(({ name, chapter }) =>
