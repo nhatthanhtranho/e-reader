@@ -39,7 +39,7 @@ export default function PostDetailLayout() {
   }, [slug]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-white">
       <div className="flex flex-col container mx-auto">
         <div className="flex flex-col md:flex-row md:shadow-lg rounded-lg overflow-hidden min-h-[50vh]">
           {/* Hình ảnh bên trái */}

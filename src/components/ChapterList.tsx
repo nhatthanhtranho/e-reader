@@ -99,7 +99,7 @@ export default function ChapterList({
                   router.push(chapter.link || "#");
                 }}
               >
-                <div className="absolute right-2 w-[25px] h-[25px]">
+                <div className="absolute right-2 w-[25px] h-[25px] text-black">
                   <Image
                     fill
                     src={
