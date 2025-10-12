@@ -12,6 +12,7 @@ export default function ReadingBookSection() {
     useEffect(() => {
         // ✅ Lấy data khi component mount (client-side)
         const books = getReadingBooks();
+        console.log(books)
         setReadingBooks(books);
     }, []);
 

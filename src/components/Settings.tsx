@@ -4,7 +4,7 @@ import { useSettings } from "@/context/SettingContext";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { formatLink } from "../../../utils/formatLink";
+import { formatLink } from "../../utils/formatLink";
 
 const iconSize = 25;
 

@@ -7,15 +7,15 @@ import styled from "styled-components";
 import { useRouter } from "next/navigation";
 
 import { useSettings } from "@/context/SettingContext";
-import Settings from "@/app/components/Settings";
-import ListOfChapter from "@/app/components/ListOfChapter";
+import Settings from "@/components/Settings";
+import ListOfChapter from "@/components/ListOfChapter";
 import {
   addToLocalStorageArray,
   fetchMetadata,
   getChapterPath,
   saveObjectKeyToLocalStorage,
 } from "@/utils";
-import { ProgressBar } from "@/app/components/ProgressBar";
+import { ProgressBar } from "@/components/ProgressBar";
 
 // --- Threshold to consider chapter as read ---
 const threshold = 200;
