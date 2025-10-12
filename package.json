@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "https://<username>.github.io/e-reader",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "dev": "cross-env NEXT_PUBLIC_ENV=production next dev --turbopack",
+    "build": "next build --turbopack && gh-pages -d out",
     "start": "next start",
     "lint": "eslint",
     "deploy": "gh-pages -d out"
