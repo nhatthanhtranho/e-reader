@@ -1,10 +1,11 @@
 "use client";
 
-import { getLocalStorageObjectValue } from "@/utils";
+import { getLocalStorageObjectValue, updateReadingBooks } from "@/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import { formatLink } from "../../utils/formatLink";
+import { Metadata } from "../../types/Metadata";
 
 interface Chapter {
   name: string;
@@ -12,11 +13,12 @@ interface Chapter {
 }
 
 interface ChapterListProps {
+  metadata?: Metadata;
   chapters: Chapter[];
   slug: string;
 }
 
-export default function ChapterList({ chapters, slug }: ChapterListProps) {
+export default function ChapterList({ chapters, slug, metadata }: ChapterListProps) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [readChapters, setReadChapters] = useState<string[]>([]);
@@ -81,7 +83,10 @@ export default function ChapterList({ chapters, slug }: ChapterListProps) {
               <div
                 key={index}
                 className="p-4 border-b border-gray-200 cursor-pointer relative hover:bg-gray-50 transition"
-                onClick={() => router.push(chapter.link || "#")}
+                onClick={() => {
+                  updateReadingBooks({ content: metadata?.content || "", dichGia: metadata?.dichGia || "", slug: metadata?.slug || "", title: metadata?.title || "", createdAt: metadata?.createdAt || "" })
+                  router.push(chapter.link || "#")
+                }}
               >
                 <div className="absolute right-2 w-[25px] h-[25px]">
                   <Image
@@ -103,11 +108,10 @@ export default function ChapterList({ chapters, slug }: ChapterListProps) {
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
-            className={`px-4 py-2 rounded border ${
-              currentPage === 1
-                ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                : "hover:bg-gray-100 border-gray-300 cursor-pointer"
-            }`}
+            className={`px-4 py-2 rounded border ${currentPage === 1
+              ? "text-gray-400 border-gray-200 cursor-not-allowed"
+              : "hover:bg-gray-100 border-gray-300 cursor-pointer"
+              }`}
           >
             Trang trước
           </button>
@@ -119,11 +123,10 @@ export default function ChapterList({ chapters, slug }: ChapterListProps) {
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded border ${
-              currentPage === totalPages
-                ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                : "hover:bg-gray-100 border-gray-300 cursor-pointer"
-            }`}
+            className={`px-4 py-2 rounded border ${currentPage === totalPages
+              ? "text-gray-400 border-gray-200 cursor-not-allowed"
+              : "hover:bg-gray-100 border-gray-300 cursor-pointer"
+              }`}
           >
             Trang sau
           </button>
