@@ -1,26 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useEffect, useMemo, useState, useRef } from "react";
+import { useParams, useRouter } from "next/navigation";
 import styled from "styled-components";
-import { useRouter } from "next/navigation";
 
 import { useSettings } from "@/context/SettingContext";
 import Settings from "@/components/Settings";
 import ListOfChapter from "@/components/ListOfChapter";
+import { ProgressBar } from "@/components/ProgressBar";
 import {
   addToLocalStorageArray,
   fetchMetadata,
   getChapterPath,
   saveObjectKeyToLocalStorage,
 } from "@/utils";
-import { ProgressBar } from "@/components/ProgressBar";
 
-// --- Threshold to consider chapter as read ---
 const threshold = 200;
 
-// --- Styled components ---
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
   margin: 0 auto;
   background-color: ${(props) =>
@@ -45,6 +42,9 @@ export default function ChapterContentLayout() {
   const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
   const [metadata, setMetadata] = useState<any>(null);
   const [progress, setProgress] = useState<number>(0);
+  const [isModified, setIsModified] = useState(false);
+
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const { fontSize, theme, width } = useSettings();
   const router = useRouter();
@@ -57,11 +57,7 @@ export default function ChapterContentLayout() {
 
   // --- Compute chapter links ---
   const chapterLinks = useMemo(() => {
-    return getChapterPath(
-      slug,
-      metadata?.chapters?.length || 1,
-      currentChapter
-    );
+    return getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter);
   }, [slug, metadata?.chapters?.length, currentChapter]);
 
   // --- Save latest read chapter ---
@@ -83,19 +79,12 @@ export default function ChapterContentLayout() {
         const documentHeight = document.documentElement.scrollHeight;
         const scrollableHeight = documentHeight - viewportHeight;
 
-        // Save scroll position
-        saveObjectKeyToLocalStorage(
-          slug,
-          `chuong-${currentChapter}`,
-          scrollTop
-        );
+        saveObjectKeyToLocalStorage(slug, `chuong-${currentChapter}`, scrollTop);
 
-        // Mark chapter as read
         if (scrollableHeight - scrollTop < threshold) {
           addToLocalStorageArray(slug, "read", `chuong-${currentChapter}`);
         }
 
-        // Calculate progress (0-100%)
         const chapterProgress =
           scrollableHeight > 0
             ? Math.round((scrollTop / scrollableHeight) * 100)
@@ -106,7 +95,6 @@ export default function ChapterContentLayout() {
 
     window.addEventListener("scroll", handleScroll);
 
-    // --- Fetch chapter content ---
     fetch(chapterLinks.currentPath)
       .then((res) => {
         if (!res.ok) throw new Error("Chapter not found");
@@ -124,14 +112,12 @@ export default function ChapterContentLayout() {
   // --- Restore scroll position & progress ---
   useEffect(() => {
     if (!content) return;
-
     const saved = localStorage.getItem("readPositions");
     const obj = saved ? JSON.parse(saved) : {};
     const scrollY = obj[slug] || 0;
 
     requestAnimationFrame(() => {
       window.scrollTo(0, scrollY);
-
       const documentHeight = document.documentElement.scrollHeight;
       const scrollableHeight = documentHeight - window.innerHeight;
       setProgress(
@@ -141,6 +127,25 @@ export default function ChapterContentLayout() {
       );
     });
   }, [slug, content]);
+
+  // --- Detect content changes (editable text) ---
+  const handleInputChange = () => {
+    if (!isModified) setIsModified(true);
+  };
+
+  // --- Export to .txt ---
+  const handleExport = () => {
+    const text =
+      contentRef.current?.innerText?.trim() || content.trim() || "Không có nội dung";
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${slug}-chuong-${currentChapter}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setIsModified(false);
+  };
 
   return (
     <Layout theme={theme}>
@@ -155,20 +160,40 @@ export default function ChapterContentLayout() {
         isOpen={isOpenListOfChapter}
         setIsOpen={setIsOpenListOfChapter}
       />
-      <Content className="py-12" fontSize={fontSize} width={width}>
-        {content.split("\n").map((paragraph, idx) => (
-          <p className="mb-5" key={idx}>
-            {paragraph}
-          </p>
-        ))}
+
+      <Content
+        ref={contentRef}
+        className="py-12 prose max-w-none"
+        fontSize={fontSize}
+        width={width}
+        contentEditable
+        suppressContentEditableWarning
+        onInput={handleInputChange}
+        style={{
+          outline: "none",
+          whiteSpace: "pre-wrap",
+          cursor: "text",
+        }}
+      >
+        {content}
       </Content>
 
-      {/* Progress indicator */}
+      {/* Nút export chỉ hiện khi có chỉnh sửa */}
+      {isModified && (
+        <div className="flex justify-center my-10">
+          <button
+            onClick={handleExport}
+            className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black"
+          >
+            Export TXT
+          </button>
+        </div>
+      )}
+
       <div className="w-36 fixed top-3 right-3">
         <ProgressBar progress={progress} />
       </div>
 
-      {/* Navigation buttons */}
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
           className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
