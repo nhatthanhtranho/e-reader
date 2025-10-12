@@ -53,13 +53,15 @@ export default function Settings({
       {/* Floating toolbar */}
       <div
         onClick={() => setShowToolbar(true)}
-        className={`bg-gray-100 rounded-r-2xl gap-6 lg:top-32 w-full items-center justify-center px-3 py-4 shadow flex lg:flex-col lg:w-auto cursor-pointer fixed z-20 transform transition-transform duration-300 ${
-          showToolbar ? "translate-x-0" : "-translate-x-12"
-        }`}
+        className={`bg-gray-100 rounded-r-2xl gap-6 lg:top-32 w-full items-center justify-center px-3 py-4 shadow flex lg:flex-col lg:w-auto cursor-pointer fixed z-20 transform transition-transform duration-300 ${showToolbar === true ? "translate-x-0" : "-translate-x-10"
+          }`}
       >
         <div
           className={`hover:bg-gray-100 p-2 rounded w-[${iconSize}px] h-[${iconSize}px] relative`}
-          onClick={() => setShowToolbar(false)}
+          onClick={(e) => {
+            e.stopPropagation(); // <-- prevent parent onClick
+            setShowToolbar(false);
+          }}
         >
           <Image
             fill
@@ -107,9 +109,8 @@ export default function Settings({
           />
         </div>
         <div
-          className={`hover:bg-gray-100 p-2 rounded w-[${iconSize}px] h-[${iconSize}px] relative ${
-            nextLink ? "" : "opacity-50 cursor-not-allowed"
-          }`}
+          className={`hover:bg-gray-100 p-2 rounded w-[${iconSize}px] h-[${iconSize}px] relative ${nextLink ? "" : "opacity-50 cursor-not-allowed"
+            }`}
           onClick={() => nextLink && router.push(nextLink)}
         >
           <Image
@@ -120,9 +121,8 @@ export default function Settings({
           />
         </div>
         <div
-          className={`hover:bg-gray-100 p-2 rounded w-[${iconSize}px] h-[${iconSize}px] relative ${
-            prevLink ? "" : "opacity-50 cursor-not-allowed"
-          }`}
+          className={`hover:bg-gray-100 p-2 rounded w-[${iconSize}px] h-[${iconSize}px] relative ${prevLink ? "" : "opacity-50 cursor-not-allowed"
+            }`}
           onClick={() => prevLink && router.push(prevLink)}
         >
           <Image
@@ -137,9 +137,8 @@ export default function Settings({
       {/* Panel settings */}
       <div
         ref={panelRef}
-        className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${
-          isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 bg-white shadow-lg text-gray-700 z-20 transform transition-transform duration-300 ease-in-out ${isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="relative overflow-y-auto h-full">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Cài đặt</h2>
@@ -160,9 +159,8 @@ export default function Settings({
             <h3 className="text-lg mb-3 font-bold">Giao diện</h3>
             <div className="flex gap-2">
               <div
-                className={`p-2 bg-white shadow rounded-full cursor-pointer border-3 ${
-                  theme === "light" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-white shadow rounded-full cursor-pointer border-3 ${theme === "light" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("light")}
               >
                 <Image
@@ -173,9 +171,8 @@ export default function Settings({
                 />
               </div>
               <div
-                className={`p-2 bg-gray-600 shadow rounded-full cursor-pointer border-3 ${
-                  theme === "dark" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-gray-600 shadow rounded-full cursor-pointer border-3 ${theme === "dark" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("dark")}
               >
                 <Image
@@ -186,9 +183,8 @@ export default function Settings({
                 />
               </div>
               <div
-                className={`p-2 bg-orange-800 shadow rounded-full cursor-pointer border-3 ${
-                  theme === "orange" ? "border-blue-300" : "border-gray-200"
-                }`}
+                className={`p-2 bg-orange-800 shadow rounded-full cursor-pointer border-3 ${theme === "orange" ? "border-blue-300" : "border-gray-200"
+                  }`}
                 onClick={() => setTheme("orange")}
               >
                 <Image

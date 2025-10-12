@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import styled from "styled-components";
+import { useRouter } from "next/navigation";
 
 import { useSettings } from "@/context/SettingContext";
 import Settings from "@/app/components/Settings";
-import { useRouter } from "next/navigation";
 import ListOfChapter from "@/app/components/ListOfChapter";
 import {
   addToLocalStorageArray,
@@ -15,10 +16,10 @@ import {
   saveObjectKeyToLocalStorage,
 } from "@/utils";
 
-// Vị trí gần cuối trang để biết là đọc xong chapter
+// --- Threshold to consider chapter as read ---
 const threshold = 200;
 
-// Outer wrapper for background & padding
+// --- Styled components ---
 const Layout = styled.div<{ theme: "light" | "dark" | string }>`
   margin: 0 auto;
   background-color: ${(props) =>
@@ -27,7 +28,6 @@ const Layout = styled.div<{ theme: "light" | "dark" | string }>`
   border-radius: 0.5rem;
 `;
 
-// Content block with dynamic width & font size
 const Content = styled.div<{ fontSize: number; width: number }>`
   width: ${(props) => props.width}%;
   margin: 0 auto;
@@ -38,78 +38,64 @@ export default function ChapterContentLayout() {
   const params = useParams();
   const chapter = params?.chapter as string;
   const slug = params?.slug as string;
-
-  // Lấy số chương từ slug (hỗ trợ nhiều chữ số)
-  const currentChapter = Number(chapter?.slice(-1)); // lấy ký tự cuối và parse sang number
+  const currentChapter = Number(chapter?.slice(-1));
 
   const [content, setContent] = useState<string>("");
   const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
-  const { fontSize, theme, width } = useSettings();
-  const router = useRouter();
-
   const [metadata, setMetadata] = useState<any>(null);
   const [progress, setProgress] = useState<number>(0);
 
+  const { fontSize, theme, width } = useSettings();
+  const router = useRouter();
+
+  // --- Fetch metadata ---
   useEffect(() => {
+    setProgress(0);
     fetchMetadata(slug, setMetadata);
   }, [slug]);
 
+  // --- Compute chapter links ---
   const chapterLinks = useMemo(() => {
-    return getChapterPath(
-      slug,
-      metadata?.chapters?.length || 1,
-      currentChapter
-    );
+    return getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter);
   }, [slug, metadata?.chapters?.length, currentChapter]);
 
+  // --- Save latest read chapter ---
   useEffect(() => {
     saveObjectKeyToLocalStorage(slug, "latestRead", `chuong-${currentChapter}`);
   }, [slug, currentChapter]);
 
+  // --- Scroll & progress handling ---
   useEffect(() => {
     if (!slug) return;
 
     let scrollTimer: NodeJS.Timeout;
 
     const handleScroll = () => {
-      // Mỗi lần scroll, reset timer
       clearTimeout(scrollTimer);
-
-      // Debounce sau 300–500ms
       scrollTimer = setTimeout(() => {
-        const scrollPosition = window.scrollY + window.innerHeight;
+        const scrollTop = window.scrollY;
+        const viewportHeight = window.innerHeight;
         const documentHeight = document.documentElement.scrollHeight;
+        const scrollableHeight = documentHeight - viewportHeight;
 
-        // --- Lưu vị trí cuộn ---
-        saveObjectKeyToLocalStorage(
-          slug,
-          `chuong-${currentChapter}`,
-          window.scrollY
-        );
+        // Save scroll position
+        saveObjectKeyToLocalStorage(slug, `chuong-${currentChapter}`, scrollTop);
 
-        // --- Kiểm tra đọc hết ---
-        if (documentHeight - scrollPosition < threshold) {
+        // Mark chapter as read
+        if (scrollableHeight - scrollTop < threshold) {
           addToLocalStorageArray(slug, "read", `chuong-${currentChapter}`);
         }
 
-        // --- Tính progress của chương hiện tại ---
-        const chapterProgress = Math.round(
-          Math.min(
-            (window.scrollY + window.innerHeight) /
-              document.documentElement.scrollHeight,
-            1
-          ) * 100
-        );
+        // Calculate progress (0-100%)
+        const chapterProgress =
+          scrollableHeight > 0 ? Math.round((scrollTop / scrollableHeight) * 100) : 100;
         setProgress(chapterProgress);
-        // 👉 Lưu hoặc hiển thị progress nếu cần:
-        // localStorage.setItem(`${slug}-progress`, chapterProgress.toFixed(2));
-        // setProgress(chapterProgress);
-      }, 100);
+      }, 50);
     };
 
     window.addEventListener("scroll", handleScroll);
 
-    // --- Fetch nội dung chương ---
+    // --- Fetch chapter content ---
     fetch(chapterLinks.currentPath)
       .then((res) => {
         if (!res.ok) throw new Error("Chapter not found");
@@ -124,7 +110,7 @@ export default function ChapterContentLayout() {
     };
   }, [chapterLinks.currentPath, slug, currentChapter]);
 
-  // --- Scroll tới vị trí đã lưu sau khi content load ---
+  // --- Restore scroll position & progress ---
   useEffect(() => {
     if (!content) return;
 
@@ -134,6 +120,10 @@ export default function ChapterContentLayout() {
 
     requestAnimationFrame(() => {
       window.scrollTo(0, scrollY);
+
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollableHeight = documentHeight - window.innerHeight;
+      setProgress(scrollableHeight > 0 ? Math.round((scrollY / scrollableHeight) * 100) : 100);
     });
   }, [slug, content]);
 
@@ -157,9 +147,13 @@ export default function ChapterContentLayout() {
           </p>
         ))}
       </Content>
+
+      {/* Progress indicator */}
       <div className="fixed flex items-center justify-center text-xs font-bold bg-gray-50 text-gray-800 top-2 right-2 w-10 h-10 rounded-full">
         {progress}%
-      </div>{" "}
+      </div>
+
+      {/* Navigation buttons */}
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
           className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
