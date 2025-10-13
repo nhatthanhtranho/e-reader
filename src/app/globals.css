@@ -1,8 +1,8 @@
-/* Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playwrite+DE+Grund+Guides&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
-
+/* eslint-disable */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
+/* Root variables */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -15,6 +15,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -22,44 +23,62 @@
   }
 }
 
+/* Body */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Dots container */
+/* Swiper dots */
 .swiper-pagination {
   display: flex;
   justify-content: center;
   gap: 10px;
-  /* khoảng cách giữa dots */
 }
 
-/* Dot mặc định */
 .swiper-pagination .custom-dot {
   width: 5px;
   height: 5px;
   background-color: #cfd6db;
-  /* vàng */
   border-radius: 50%;
   opacity: 0.5;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
-/* Dot active */
 .swiper-pagination .swiper-pagination-bullet-active.custom-dot {
   width: 8px;
   height: 8px;
   background-color: #ff6347;
-  /* đỏ */
   opacity: 1;
   transform: scale(1.1);
 }
 
+/* Rotate animation */
 .rotate {
   animation: spin 100s linear infinite;
   transform-origin: center;
   will-change: transform;
+}
+
+/* Font classes */
+.open-sans-unique {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+}
+
+.playfair-display-regular {
+  font-family: "Playfair Display", serif;
+  font-style: normal;
+}
+
+.montserrat-unique {
+  font-family: "Montserrat", sans-serif;
+  font-style: normal;
+}
+
+.raleway-unique {
+  font-family: "Raleway", sans-serif;
+  font-style: normal;
 }

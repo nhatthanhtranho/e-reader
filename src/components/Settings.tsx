@@ -236,28 +236,19 @@ export default function Settings({
               value={fontFamily} // từ useSettings
               onChange={(e) => setFontFamily(e.target.value)}
             >
-              <option
-                style={{ fontFamily: "Roboto, sans-serif" }}
-                value="Roboto"
-              >
-                Roboto
+              <option className="raleway-unique" value="raleway-unique">
+                Raleway
               </option>
-              <option
-                style={{ fontFamily: "Open Sans, sans-serif" }}
-                value="Open Sans"
-              >
+              <option className="open-sans-unique" value="open-sans-unique">
                 Open Sans
               </option>
               <option
-                style={{ fontFamily: "Playfair Display, serif" }}
-                value="Playfair Display"
+                className="playfair-display-regular"
+                value="playfair-display-regular"
               >
-                Playfair Display
+                Playfair
               </option>
-              <option
-                style={{ fontFamily: "Montserrat, sans-serif" }}
-                value="Montserrat"
-              >
+              <option className="montserrat-unique" value="montserrat-unique">
                 Montserrat
               </option>
             </select>
