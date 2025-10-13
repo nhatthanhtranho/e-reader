@@ -26,6 +26,8 @@ export default function Settings({
 
   const {
     theme,
+    fontFamily,
+    setFontFamily,
     setTheme,
     fontSize,
     increaseFont,
@@ -225,6 +227,40 @@ export default function Settings({
                 />
               </div>
             </div>
+          </div>
+          <div className="mb-3 w-48">
+            <h3 className="text-lg font-bold mb-3">Font chữ</h3>
+
+            <select
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              value={fontFamily} // từ useSettings
+              onChange={(e) => setFontFamily(e.target.value)}
+            >
+              <option
+                style={{ fontFamily: "Roboto, sans-serif" }}
+                value="Roboto"
+              >
+                Roboto
+              </option>
+              <option
+                style={{ fontFamily: "Open Sans, sans-serif" }}
+                value="Open Sans"
+              >
+                Open Sans
+              </option>
+              <option
+                style={{ fontFamily: "Playfair Display, serif" }}
+                value="Playfair Display"
+              >
+                Playfair Display
+              </option>
+              <option
+                style={{ fontFamily: "Montserrat, sans-serif" }}
+                value="Montserrat"
+              >
+                Montserrat
+              </option>
+            </select>
           </div>
 
           {/* Font size */}
