@@ -18,7 +18,7 @@ export default function ChapterBreaker() {
 
   useEffect(() => {
     (async () => {
-      if (typeof window === "undefined") return;
+      // if (typeof window === "undefined") return;
       // const lib = await import("pdfjs-dist/build/pdf");
         const lib = ''
       pdfjsLib = lib;

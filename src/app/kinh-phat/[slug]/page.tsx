@@ -11,7 +11,7 @@ export function generateStaticParams() {
     { slug: "kinh-bat-chu-tam-muoi" },
     { slug: "kinh-dai-thua-duyen-sinh" },
     { slug: "kinh-phat-danh-ton-thang-da-la-ni" },
-
+    { slug: "kinh-phap-hoa" },
   ];
 }
 

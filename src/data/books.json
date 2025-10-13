@@ -54,5 +54,13 @@
         "content": "**Phật Đảnh Tôn Thắng Đà La Ni** là một kinh Đại thừa nói về thần chú vi diệu do Đức Phật Thích Ca Mâu Ni truyền dạy. Kinh này tán dương năng lực vô biên của **Đà La Ni Tôn Thắng**, có thể tiêu trừ nghiệp chướng, giải thoát chúng sinh khỏi khổ đau sinh tử và ác đạo. Người trì tụng chân thành sẽ được chư Phật gia hộ, tăng phước thọ, diệt tội nặng, thoát khỏi hiểm nạn và đạt an lạc hiện đời. Kinh nhấn mạnh lòng tin sâu, tâm thanh tịnh, và sự kiên trì trì tụng là nền tảng để đạt được công đức thù thắng vô lượng.",
         "slug": "/kinh-phat-danh-ton-thang-da-la-ni",
         "createdAt": "12/10/2025"
+    },
+    {
+        "title": "Kinh Pháp Hoa",
+        "dichGia": "Thích Trí Tịnh",
+        "content": "Kinh Pháp Hoa",
+        "slug": "/kinh-phap-hoa",
+        "createdAt": "12/10/2025",
+        "maxChapter": 28
     }
 ]
