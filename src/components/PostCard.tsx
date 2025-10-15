@@ -62,7 +62,7 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
           src={formatLink(bannerURL)}
           alt={title}
           loading="lazy"
-          className="object-cover"
+          className="object-cover object-center"
         />
 
         <LikeBar visible={true} />

@@ -43,14 +43,16 @@ export default function PostDetailLayout() {
       <div className="flex flex-col container mx-auto">
         <div className="flex flex-col md:flex-row md:shadow-lg rounded-lg overflow-hidden min-h-[50vh]">
           {/* Hình ảnh bên trái */}
-          <div className="md:w-1/3 w-full relative h-64 md:h-auto">
+          <div className="md:w-1/3 w-full">
             <Image
-              src={formatLink(`/assets${metadata?.slug}/banner.webp`)} // Bạn có thể bind src từ metadata nếu có
+              src={formatLink(`/assets${metadata?.slug}/banner.webp`)}
               alt={metadata?.title ?? "Kinh Phật"}
-              fill
-              className="object-cover"
+              width={800}
+              height={600}
+              className="w-full h-auto object-contain"
             />
           </div>
+
 
           {/* Nội dung bên phải */}
           <div className="md:w-2/3 w-full p-6 px-4 flex flex-col gap-3 md:gap-4">
@@ -101,9 +103,8 @@ export default function PostDetailLayout() {
               </button>
 
               <button
-                className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${
-                  latestRead == null ? "hidden" : ""
-                }`}
+                className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${latestRead == null ? "hidden" : ""
+                  }`}
                 onClick={() => {
                   if (latestRead)
                     updateReadingBooks({

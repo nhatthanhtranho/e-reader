@@ -58,9 +58,16 @@
     {
         "title": "Kinh Pháp Hoa",
         "dichGia": "Thích Trí Tịnh",
-        "content": "Kinh Pháp Hoa",
+        "content": "**Kinh Pháp Hoa** (Saddharma Puṇḍarīka Sūtra) là một trong những bộ kinh quan trọng nhất của Phật giáo Đại thừa, được xem là “vua của các kinh”. Nội dung kinh giảng về chân lý bình đẳng, khẳng định mọi chúng sinh đều có khả năng thành Phật (Phật tánh). Kinh nhấn mạnh lòng tin, trí tuệ và hạnh nguyện Bồ Tát là con đường đưa đến giác ngộ. Qua các phẩm như “Phương tiện”, “Thí dụ”, “Dược thảo dụ” hay “Phổ môn”, Kinh Pháp Hoa truyền tải tinh thần từ bi, cứu độ và niềm tin vào Phật tính sẵn có nơi mỗi người.",
         "slug": "/kinh-phap-hoa",
         "createdAt": "12/10/2025",
         "maxChapter": 28
+    },
+    {
+        "title": "Kinh Địa Tạng Bồ Tát Bổn Nguyện",
+        "dichGia": "Thích Trí Tịnh",
+        "content": "**Kinh Địa Tạng Bồ Tát Bổn Nguyện** là một trong ba bộ kinh lớn của Phật giáo Đại thừa, cùng với Kinh Pháp Hoa và Kinh Hoa Nghiêm. Kinh kể về hạnh nguyện sâu dày của Bồ Tát Địa Tạng, ngài phát nguyện cứu độ tất cả chúng sinh trong sáu cõi, đặc biệt là những kẻ đang chịu khổ nơi địa ngục. Nội dung kinh khuyến khích hiếu thảo, làm lành, tránh ác, và tu tâm hướng thiện. Đọc tụng Kinh Địa Tạng được xem là phương pháp tạo phước, tiêu nghiệp, cầu siêu cho người quá cố và đem lại an lành, trí tuệ cho người còn sống.",
+        "slug": "/kinh-dia-tang",
+        "createdAt": "15/10/2025"
     }
 ]

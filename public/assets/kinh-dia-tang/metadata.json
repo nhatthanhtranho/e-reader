@@ -1,0 +1,70 @@
+{
+  "title": "Kinh Địa Tạng Bồ Tát Bổn Nguyện",
+  "dichGia": "Thích Trí Tịnh",
+  "content": "**Kinh Địa Tạng Bồ Tát Bổn Nguyện** là một trong ba bộ kinh lớn của Phật giáo Đại thừa, cùng với Kinh Pháp Hoa và Kinh Hoa Nghiêm. Kinh kể về hạnh nguyện sâu dày của Bồ Tát Địa Tạng, ngài phát nguyện cứu độ tất cả chúng sinh trong sáu cõi, đặc biệt là những kẻ đang chịu khổ nơi địa ngục. Nội dung kinh khuyến khích hiếu thảo, làm lành, tránh ác, và tu tâm hướng thiện. Đọc tụng Kinh Địa Tạng được xem là phương pháp tạo phước, tiêu nghiệp, cầu siêu cho người quá cố và đem lại an lành, trí tuệ cho người còn sống.",
+  "slug": "/kinh-dia-tang",
+  "createdAt": "15/10/2025",
+  "tags": [
+    "Kinh Phật",
+    "Kinh Đại Thừa"
+  ],
+  "maxChapter": 14,
+  "chapters": [
+    {
+      "name": "Phần Mở Đầu",
+      "fileName": "chuong-1.txt"
+    },
+    {
+      "name": "Phẩm Thứ Nhất: Thần Thông Trên Cung Trời Đao Lợi",
+      "fileName": "chuong-2.txt"
+    },
+    {
+      "name": "Phẩm Thứ Hai: Phân Thân Tập Hội",
+      "fileName": "chuong-3.txt"
+    },
+    {
+      "name": "Phẩm Thứ Ba: Quán Chúng Sanh Nghiệp Duyên",
+      "fileName": "chuong-4.txt"
+    },
+    {
+      "name": "Phẩm Thứ Tư: Nghiệp Cảm Của Chúng Sanh",
+      "fileName": "chuong-5.txt"
+    },
+    {
+      "name": "Phẩm Thứ Năm: Danh Hiệu Của Địa Ngục",
+      "fileName": "chuong-6.txt"
+    },
+    {
+      "name": "Phẩm Thứ Sáu: Như Lai Tán Thán",
+      "fileName": "chuong-7.txt"
+    },
+    {
+      "name": "Phẩm Thứ Bảy: Lợi Ích Cả Kẻ Còn Người Mất",
+      "fileName": "chuong-8.txt"
+    },
+    {
+      "name": "Phẩm Thứ Tám: Các Vua Diêm La Khen Ngợi",
+      "fileName": "chuong-9.txt"
+    },
+    {
+      "name": "Phẩm Thứ Chín: Xưng Danh Hiệu Chư Phật",
+      "fileName": "chuong-10.txt"
+    },
+    {
+      "name": "Phẩm Thứ Mười: So Sánh Nhân Duyên Công Đức Của Sự Bố Thí",
+      "fileName": "chuong-11.txt"
+    },
+    {
+      "name": "Phẩm Thứ Mười Một: Địa Thần Hộ Pháp",
+      "fileName": "chuong-12.txt"
+    },
+    {
+      "name": "Phẩm Thứ Mười Hai: Thấy Nghe Được Lợi Ích",
+      "fileName": "chuong-13.txt"
+    },
+    {
+      "name": "Phẩm Thứ Mười Ba: Dặn Dò Cứu Độ Nhơn Thiên",
+      "fileName": "chuong-14.txt"
+    }
+  ]
+}
