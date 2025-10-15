@@ -26,7 +26,10 @@ const Layout = styled.div<{ theme: "light" | "dark" | string }>`
   border-radius: 0.5rem;
 `;
 
-const Content = styled.div<{ fontSize: number; width: number }>`
+const Content = styled.div<{
+  fontSize: number;
+  width: number;
+}>`
   width: ${(props) => props.width}%;
   margin: 0 auto;
   font-size: ${(props) => props.fontSize}px;
@@ -47,7 +50,7 @@ export default function ChapterContentLayout() {
 
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { fontSize, theme, width } = useSettings();
+  const { fontSize, theme, width, fontFamily } = useSettings();
   const router = useRouter();
 
   // --- Fetch metadata ---
@@ -80,7 +83,11 @@ export default function ChapterContentLayout() {
         const documentHeight = document.documentElement.scrollHeight;
         const scrollableHeight = documentHeight - viewportHeight;
 
-        saveObjectKeyToLocalStorage(slug, `chuong-${currentChapter}`, scrollTop);
+        saveObjectKeyToLocalStorage(
+          slug,
+          `chuong-${currentChapter}`,
+          scrollTop
+        );
 
         if (scrollableHeight - scrollTop < threshold) {
           addToLocalStorageArray(slug, "read", `chuong-${currentChapter}`);
@@ -137,7 +144,9 @@ export default function ChapterContentLayout() {
   // --- Export to .txt ---
   const handleExport = () => {
     const text =
-      contentRef.current?.innerText?.trim() || content.trim() || "Không có nội dung";
+      contentRef.current?.innerText?.trim() ||
+      content.trim() ||
+      "Không có nội dung";
     const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -164,7 +173,7 @@ export default function ChapterContentLayout() {
 
       <Content
         ref={contentRef}
-        className="py-12 prose max-w-none"
+        className={`py-12 prose max-w-none ${fontFamily}`}
         fontSize={fontSize}
         width={width}
         contentEditable

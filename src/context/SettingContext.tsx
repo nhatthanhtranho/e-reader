@@ -10,17 +10,20 @@ import {
 } from "react";
 
 type Theme = "light" | "dark" | "orange";
+type Alignment = "left" | "center" | "right";
 
 type Settings = {
   theme: Theme;
   fontSize: number;
   width: number;
-  alignment: "left" | "center" | "right";
+  alignment: Alignment;
+  fontFamily: string;
   setTheme: (theme: Theme) => void;
   increaseFont: () => void;
   decreaseFont: () => void;
-  setAlignment: (align: "left" | "center" | "right") => void;
+  setAlignment: (align: Alignment) => void;
   setWidth: (width: number) => void;
+  setFontFamily: (font: string) => void;
 };
 
 const defaultSettings: Settings = {
@@ -28,11 +31,13 @@ const defaultSettings: Settings = {
   fontSize: 16,
   width: 80,
   alignment: "left",
+  fontFamily: "Roboto",
   setTheme: () => {},
   increaseFont: () => {},
   decreaseFont: () => {},
   setAlignment: () => {},
   setWidth: () => {},
+  setFontFamily: () => {},
 };
 
 const SettingsContext = createContext<Settings>(defaultSettings);
@@ -59,17 +64,19 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     return 80;
   });
 
-  const [alignment, setAlignment] = useState<"left" | "center" | "right">(
-    () => {
-      if (typeof window !== "undefined") {
-        return (
-          (localStorage.getItem("alignment") as "left" | "center" | "right") ||
-          "left"
-        );
-      }
-      return "left";
+  const [alignment, setAlignment] = useState<Alignment>(() => {
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("alignment") as Alignment) || "left";
     }
-  );
+    return "left";
+  });
+
+  const [fontFamily, setFontFamily] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("fontFamily") || "Roboto";
+    }
+    return "Roboto";
+  });
 
   // Persist to localStorage whenever they change
   useEffect(() => {
@@ -88,6 +95,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("alignment", alignment);
   }, [alignment]);
 
+  useEffect(() => {
+    localStorage.setItem("fontFamily", fontFamily);
+  }, [fontFamily]);
+
   return (
     <SettingsContext.Provider
       value={{
@@ -95,11 +106,13 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         fontSize,
         width,
         alignment,
+        fontFamily,
         setTheme,
         increaseFont: () => setFontSize((s) => s + 1),
         decreaseFont: () => setFontSize((s) => s - 1),
         setAlignment,
         setWidth: (s) => setWidth(s),
+        setFontFamily,
       }}
     >
       {children}
