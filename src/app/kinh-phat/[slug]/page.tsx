@@ -13,7 +13,7 @@ export function generateStaticParams() {
     { slug: "kinh-phat-danh-ton-thang-da-la-ni" },
     { slug: "kinh-phap-hoa" },
     { slug: "kinh-dia-tang" },
-
+    { slug: "kinh-vien-giac"}
   ];
 }
 

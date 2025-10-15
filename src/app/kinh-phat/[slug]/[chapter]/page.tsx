@@ -13,6 +13,7 @@ export function generateStaticParams() {
     { name: "kinh-phat-danh-ton-thang-da-la-ni", chapter: 3 },
     { name: "kinh-phap-hoa", chapter: 28 },
     { name: "kinh-dia-tang", chapter: 14 },
+    { name: "kinh-vien-giac", chapter: 8 },
 
 
   ];
