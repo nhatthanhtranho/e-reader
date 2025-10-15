@@ -36,7 +36,8 @@ export default function ChapterContentLayout() {
   const params = useParams();
   const chapter = params?.chapter as string;
   const slug = params?.slug as string;
-  const currentChapter = Number(chapter?.slice(-1));
+  const match = chapter?.match(/(\d+)$/);
+  const currentChapter = match ? Number(match[1]) : null;
 
   const [content, setContent] = useState<string>("");
   const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
@@ -57,7 +58,7 @@ export default function ChapterContentLayout() {
 
   // --- Compute chapter links ---
   const chapterLinks = useMemo(() => {
-    return getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter);
+    return getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter || 0);
   }, [slug, metadata?.chapters?.length, currentChapter]);
 
   // --- Save latest read chapter ---
@@ -196,9 +197,8 @@ export default function ChapterContentLayout() {
 
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
-            !chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           disabled={!chapterLinks.prevPath}
           onClick={() =>
             chapterLinks.prevPath && router.push(chapterLinks.prevPath || "")
@@ -207,9 +207,8 @@ export default function ChapterContentLayout() {
           Chương Trước
         </button>
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${
-            !chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           disabled={!chapterLinks.nextPath}
           onClick={() =>
             chapterLinks.nextPath && router.push(chapterLinks.nextPath || "")
