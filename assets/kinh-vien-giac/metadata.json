@@ -1,0 +1,46 @@
+{
+  "title": "Kinh Viên Giác",
+  "dichGia": "Thích Duy Lực",
+  "content": "**Kinh Viên Giác** là một bộ kinh trọng yếu của Phật giáo Đại thừa, được đức Phật Thích Ca giảng cho mười hai vị Bồ Tát. Nội dung kinh xoay quanh “tự tánh Viên Giác” – bản tâm thanh tịnh, sáng suốt vốn sẵn có nơi mọi chúng sinh. Kinh dạy rằng mọi vọng niệm, sinh diệt chỉ là hư vọng, còn Viên Giác là chân thật, bất sinh bất diệt. Người tu phải nhận ra và sống với bản tâm này để thoát luân hồi, đạt giác ngộ viên mãn. Kinh Viên Giác giúp hành giả hiểu rõ con đường tu hành qua quán chiếu, lìa chấp, và trở về tánh giác thanh tịnh.",
+  "slug": "/kinh-vien-giac",
+  "createdAt": "15/10/2025",
+  "tags": [
+    "Kinh Phật",
+    "Kinh Đại Thừa"
+  ],
+  "maxChapter": 8,
+  "chapters": [
+    {
+      "name": "Chương 1",
+      "fileName": "chuong-1"
+    },
+    {
+      "name": "Chương 2",
+      "fileName": "chuong-2"
+    },
+    {
+      "name": "Chương 3",
+      "fileName": "chuong-3"
+    },
+    {
+      "name": "Chương 4",
+      "fileName": "chuong-4"
+    },
+    {
+      "name": "Chương 5",
+      "fileName": "chuong-5"
+    },
+    {
+      "name": "Chương 6",
+      "fileName": "chuong-6"
+    },
+    {
+      "name": "Chương 7",
+      "fileName": "chuong-7"
+    },
+    {
+      "name": "Chương 8",
+      "fileName": "chuong-8"
+    }
+  ]
+}
