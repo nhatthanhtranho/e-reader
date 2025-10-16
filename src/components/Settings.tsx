@@ -78,9 +78,9 @@ export default function Settings({
       {/* Floating toolbar */}
       <div
         onClick={() => setShowToolbar(true)}
-        className={`bg-gray-100 rounded-r-2xl gap-6 items-center justify-center px-3 py-4 shadow flex flex-col lg:w-auto cursor-pointer fixed z-20 left-0 
+        className={`settings rounded-r-2xl gap-6 items-center justify-center px-3 py-4 shadow flex flex-col lg:w-auto cursor-pointer fixed z-20 left-0 
     top-1/2 -translate-y-1/2 transform transition-transform duration-300 
-    ${showToolbar ? "translate-x-0" : "-translate-x-10"}`}
+    ${showToolbar ? "translate-x-0" : "-translate-x-10"} ${theme}`}
       >
         <div
           className={`hover:bg-gray-100 p-2 rounded w-[${iconSize}px] h-[${iconSize}px] relative`}
