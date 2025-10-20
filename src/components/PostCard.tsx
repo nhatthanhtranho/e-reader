@@ -16,6 +16,7 @@ export interface PropTypes {
   urlPrefix?: string;
   tags?: string[];
   progress?: number;
+  isOneChapter?: boolean
 }
 
 const PostCardWithDescription: React.FC<PropTypes> = ({
@@ -27,14 +28,19 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   urlPrefix,
   progress,
   tags,
+  isOneChapter
 }) => {
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log("Clicked on post card:", title, "is one chaopter", isOneChapter);
     const target = e.target as HTMLElement;
     if (target.closest(".like-button")) return; // tránh click vào LikeBar
-    router.push(formatLink(`${urlPrefix}${url}`));
+    if(isOneChapter){
+      return router.push(formatLink(`${urlPrefix}${url}/chuong-1`));
+    }
+    // return router.push(formatLink(`${urlPrefix}${url}`));
   };
 
   const bannerURL = `/assets${url}/banner.webp`;

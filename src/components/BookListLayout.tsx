@@ -59,6 +59,7 @@ const BookListLayout: FC<ExploreSectionProps> = ({
                 date={book.createdAt}
                 progress={book.progress}
                 tags={book.tags}
+                isOneChapter={book.maxChapter === 1}
               />
             </SwiperSlide>
           ))}
