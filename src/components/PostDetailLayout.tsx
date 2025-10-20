@@ -16,6 +16,7 @@ import {
 } from "@/utils";
 import { formatLink } from "../../utils/formatLink";
 import Footer from "./Footer";
+import BackToHomeButton from "./BackToHomeButton";
 
 export default function PostDetailLayout() {
   const { slug } = useParams(); // Lấy slug từ URL
@@ -120,6 +121,9 @@ export default function PostDetailLayout() {
               >
                 Đọc tiếp
               </button>
+
+              <BackToHomeButton />
+
             </div>
           </div>
         </div>
