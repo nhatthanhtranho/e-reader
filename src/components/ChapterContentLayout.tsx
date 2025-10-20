@@ -216,7 +216,7 @@ export default function ChapterContentLayout() {
           Chương Trước
         </button>
         <button
-          className={`${!chapterLinks.nextPath && 'hidden'} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
+          className={`${!chapterLinks.nextPath && 'hidden '} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
             }`}
           disabled={!chapterLinks.nextPath}
           onClick={() =>
