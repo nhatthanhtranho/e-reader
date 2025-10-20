@@ -206,7 +206,7 @@ export default function ChapterContentLayout() {
 
       <div className="mx-auto flex gap-4 items-center justify-center">
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
+          className={`${!chapterLinks.prevPath && 'hidden'} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
             }`}
           disabled={!chapterLinks.prevPath}
           onClick={() =>
@@ -216,7 +216,7 @@ export default function ChapterContentLayout() {
           Chương Trước
         </button>
         <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
+          className={`${!chapterLinks.nextPath && 'hidden'} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
             }`}
           disabled={!chapterLinks.nextPath}
           onClick={() =>
