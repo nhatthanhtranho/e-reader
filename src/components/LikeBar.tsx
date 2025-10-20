@@ -3,11 +3,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { formatLink } from "../../utils/formatLink";
 
-interface LikeBarProps {
-  visible?: boolean;
-}
 
-const LikeBar: React.FC<LikeBarProps> = ({ visible = true }) => {
+const LikeBar: React.FC = ({ }) => {
   const [liked, setLiked] = useState(false);
   const [animating, setAnimating] = useState(false);
 
@@ -20,15 +17,11 @@ const LikeBar: React.FC<LikeBarProps> = ({ visible = true }) => {
 
   return (
     <div
-      className={`absolute bottom-0 left-0 right-0 h-16 flex items-center justify-end px-4
-                  bg-gradient-to-t from-black/60 to-transparent text-white 
-                  transition-opacity duration-300 ${visible ? "opacity-100" : "opacity-0"}`}
       onClick={(e) => e.stopPropagation()}
     >
-      {/* ❤️ Like button */}
       <div
         onClick={handleLikeClick}
-        className={`like-button relative w-10 h-10 flex items-center justify-center rounded-full 
+        className={`like-button relative w-10 h-10 flex items-center justify-center rounded-full
                     cursor-pointer transition-transform duration-200
                     ${animating ? "scale-125" : "scale-100"}`}
       >

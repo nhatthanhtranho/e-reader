@@ -34,13 +34,12 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   const [hovered, setHovered] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log("Clicked on post card:", title, "is one chaopter", isOneChapter);
     const target = e.target as HTMLElement;
     if (target.closest(".like-button")) return; // tránh click vào LikeBar
-    if(isOneChapter){
+    if (isOneChapter) {
       return router.push(formatLink(`${urlPrefix}${url}/chuong-1`));
     }
-    // return router.push(formatLink(`${urlPrefix}${url}`));
+    return router.push(formatLink(`${urlPrefix}${url}`));
   };
 
   const bannerURL = `/assets${url}/banner.webp`;
@@ -72,7 +71,9 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
           className="object-cover object-center"
         />
 
-        <LikeBar visible={true} />
+        <div className="absolute right-0 bottom-0 z-10">
+          <LikeBar />
+        </div>
       </div>
 
       {/* Nội dung */}
