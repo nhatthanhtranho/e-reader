@@ -1,0 +1,18 @@
+{
+    "title": "Kinh Kim Cang",
+    "dichGia": "Thích Trí Tịnh",
+    "content": "**Kinh Kim Cang Bát Nhã Ba La Mật** là một bản kinh quan trọng trong hệ thống Kinh Bát Nhã, ghi lại lời Phật dạy về trí tuệ “Bát Nhã” – trí tuệ thấy rõ chân tướng vạn pháp. Nội dung chính nhấn mạnh “vô ngã”, “vô tướng”, “vô trụ” – mọi hiện tượng đều giả hợp, không có thực thể cố định. Người tu cần hành bố thí, giữ giới, tinh tấn… nhưng không chấp vào công đức hay hình tướng. Tinh thần của kinh giúp đoạn trừ chấp ngã, đạt đến trí tuệ giải thoát và tâm vô phân biệt – chính là “tuệ giác Kim Cang”, phá tan mọi vọng tưởng.",
+    "slug": "/kinh-kim-cang",
+    "createdAt": "20/10/2025",
+    "tags": [
+        "Kinh Phật",
+        "Kinh Đại Thừa"
+    ],
+    "maxChapter": 1,
+    "chapters": [
+        {
+            "name": "Chánh kinh",
+            "fileName": "chuong-1"
+        }
+    ]
+}
