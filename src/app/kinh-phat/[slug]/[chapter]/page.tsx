@@ -14,6 +14,7 @@ export function generateStaticParams() {
     { name: "kinh-phap-hoa", chapter: 28 },
     { name: "kinh-dia-tang", chapter: 14 },
     { name: "kinh-vien-giac", chapter: 8 },
+    { name: "kinh-kim-cang", chapter: 1 },
 
 
   ];
