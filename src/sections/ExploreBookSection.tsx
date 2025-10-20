@@ -6,7 +6,7 @@ import bookList from "@/data/books.json";
 import { getReadingBooks } from "@/utils";
 import { ReadingBook } from "../../types/ReadingBook";
 
-export default function ExploreBookSection() {
+export default function ExploreBookSection({}) {
     const [readingBooks, setReadingBooks] = useState<ReadingBook[]>([]);
 
     useEffect(() => {
