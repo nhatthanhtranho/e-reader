@@ -69,6 +69,7 @@ const BookListLayout: FC<ExploreSectionProps> = ({
                 dichGia={book.dichGia}
                 date={book.createdAt}
                 progress={book.progress}
+                tags={book.tags}
               />
             </SwiperSlide>
           ))}

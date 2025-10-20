@@ -4,4 +4,5 @@ export interface Article {
     content?:string
     dichGia:string;
     createdAt?: string;
+    tags?: string[];
 }
