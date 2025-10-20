@@ -8,6 +8,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import './swiper-equal-height.css'; // ✅ thêm dòng này
 
 interface CustomSwiperProps {
   children: ReactNode;
@@ -23,7 +24,7 @@ export default function CustomSwiper({
   children,
   withNavigation = true,
   withPagination = true,
-  autoplay = true,
+  autoplay = false,
   loop = true,
   spaceBetween = 20,
   breakpoints = {
@@ -40,11 +41,7 @@ export default function CustomSwiper({
     <div className="relative">
       {withNavigation && (
         <>
-          {/* Nút Next */}
-          <div
-            ref={nextRef}
-            className="swiper-button-next w-[40px] h-[40px] translate-x-4 -translate-y-2"
-          >
+          <div ref={nextRef} className="swiper-button-next w-[40px] h-[40px] translate-x-4 -translate-y-2">
             <svg
               className="w-full h-full text-[#EFBF04] bg-white rounded-full 
               shadow-lg ring-1 ring-gray-200 hover:ring-gray-300 
@@ -57,12 +54,7 @@ export default function CustomSwiper({
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </div>
-
-          {/* Nút Prev */}
-          <div
-            ref={prevRef}
-            className="swiper-button-prev w-[40px] h-[40px] -translate-x-4 -translate-y-2"
-          >
+          <div ref={prevRef} className="swiper-button-prev w-[40px] h-[40px] -translate-x-4 -translate-y-2">
             <svg
               className="w-full h-full text-[#EFBF04] bg-white rounded-full 
               shadow-lg ring-1 ring-gray-200 hover:ring-gray-300 
@@ -86,23 +78,20 @@ export default function CustomSwiper({
         breakpoints={breakpoints}
         navigation={
           withNavigation
-            ? {
-              nextEl: nextRef.current,
-              prevEl: prevRef.current,
-            }
+            ? { nextEl: nextRef.current, prevEl: prevRef.current }
             : undefined
         }
         pagination={
           withPagination
             ? {
-              el: paginationRef.current!,
-              clickable: true,
-              renderBullet: (index, className) =>
-                `<span class="${className} custom-dot"></span>`,
-            }
+                el: paginationRef.current!,
+                clickable: true,
+                renderBullet: (index, className) =>
+                  `<span class="${className} custom-dot"></span>`,
+              }
             : undefined
         }
-        onBeforeInit={swiper => {
+        onBeforeInit={(swiper) => {
           if (withNavigation && swiper.params.navigation !== false) {
             const nav = swiper.params.navigation as any;
             nav.prevEl = prevRef.current;
@@ -113,6 +102,7 @@ export default function CustomSwiper({
             pag.el = paginationRef.current;
           }
         }}
+        className="!pb-4 equal-height-swiper"
       >
         {children}
       </Swiper>

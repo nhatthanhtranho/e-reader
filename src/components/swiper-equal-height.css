@@ -1,0 +1,20 @@
+/* ✅ Ép Swiper wrapper & slide stretch toàn phần */
+.equal-height-swiper .swiper-wrapper {
+    display: flex;
+    align-items: stretch !important;
+  }
+  
+  .equal-height-swiper .swiper-slide {
+    display: flex !important;
+    height: auto !important;
+    align-items: stretch !important;
+  }
+  
+  /* Đảm bảo card con fill chiều cao */
+  .equal-height-swiper .swiper-slide > * {
+    flex: 1 1 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  

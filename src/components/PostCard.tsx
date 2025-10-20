@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { formatLink } from "../../utils/formatLink";
 import LikeBar from "./LikeBar";
-import TagList from "./TagList"; // ⚠️ chỉnh lại path nếu cần
+import TagList from "./TagList";
 
 export interface PropTypes {
   title: string;
@@ -32,9 +32,8 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   const [hovered, setHovered] = useState(false);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Nếu click bắt nguồn từ nút Like → không chuyển trang
     const target = e.target as HTMLElement;
-    if (target.closest(".like-button")) return;
+    if (target.closest(".like-button")) return; // tránh click vào LikeBar
     router.push(formatLink(`${urlPrefix}${url}`));
   };
 
@@ -42,9 +41,9 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
 
   return (
     <div
-      className="relative flex flex-col cursor-pointer rounded-2xl overflow-hidden shadow-lg
-                 bg-gradient-to-b from-white to-gray-50 transition-transform hover:scale-[1.02]
-                 group h-full min-h-[480px]"
+      className="post-card relative flex flex-col h-full cursor-pointer rounded-2xl overflow-hidden shadow-lg
+               bg-gradient-to-b from-white to-gray-50 transition-transform hover:scale-[1.02]
+               group"
       onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -72,8 +71,7 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
 
       {/* Nội dung */}
       <div className="flex flex-col justify-between flex-1 p-4 text-gray-700">
-        <div>
-          {/* ✅ Danh sách tags tái sử dụng */}
+        <div className="flex-1">
           <TagList tags={tags} maxVisible={2} className="mb-4" />
 
           <h3 className="font-bold text-xl leading-snug line-clamp-2 text-gray-900">
@@ -87,7 +85,6 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
 
           <p className="text-gray-700 text-base line-clamp-4 mt-3">{content}</p>
         </div>
-        <div className="mt-4" />
       </div>
     </div>
   );
