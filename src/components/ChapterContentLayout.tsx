@@ -171,6 +171,45 @@ export default function ChapterContentLayout() {
         setIsOpen={setIsOpenListOfChapter}
       />
 
+      <div className="mx-auto flex gap-4 items-center justify-center pt-8">
+
+        <button
+          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black`}
+
+          onClick={() => router.push("/")
+          }
+        >
+          Trang chủ
+        </button>
+
+
+        <button
+          className={`${!chapterLinks.prevPath && 'hidden'} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          disabled={!chapterLinks.prevPath}
+          onClick={() =>
+            chapterLinks.prevPath && router.push(chapterLinks.prevPath || "")
+          }
+        >
+          Chương Trước
+        </button>
+
+
+
+        <button
+          className={`${!chapterLinks.nextPath && 'hidden '} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          disabled={!chapterLinks.nextPath}
+          onClick={() =>
+            chapterLinks.nextPath && router.push(chapterLinks.nextPath || "")
+          }
+        >
+          Chương Sau
+        </button>
+      </div>
+
+
+
       <Content
         ref={contentRef}
         className={`py-12 prose max-w-none ${fontFamily}`}
