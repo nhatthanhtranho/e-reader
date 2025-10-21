@@ -52,7 +52,6 @@ export default function SearchBar({
     setQuery("");
     setShowResults(false);
 
-    // ✅ Điều hướng thuần HTML
     const url = `${urlPrefix}${item.slug}`;
     const finalUrl =
       item.maxChapter === 1
@@ -77,20 +76,36 @@ export default function SearchBar({
       {showResults && (
         <div className="absolute z-50 w-full bg-white border border-gray-200 rounded-lg mt-2 shadow-lg max-h-60 overflow-y-auto">
           {results.length > 0 ? (
-            results.map((item) => (
-              <div
-                key={item.slug}
-                onClick={() => handleSelect(item)}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              >
-                <p className="text-sm font-medium text-gray-800">
-                  {item.title}
-                </p>
-                {item.dichGia && (
-                  <p className="text-xs text-gray-600">{item.dichGia}</p>
-                )}
-              </div>
-            ))
+            <>
+              {/* ✅ Hiện tối đa 3 kết quả */}
+              {results.slice(0, 3).map((item) => (
+                <div
+                  key={item.slug}
+                  onClick={() => handleSelect(item)}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  <p className="text-sm font-medium text-gray-800">
+                    {item.title}
+                  </p>
+                  {item.dichGia && (
+                    <p className="text-xs text-gray-600">{item.dichGia}</p>
+                  )}
+                </div>
+              ))}
+
+              {/* 🔗 Nút xem tất cả */}
+              {results.length > 3 && (
+                <div
+                  onClick={() => {
+                    // 👉 Ví dụ: chuyển đến trang tìm kiếm đầy đủ
+                    window.location.href = `/tim-kiem?q=${encodeURIComponent(query)}`;
+                  }}
+                  className="px-4 py-2 text-center text-sm text-blue-600 hover:bg-blue-50 cursor-pointer border-t border-gray-200"
+                >
+                  Xem tất cả {results.length} kết quả »
+                </div>
+              )}
+            </>
           ) : (
             <div className="px-4 py-3 text-gray-500 text-center">
               ❌ Không tìm thấy kết quả (404)
