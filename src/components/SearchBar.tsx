@@ -1,21 +1,52 @@
 "use client";
-
+import Image from "next/image";
 import { useState } from "react";
 import books from "@/data/books.json";
 import { ReadingBook } from "../../types/ReadingBook";
 import { formatLink } from "../../utils/formatLink";
 
-interface SearchBarProps {
-  placeholder?: string;
-  className?: string;
-  urlPrefix?: string; // tuỳ chọn, nếu bạn cần thêm prefix cho link
-}
+/** 🪶 Bỏ dấu tiếng Việt */
+const removeVietnameseTones = (str: string): string => {
+  return str
+    .normalize("NFD") // tách chữ và dấu
+    .replace(/[\u0300-\u036f]/g, "") // xóa dấu
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+};
+
+/** ✨ Highlight phần khớp (có xử lý bỏ dấu) */
+const highlightText = (text: string, query: string) => {
+  if (!query) return text;
+
+  const plainText = removeVietnameseTones(text).toLowerCase();
+  const plainQuery = removeVietnameseTones(query).toLowerCase();
+
+  // Nếu không khớp thì trả về text gốc
+  const startIndex = plainText.indexOf(plainQuery);
+  if (startIndex === -1) return text;
+
+  const endIndex = startIndex + plainQuery.length;
+
+  return (
+    <>
+      {text.slice(0, startIndex)}
+      <span className="bg-teal-100 text-gray-900 font-semibold">
+        {text.slice(startIndex, endIndex)}
+      </span>
+      {text.slice(endIndex)}
+    </>
+  );
+};
 
 export default function SearchBar({
-  placeholder = "Tìm kiếm...",
+  placeholder = "Tìm kiếm kinh điển...",
   className = "",
   urlPrefix = "",
-}: SearchBarProps) {
+}: {
+  placeholder?: string;
+  className?: string;
+  urlPrefix?: string;
+}) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<ReadingBook[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -29,17 +60,22 @@ export default function SearchBar({
       return;
     }
 
-    const lower = value.toLowerCase();
+    const normalizedQuery = removeVietnameseTones(value.toLowerCase());
 
     const filtered = books.filter((item) => {
-      const hasTag =
-        Array.isArray(item.tags) &&
-        item.tags.some((tag: string) => tag.toLowerCase().includes(lower));
+      const title = removeVietnameseTones(item.title.toLowerCase());
+      const dichGia = removeVietnameseTones(item.dichGia?.toLowerCase() || "");
+      const content = removeVietnameseTones(item.content?.toLowerCase() || "");
+      const tags = (Array.isArray(item.tags) ? item.tags : []).map((t) =>
+        removeVietnameseTones(t.toLowerCase())
+      );
+
+      const hasTag = tags.some((tag) => tag.includes(normalizedQuery));
 
       return (
-        item.title.toLowerCase().includes(lower) ||
-        item.dichGia?.toLowerCase().includes(lower) ||
-        item.content?.toLowerCase().includes(lower) ||
+        title.includes(normalizedQuery) ||
+        dichGia.includes(normalizedQuery) ||
+        content.includes(normalizedQuery) ||
         hasTag
       );
     });
@@ -82,13 +118,15 @@ export default function SearchBar({
                 <div
                   key={item.slug}
                   onClick={() => handleSelect(item)}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors duration-150"
                 >
-                  <p className="text-sm font-medium text-gray-800">
-                    {item.title}
+                  <p className="text-sm font-medium text-gray-800 line-clamp-1">
+                    {highlightText(item.title, query)}
                   </p>
                   {item.dichGia && (
-                    <p className="text-xs text-gray-600">{item.dichGia}</p>
+                    <p className="text-xs text-gray-600 line-clamp-1">
+                      {highlightText(item.dichGia, query)}
+                    </p>
                   )}
                 </div>
               ))}
@@ -97,8 +135,9 @@ export default function SearchBar({
               {results.length > 3 && (
                 <div
                   onClick={() => {
-                    // 👉 Ví dụ: chuyển đến trang tìm kiếm đầy đủ
-                    window.location.href = `/tim-kiem?q=${encodeURIComponent(query)}`;
+                    window.location.href = `/tim-kiem?q=${encodeURIComponent(
+                      query
+                    )}`;
                   }}
                   className="px-4 py-2 text-center text-sm text-blue-600 hover:bg-blue-50 cursor-pointer border-t border-gray-200"
                 >
@@ -107,8 +146,23 @@ export default function SearchBar({
               )}
             </>
           ) : (
-            <div className="px-4 py-3 text-gray-500 text-center">
-              ❌ Không tìm thấy kết quả (404)
+            <div className="px-4 py-6 text-center text-gray-500">
+              <div className="flex flex-col items-center justify-center">
+                <Image
+                  src={formatLink("/icons/empty.png")}
+                  width={50}
+                  height={50}
+                  alt="empty"
+                  className="mb-2 opacity-80"
+                />
+
+                <p className="text-sm font-medium text-gray-700">
+                  Không tìm thấy kết quả
+                </p>
+                <p className="text-xs text-gray-400 mt-1">
+                  Thử nhập từ khóa khác nhé 🌿
+                </p>
+              </div>
             </div>
           )}
         </div>
