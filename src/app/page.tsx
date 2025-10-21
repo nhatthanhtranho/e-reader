@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import ExploreBookSection from "@/sections/ExploreBookSection";
 import ReadingBookSection from "@/sections/ReadingBookSection";
 import SearchBar from "@/components/SearchBar";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Home() {
 
@@ -16,6 +17,9 @@ export default function Home() {
         title="Thanh Tịnh Tạng"
         subtitle="Kho Lưu Trữ Kinh Điển Phật Giáo"
       />
+
+      <ThemeToggle />
+
 
       {/* 🔍 Thanh tìm kiếm */}
       <div className="container mx-auto mt-8">
