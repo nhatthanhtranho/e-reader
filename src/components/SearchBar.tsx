@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import books from "@/data/books.json";
 import { ReadingBook } from "../../types/ReadingBook";
 import { formatLink } from "../../utils/formatLink";
@@ -126,11 +126,11 @@ export default function SearchBar({
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground line-clamp-1">
+                    <p className="text-sm font-medium text-foreground line-clamp-1 text-left">
                       {highlightText(item.title, query)}
                     </p>
                     {item.dichGia && (
-                      <p className="text-xs text-secondary line-clamp-1">
+                      <p className="text-xs text-secondary line-clamp-1 text-left">
                         {highlightText(item.dichGia, query)}
                       </p>
                     )}

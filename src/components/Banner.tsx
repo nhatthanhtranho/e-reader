@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import SearchBar from './SearchBar';
 
 interface BannerProps {
   backgroundUrl: string;
@@ -15,8 +16,6 @@ const Banner: React.FC<BannerProps> = ({
   backgroundUrl,
   title,
   subtitle,
-  ctaPrimary,
-  ctaSecondary,
 }) => {
   return (
     <section className="relative w-full h-[20vh] md:h-[30vh] lg:h-[40vh] flex items-center justify-center">
@@ -40,24 +39,7 @@ const Banner: React.FC<BannerProps> = ({
         </h1>
         <p className="md:text-3xl text-lg tracking-wide font-bold text-yellow-400 mb-8">{subtitle}</p>
 
-        <div className="flex justify-center gap-4">
-          {ctaSecondary && (
-            <a
-              href={ctaSecondary.link}
-              className="bg-white text-gray-800 font-semibold px-6 py-3 rounded shadow hover:bg-gray-100 transition"
-            >
-              {ctaSecondary.label}
-            </a>
-          )}
-          {ctaPrimary && (
-            <a
-              href={ctaPrimary.link}
-              className="bg-yellow-400 text-gray-900 font-semibold px-6 py-3 rounded shadow hover:bg-yellow-500 transition"
-            >
-              {ctaPrimary.label}
-            </a>
-          )}
-        </div>
+        <SearchBar />
       </div>
     </section>
   );
