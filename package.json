@@ -13,6 +13,8 @@
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
     "file-saver": "^2.0.5",
+    "iconsax-react": "^0.0.8",
+    "iconsax-reactjs": "^0.0.8",
     "jszip": "^3.10.1",
     "lucide-react": "^0.546.0",
     "mammoth": "^1.11.0",
