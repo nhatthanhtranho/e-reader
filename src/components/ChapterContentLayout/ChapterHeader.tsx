@@ -1,5 +1,5 @@
 "use client";
-import Settings from "@/components/Settings";
+import Settings from "@/components/Settings/Settings";
 import ListOfChapter from "@/components/ListOfChapter";
 import { Metadata } from "../../../types/Metadata";
 
