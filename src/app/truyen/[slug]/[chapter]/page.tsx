@@ -1,4 +1,4 @@
-import ChapterContentLayoutSupportMDFormat from "@/components/ChapterContentLayoutSupportMDFormat";
+import ChapterContentLayout from "@/components/ChapterContentLayout";
 
 export function generateStaticParams() {
   const data = [
@@ -16,5 +16,5 @@ export function generateStaticParams() {
   return params;
 }
 export default function ChapterSlugPage() {
-  return <ChapterContentLayoutSupportMDFormat />;
+  return <ChapterContentLayout />;
 }

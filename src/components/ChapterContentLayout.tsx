@@ -37,14 +37,20 @@ const Content = styled.div<{ fontSize: number; width: number }>`
   transition: color 0.3s ease;
 `;
 
-export default function ChapterContentLayout() {
+interface ChapterContentLayoutProps {
+  isEdit?: boolean;
+}
+
+export default function ChapterContentLayout({
+  isEdit = true,
+}: ChapterContentLayoutProps) {
   const params = useParams();
   const chapter = params?.chapter as string;
   const slug = params?.slug as string;
   const match = chapter?.match(/(\d+)$/);
   const currentChapter = match ? Number(match[1]) : null;
 
-  const [content, setContent] = useState<string>("");
+  const [content, setContent] = useState<string[]>([]);
   const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
   const [metadata, setMetadata] = useState<any>(null);
   const [progress, setProgress] = useState<number>(0);
@@ -52,7 +58,7 @@ export default function ChapterContentLayout() {
 
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { fontSize, theme, width, fontFamily } = useSettings();
+  const { fontSize, width, fontFamily } = useSettings();
   const router = useRouter();
 
   // --- Fetch metadata ---
@@ -114,13 +120,20 @@ export default function ChapterContentLayout() {
         if (!res.ok) throw new Error("Chapter not found");
         return res.text();
       })
-      .then((text) => setContent(text))
-      .catch(console.error);
+      .then((text) => {
+        if (typeof text !== "string") return setContent([]);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(scrollTimer);
-    };
+        const cleaned = text
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line.length > 0);
+
+        setContent(cleaned);
+      })
+      .catch((err) => {
+        console.error(err);
+        setContent([]); // fallback an toàn
+      });
   }, [chapterLinks.currentPath, slug, currentChapter]);
 
   // --- Restore scroll position & progress ---
@@ -144,21 +157,33 @@ export default function ChapterContentLayout() {
 
   // --- Detect content changes (editable text) ---
   const handleInputChange = () => {
+    if (!contentRef.current) return;
+
+    // Lấy toàn bộ <p> bên trong Content
+    const paragraphs = Array.from(contentRef.current.querySelectorAll("p"));
+    const updated = paragraphs
+      .map((p) => p.innerText.trim())
+      .filter((t) => t.length > 0);
+
+    setContent(updated);
     if (!isModified) setIsModified(true);
   };
 
   // --- Export to .txt ---
   const handleExport = () => {
     const text =
-      contentRef.current?.innerText?.trim() ||
-      content.trim() ||
-      "Không có nội dung";
+      Array.isArray(content) && content.length > 0
+        ? content.join("\n\n")
+        : "Không có nội dung";
+
     const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
+
     const a = document.createElement("a");
     a.href = url;
     a.download = `${slug}-chuong-${currentChapter}.txt`;
     a.click();
+
     URL.revokeObjectURL(url);
     setIsModified(false);
   };
@@ -216,7 +241,9 @@ export default function ChapterContentLayout() {
         suppressContentEditableWarning
         onInput={handleInputChange}
       >
-        {content}
+        {content.map((line, index) => (
+          <p key={index}>{line}</p>
+        ))}
       </Content>
 
       {/* Buttons dưới content */}
