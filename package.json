@@ -2,11 +2,11 @@
   "name": "e-reader",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://<username>.github.io/e-reader",
+  "homepage": "https://nhatthanhtranho.github.io/e-reader",
   "scripts": {
-   "dev": "cross-env NEXT_PUBLIC_ENV=production next dev --turbopack",
-  "build": "next build --turbopack",
-  "deploy": "gh-pages -d out",
+    "dev": "cross-env NEXT_PUBLIC_ENV=production next dev --turbopack",
+    "build": "next build --turbopack",
+    "deploy": "git subtree push --prefix out origin gh-pages",
     "start": "next start",
     "lint": "eslint"
   },

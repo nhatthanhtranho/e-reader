@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import ThemedIcon from "./ThemeIcon";
+import { DARK_THEME, FOREST_THEME, THEMES } from "@/constants";
 
 const iconSize = 25;
 
@@ -61,7 +62,6 @@ export default function Settings({
     }
   }, [width]);
 
-  const themes: Array<"light" | "dark" | "forest"> = ["light", "dark", "forest"];
 
   return (
     <>
@@ -146,7 +146,7 @@ export default function Settings({
           <div className="mb-3">
             <h3 className="text-lg mb-3 font-bold">Giao diện</h3>
             <div className="flex gap-2">
-              {themes.map((t) => (
+              {THEMES.map((t) => (
                 <div
                   key={t}
                   onClick={() => setTheme(t)}
@@ -251,15 +251,15 @@ export default function Settings({
                   background: (() => {
                     const percent = ((width - 60) / 40) * 100;
                     const primaryColor =
-                      theme === "dark"
+                      theme === DARK_THEME
                         ? "#818cf8" // Indigo
-                        : theme === "forest"
+                        : theme === FOREST_THEME
                           ? "#22c55e" // Green
                           : "#3b82f6"; // Blue
                     const borderColor =
-                      theme === "dark"
+                      theme === DARK_THEME
                         ? "#374151" // Gray-700
-                        : theme === "forest"
+                        : theme === FOREST_THEME
                           ? "#064e3b" // Dark green
                           : "#d1d5db"; // Gray-300
                     return `linear-gradient(to right, ${primaryColor} ${percent}%, ${borderColor} ${percent}%)`;

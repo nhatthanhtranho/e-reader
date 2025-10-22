@@ -4,6 +4,7 @@ import { SettingsProvider } from "@/context/SettingContext";
 
 import "./globals.scss";
 import { ThemeProvider } from "next-themes";
+import { THEMES } from "@/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,7 @@ export default function RootLayout({
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="light"
-          themes={["light", "dark", "forest"]}
+          themes={THEMES}
         >
           <SettingsProvider>{children}</SettingsProvider>
         </ThemeProvider>
