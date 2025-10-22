@@ -68,7 +68,6 @@ const BookListLayout: FC<ExploreSectionProps> = ({
                 progress={book.progress}
                 tags={book.tags}
                 isOneChapter={book.maxChapter === 1}
-                className="bg-background text-foreground border-border transition-colors"
               />
             </SwiperSlide>
           ))}

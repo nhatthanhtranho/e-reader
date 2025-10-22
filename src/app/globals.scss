@@ -44,16 +44,26 @@
 
 /* === AMBER THEME (EYE COMFORT / READING MODE) === */
 [data-theme="amber"] {
-  --color-bg: 255 250 240;
-  /* warm cream (#FFF8E1 ~ amber-50) */
-  --color-text: 38 20 0;
-  /* dark brown for contrast */
+  --color-bg: 255 248 220;
+  /* warm cream hơn, dịu mắt hơn so với trắng vàng nhạt */
+  
+  --color-text: 33 20 10;
+  /* nâu đậm để chữ rõ nhưng không quá chói */
+  
   --color-primary: 245 158 11;
-  /* amber-500 */
+  /* amber-500, nổi bật nhưng ấm */
+  
   --color-secondary: 217 119 6;
-  /* amber-600 */
+  /* amber-600, dùng cho hover hoặc nhấn */
+  
   --color-accent: 252 211 77;
-  /* amber-300 */
+  /* amber-300, làm highlight nhẹ */
+  
+  --color-border: 225 190 140;
+  /* màu border nhẹ, hòa với nền */
+  
+  --color-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  /* shadow mềm, dịu mắt */
 }
 
 /* === FOREST THEME === */
