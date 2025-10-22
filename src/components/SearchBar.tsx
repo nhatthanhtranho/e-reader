@@ -1,6 +1,7 @@
 "use client";
+
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import books from "@/data/books.json";
 import { ReadingBook } from "../../types/ReadingBook";
 import { formatLink } from "../../utils/formatLink";
@@ -26,7 +27,7 @@ const highlightText = (text: string, query: string) => {
   return (
     <>
       {text.slice(0, startIndex)}
-      <span className="bg-teal-100 text-gray-900 font-semibold">
+      <span className="bg-primary/20 text-primary font-semibold">
         {text.slice(startIndex, endIndex)}
       </span>
       {text.slice(endIndex)}
@@ -101,23 +102,21 @@ export default function SearchBar({
         value={query}
         onChange={(e) => handleSearch(e.target.value)}
         placeholder={placeholder}
-        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
+        className="w-full border border-border rounded-lg px-4 py-2 text-foreground bg-background focus:ring-2 focus:ring-primary outline-none transition-colors"
       />
 
       {/* 📘 Kết quả */}
       {showResults && (
-        <div className="absolute z-50 w-full bg-white border border-gray-200 rounded-lg mt-2 shadow-lg max-h-72 overflow-y-auto">
+        <div className="absolute z-50 w-full bg-background border border-border rounded-lg mt-2 shadow-lg max-h-72 overflow-y-auto transition-colors">
           {results.length > 0 ? (
             <>
-              {/* ✅ Hiện tối đa 3 kết quả */}
               {results.slice(0, 3).map((item) => (
                 <div
                   key={item.slug}
                   onClick={() => handleSelect(item)}
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors duration-150 border-b border-gray-100 last:border-none"
+                  className="flex items-center gap-3 px-4 py-2 hover:bg-primary/10 cursor-pointer transition-colors duration-150 border-b border-border last:border-none"
                 >
-                  {/* 🖼 Banner */}
-                  <div className="flex-shrink-0 w-12 h-12 rounded-md overflow-hidden bg-gray-100">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-md overflow-hidden bg-background">
                     <Image
                       src={`/assets${item.slug}/banner.webp`}
                       alt={item.title}
@@ -126,14 +125,12 @@ export default function SearchBar({
                       className="object-cover w-full h-full"
                     />
                   </div>
-
-                  {/* 📝 Thông tin */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 line-clamp-1">
+                    <p className="text-sm font-medium text-foreground line-clamp-1">
                       {highlightText(item.title, query)}
                     </p>
                     {item.dichGia && (
-                      <p className="text-xs text-gray-600 line-clamp-1">
+                      <p className="text-xs text-secondary line-clamp-1">
                         {highlightText(item.dichGia, query)}
                       </p>
                     )}
@@ -141,7 +138,6 @@ export default function SearchBar({
                 </div>
               ))}
 
-              {/* 🔗 Nút xem tất cả */}
               {results.length > 3 && (
                 <div
                   onClick={() => {
@@ -149,14 +145,14 @@ export default function SearchBar({
                       query
                     )}`;
                   }}
-                  className="px-4 py-2 text-center text-sm text-blue-600 hover:bg-blue-50 cursor-pointer border-t border-gray-200"
+                  className="px-4 py-2 text-center text-sm text-primary hover:bg-primary/10 cursor-pointer border-t border-border transition-colors"
                 >
                   Xem tất cả {results.length} kết quả »
                 </div>
               )}
             </>
           ) : (
-            <div className="px-4 py-6 text-center text-gray-500">
+            <div className="px-4 py-6 text-center text-secondary">
               <div className="flex flex-col items-center justify-center">
                 <Image
                   src={formatLink("/icons/empty.png")}
@@ -165,10 +161,8 @@ export default function SearchBar({
                   alt="empty"
                   className="mb-2 opacity-80"
                 />
-                <p className="text-sm font-medium text-gray-700">
-                  Không tìm thấy kết quả
-                </p>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-sm font-medium">Không tìm thấy kết quả</p>
+                <p className="text-xs mt-1">
                   Thử nhập từ khóa khác nhé 🌿
                 </p>
               </div>

@@ -22,20 +22,25 @@ const BookListLayout: FC<ExploreSectionProps> = ({
 }) => {
   const processedBooks: ReadingBookWithProgress[] = renderProgress
     ? books.map((book) => {
-      const readCount = getNumberOfChapterAlreadyRead(book.slug);
-      const progress = book.maxChapter
-        ? Math.round((readCount / book.maxChapter) * 100)
-        : 0;
-      return { ...book, progress };
-    })
+        const readCount = getNumberOfChapterAlreadyRead(book.slug);
+        const progress = book.maxChapter
+          ? Math.round((readCount / book.maxChapter) * 100)
+          : 0;
+        return { ...book, progress };
+      })
     : books;
 
   return (
     <div className="container mx-auto px-3 md:px-0">
       <div className="mt-8 mb-8">
-        <h2 className="uppercase text-3xl font-bold">{title}</h2>
-        <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
+        {/* Tiêu đề */}
+        <h2 className="uppercase text-3xl font-bold text-foreground">{title}</h2>
+        <div
+          className="w-12 mt-2 mb-6 border-2"
+          style={{ borderColor: 'rgb(var(--color-primary))' }}
+        />
 
+        {/* Swiper */}
         <CustomSwiper
           withNavigation
           withPagination
@@ -49,7 +54,10 @@ const BookListLayout: FC<ExploreSectionProps> = ({
           }}
         >
           {processedBooks.map((book) => (
-            <SwiperSlide key={book.slug} className="p-2 flex h-auto items-stretch">
+            <SwiperSlide
+              key={book.slug}
+              className="p-2 flex h-auto items-stretch"
+            >
               <PostCardWithDescription
                 urlPrefix="/kinh-phat/"
                 title={book.title}
@@ -60,6 +68,7 @@ const BookListLayout: FC<ExploreSectionProps> = ({
                 progress={book.progress}
                 tags={book.tags}
                 isOneChapter={book.maxChapter === 1}
+                className="bg-background text-foreground border-border transition-colors"
               />
             </SwiperSlide>
           ))}

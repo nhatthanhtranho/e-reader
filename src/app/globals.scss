@@ -1,15 +1,22 @@
 /* eslint-disable */
 
-/* === Fonts === */
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+/* === FONT IMPORTS === */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap");
 
-/* === Tailwind === */
+/* === TAILWIND === */
 @import "tailwindcss";
 
-/* === THEME VARIABLES === */
+/* ============================================================
+   GLOBAL COLOR VARIABLES
+   → 5 màu cốt lõi cho mọi theme:
+     --color-bg        → nền chính (background)
+     --color-text      → chữ chính (foreground)
+     --color-primary   → thương hiệu / hành động chính
+     --color-secondary → phụ trợ / nhấn nhẹ
+     --color-accent    → nổi bật (CTA, icon, badge)
+   ============================================================ */
 
-/* Light (mặc định): nhẹ nhàng, hiện đại */
-:root,
+/* === LIGHT THEME === */
 :root,
 [data-theme="light"] {
   --color-bg: 248 250 252;
@@ -20,25 +27,11 @@
   /* blue-600 */
   --color-secondary: 99 102 241;
   /* indigo-500 */
-
-  --card-bg: 255 255 255;
-  /* white */
-  --card-text: 17 24 39;
-  /* slate-900 */
-  --accent: 59 130 246;
+  --color-accent: 59 130 246;
   /* blue-500 */
-  --border-color: 226 232 240;
-  /* slate-200 */
-
-  /* ✅ Tag colors (light - fixed for readability) */
-  --tag-bg: 226 232 240;
-  /* slate-200: nhẹ nhưng rõ trên nền trắng */
-  --tag-text-color: 30 41 59;
-  /* slate-800: chữ rõ nét, dễ đọc */
 }
 
-
-/* Dark: trung tính, sang trọng, dễ đọc */
+/* === DARK THEME === */
 [data-theme="dark"] {
   --color-bg: 17 24 39;
   /* slate-900 */
@@ -48,87 +41,100 @@
   /* blue-300 */
   --color-secondary: 165 180 252;
   /* indigo-300 */
-
-  --card-bg: 30 41 59;
-  /* slate-800 */
-  --card-text: 243 244 246;
-  /* gray-100 */
-  --accent: 96 165 250;
+  --color-accent: 96 165 250;
   /* blue-400 */
-  --border-color: 55 65 81;
-  /* gray-700 */
-
-  /* ✅ Tag colors (dark) */
-  --tag-bg: 59 130 246;
-  /* blue-500 */
-  --tag-text-color: 255 255 255;
-  /* white */
 }
 
-/* Forest: trầm ấm, tươi mát */
+/* === FOREST THEME === */
 [data-theme="forest"] {
   --color-bg: 19 38 28;
-  /* deep green forest tone */
+  /* deep green */
   --color-text: 236 253 245;
   /* mint white */
   --color-primary: 16 185 129;
   /* emerald-500 */
   --color-secondary: 34 197 94;
   /* green-500 */
-
-  --card-bg: 6 78 59;
-  /* emerald-900 */
-  --card-text: 236 253 245;
-  /* mint white */
-  --accent: 16 185 129;
-  /* emerald-500 */
-  --border-color: 4 120 87;
-  /* emerald-700 */
-
-  /* ✅ Tag colors (forest) */
-  --tag-bg: 21 128 61;
-  /* green-700 */
-  --tag-text-color: 236 253 245;
-  /* mint white */
+  --color-accent: 52 211 153;
+  /* emerald-400 */
 }
 
-/* === Tailwind Theme Mapping === */
+/* ============================================================
+   TAILWIND VARIABLE MAPPING
+   ============================================================ */
 @theme inline {
   --color-background: rgb(var(--color-bg));
   --color-foreground: rgb(var(--color-text));
-  --color-border: rgb(var(--border-color));
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-border: rgb(var(--color-text) / 0.1);
+  --color-primary: rgb(var(--color-primary));
+  --color-secondary: rgb(var(--color-secondary));
+  --color-accent: rgb(var(--color-accent));
+
+  --font-sans: "Open Sans", sans-serif;
+  --font-display: "Montserrat", sans-serif;
 }
 
-/* === BASE BODY === */
+/* ============================================================
+   BASE STYLES
+   ============================================================ */
 body {
   background-color: rgb(var(--color-bg));
   color: rgb(var(--color-text));
-  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
   transition:
-    background-color 0.4s ease,
-    color 0.4s ease,
-    border-color 0.3s ease;
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
+
+/* ============================================================
+   COMPONENT STYLES
+   ============================================================ */
 
 /* === CARD === */
 .card {
-  background-color: var(--card-bg);
-  color: var(--card-text);
-  border: 1px solid rgb(var(--border-color));
+  background-color: rgb(var(--color-bg) / 0.9);
+  color: rgb(var(--color-text));
+  border: 1px solid rgb(var(--color-text) / 0.1);
   border-radius: 1rem;
   padding: 1.25rem;
   box-shadow: 0 2px 6px rgb(0 0 0 / 0.05);
   transition:
-    background-color 0.4s ease,
-    color 0.4s ease,
-    border-color 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease,
     box-shadow 0.3s ease;
 }
 
 .card:hover {
   box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+}
+
+/* === BUTTONS === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: rgb(var(--color-primary));
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: rgb(var(--color-accent));
+}
+
+.btn-secondary {
+  background-color: rgb(var(--color-secondary));
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: rgb(var(--color-primary));
 }
 
 /* === SWIPER PAGINATION === */
@@ -139,9 +145,9 @@ body {
 }
 
 .swiper-pagination .custom-dot {
-  width: 5px;
-  height: 5px;
-  background-color: rgb(var(--color-border));
+  width: 6px;
+  height: 6px;
+  background-color: rgb(var(--color-text) / 0.2);
   border-radius: 50%;
   opacity: 0.6;
   transition: all 0.3s ease;
@@ -174,30 +180,69 @@ body {
 }
 
 /* === FONT HELPERS === */
-.open-sans-unique {
-  font-family: "Open Sans", sans-serif;
+.open-sans {
+  font-family: var(--font-sans);
 }
 
-.playfair-display-regular {
-  font-family: "Playfair Display", serif;
+.montserrat {
+  font-family: var(--font-display);
 }
 
-.montserrat-unique {
-  font-family: "Montserrat", sans-serif;
+
+@keyframes like-ping {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.4);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.raleway-unique {
-  font-family: "Raleway", sans-serif;
+@keyframes like-glow {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
 }
 
-/* === CUSTOM SCOPED COMPONENTS === */
-.settings {
-  background-color: rgb(var(--color-bg));
-  color: rgb(var(--color-text));
-  border: 1px solid rgb(var(--color-primary) / 0.3);
-  border-radius: 0.75rem;
-  transition:
-    background-color 0.4s ease,
-    color 0.4s ease,
-    border-color 0.4s ease;
+.animate-like-ping {
+  animation: like-ping 0.4s ease-in-out;
+}
+
+.animate-like-glow {
+  animation: like-glow 0.5s ease-out forwards;
+}
+
+@keyframes tag-popup {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-tag-popup {
+  animation: tag-popup 0.25s ease-out forwards;
 }

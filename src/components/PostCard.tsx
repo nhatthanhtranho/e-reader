@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import TagList from "./TagList";
 
 export interface PropTypes {
   title: string;
+  className?: string
   url: string;
   content?: string;
   dichGia?: string;
@@ -28,7 +29,8 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   urlPrefix,
   progress,
   tags,
-  isOneChapter
+  isOneChapter,
+  className
 }) => {
   const router = useRouter();
   const [hovered, setHovered] = useState(false);
@@ -36,32 +38,36 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
     if (target.closest(".like-button")) return; // tránh click vào LikeBar
-    if (isOneChapter) {
-      return router.push(formatLink(`${urlPrefix}${url}/chuong-1`));
-    }
-    return router.push(formatLink(`${urlPrefix}${url}`));
+    const fullUrl = isOneChapter
+      ? formatLink(`${urlPrefix}${url}/chuong-1`)
+      : formatLink(`${urlPrefix}${url}`);
+    router.push(fullUrl);
   };
 
   const bannerURL = `/assets${url}/banner.webp`;
 
   return (
     <div
-      className="post-card relative flex flex-col h-full cursor-pointer rounded-2xl overflow-hidden
-                 shadow-md border border-[rgb(var(--border-color))]
-                 bg-[var(--card-bg)] text-[var(--card-text)]
-                 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl group"
+      className={`
+        ${className}
+        relative flex flex-col h-full cursor-pointer rounded-2xl overflow-hidden
+        border border-[rgb(var(--color-border))]
+        bg-[rgb(var(--color-bg)/0.95)] text-[rgb(var(--color-text))]
+        shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group
+      `}
       onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Ảnh banner */}
-      <div className="w-full h-60 relative flex-shrink-0 rounded-t-2xl overflow-hidden shadow-inner">
+      {/* Banner */}
+      <div className="w-full h-60 relative flex-shrink-0 overflow-hidden rounded-t-2xl">
+        {/* Tiến độ đọc */}
         {progress && (
-          <div className="absolute top-2 right-2 z-20 flex flex-col items-center animate-fade-in">
-            <div className="relative bg-[rgb(var(--color-bg))] text-[rgb(var(--color-text))]
-                            font-semibold px-2 py-1 rounded-md shadow-md text-sm sm:text-base">
-              {progress}%
-            </div>
+          <div
+            className="absolute top-2 right-2 z-20 bg-[rgb(var(--color-bg))] text-[rgb(var(--color-text))]
+                       font-semibold px-2 py-1 rounded-md shadow-md text-sm sm:text-base animate-fade-in"
+          >
+            {progress}%
           </div>
         )}
 
@@ -73,6 +79,7 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
           className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
         />
 
+        {/* Like bar */}
         <div className="absolute right-0 bottom-0 z-10">
           <LikeBar />
         </div>
@@ -81,20 +88,42 @@ const PostCardWithDescription: React.FC<PropTypes> = ({
       {/* Nội dung */}
       <div className="flex flex-col justify-between flex-1 p-4">
         <div className="flex-1">
-          <TagList tags={tags} maxVisible={2} className="mb-4" />
+          {/* Tag list */}
+          <TagList tags={tags} maxVisible={2} className="mb-3" />
 
-          <h3 className="font-bold text-xl leading-snug line-clamp-2 text-[var(--card-text)] group-hover:text-[rgb(var(--accent))] transition-colors duration-300">
+          {/* Tiêu đề */}
+          <h3
+            className="
+              font-bold text-xl leading-snug line-clamp-2
+              text-[rgb(var(--color-text))]
+              group-hover:text-[rgb(var(--color-primary))]
+              transition-colors duration-300
+            "
+          >
             {title}
           </h3>
 
-          <div className="flex items-center mt-2 gap-2 text-[rgb(var(--color-text))] opacity-80 text-xs">
+          {/* Thông tin dịch giả & ngày */}
+          <div
+            className="
+              flex items-center mt-2 gap-2 text-xs opacity-70
+              text-[rgb(var(--color-text))]
+            "
+          >
             {dichGia && <p>Dịch giả: {dichGia}</p>}
             <p className="ml-auto">{date}</p>
           </div>
 
-          <p className="text-[var(--card-text)] text-base line-clamp-4 mt-3 opacity-90">
-            {content}
-          </p>
+          {/* Mô tả */}
+          {content && (
+            <p
+              className="
+                text-[rgb(var(--color-text))] opacity-90 text-base mt-3 line-clamp-4
+              "
+            >
+              {content}
+            </p>
+          )}
         </div>
       </div>
     </div>

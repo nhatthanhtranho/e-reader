@@ -18,21 +18,23 @@ import {
 
 const threshold = 200;
 
-const Layout = styled.div<{ theme: "light" | "dark" | string }>`
+// === Layout container theme-aware
+const Layout = styled.div`
   margin: 0 auto;
-  background-color: ${(props) =>
-    props.theme === "dark" ? "#1a1a1a" : "#fafafa"};
-  color: ${(props) => (props.theme === "dark" ? "#f3f4f6" : "#1e2939")};
-  border-radius: 0.5rem;
+  background-color: rgb(var(--color-bg));
+  color: rgb(var(--color-text));
+  transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
-const Content = styled.div<{
-  fontSize: number;
-  width: number;
-}>`
+// === Content editable theme-aware
+const Content = styled.div<{ fontSize: number; width: number }>`
   width: ${(props) => props.width}%;
   margin: 0 auto;
   font-size: ${(props) => props.fontSize}px;
+  outline: none;
+  white-space: pre-wrap;
+  cursor: text;
+  transition: color 0.3s ease;
 `;
 
 export default function ChapterContentLayout() {
@@ -61,7 +63,11 @@ export default function ChapterContentLayout() {
 
   // --- Compute chapter links ---
   const chapterLinks = useMemo(() => {
-    return getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter || 0);
+    return getChapterPath(
+      slug,
+      metadata?.chapters?.length || 1,
+      currentChapter || 0
+    );
   }, [slug, metadata?.chapters?.length, currentChapter]);
 
   // --- Save latest read chapter ---
@@ -157,8 +163,13 @@ export default function ChapterContentLayout() {
     setIsModified(false);
   };
 
+  // === Theme-aware button classes ===
+  const buttonClass =
+    "w-48 py-2 rounded shadow border border-[rgb(var(--color-border))] cursor-pointer transition-colors duration-200 " +
+    "bg-[rgb(var(--color-primary))] text-white hover:bg-[rgb(var(--color-accent))]";
+
   return (
-    <Layout theme={theme}>
+    <Layout>
       <Settings
         nextLink={chapterLinks.nextPath}
         prevLink={chapterLinks.prevPath}
@@ -171,99 +182,80 @@ export default function ChapterContentLayout() {
         setIsOpen={setIsOpenListOfChapter}
       />
 
-      <div className="mx-auto flex gap-4 items-center justify-center pt-8">
-
-        <button
-          className={`w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black`}
-
-          onClick={() => router.push("/")
-          }
-        >
+      <div className="mx-auto flex gap-4 items-center justify-center py-12 flex-wrap">
+        <button className={buttonClass} onClick={() => router.push("/")}>
           Trang chủ
         </button>
 
+        {chapterLinks.prevPath && (
+          <button
+            className={buttonClass}
+            onClick={() => router.push(chapterLinks.prevPath as any)}
+          >
+            Chương Trước
+          </button>
+        )}
 
-        <button
-          className={`${!chapterLinks.prevPath && 'hidden'} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          disabled={!chapterLinks.prevPath}
-          onClick={() =>
-            chapterLinks.prevPath && router.push(chapterLinks.prevPath || "")
-          }
-        >
-          Chương Trước
-        </button>
-
-
-
-        <button
-          className={`${!chapterLinks.nextPath && 'hidden '} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          disabled={!chapterLinks.nextPath}
-          onClick={() =>
-            chapterLinks.nextPath && router.push(chapterLinks.nextPath || "")
-          }
-        >
-          Chương Sau
-        </button>
+        {chapterLinks.nextPath && (
+          <button
+            className={buttonClass}
+            onClick={() => router.push(chapterLinks.nextPath as any)}
+          >
+            Chương Sau
+          </button>
+        )}
       </div>
 
-
-
+      {/* Chapter Content */}
       <Content
         ref={contentRef}
-        className={`py-12 prose max-w-none ${fontFamily}`}
+        className={`py-12 prose max-w-none ${fontFamily} text-[rgb(var(--color-text))]`}
         fontSize={fontSize}
         width={width}
         contentEditable
         suppressContentEditableWarning
         onInput={handleInputChange}
-        style={{
-          outline: "none",
-          whiteSpace: "pre-wrap",
-          cursor: "text",
-        }}
       >
         {content}
       </Content>
 
-      {/* Nút export chỉ hiện khi có chỉnh sửa */}
+      {/* Buttons dưới content */}
+      <div className="mx-auto flex gap-4 items-center justify-center pb-12 flex-wrap">
+        <button className={buttonClass} onClick={() => router.push("/")}>
+          Trang chủ
+        </button>
+
+        {chapterLinks.prevPath && (
+          <button
+            className={buttonClass}
+            onClick={() => router.push(chapterLinks.prevPath as any)}
+          >
+            Chương Trước
+          </button>
+        )}
+
+        {chapterLinks.nextPath && (
+          <button
+            className={buttonClass}
+            onClick={() => router.push(chapterLinks.nextPath as any)}
+          >
+            Chương Sau
+          </button>
+        )}
+      </div>
+
+      {/* Export button */}
       {isModified && (
         <div className="flex justify-center my-10">
-          <button
-            onClick={handleExport}
-            className="w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black"
-          >
+          <button className={buttonClass} onClick={handleExport}>
             Export TXT
           </button>
         </div>
       )}
 
+      {/* Progress Bar */}
       <div className="w-36 fixed top-3 right-3">
         <ProgressBar progress={progress} />
-      </div>
-
-      <div className="mx-auto flex gap-4 items-center justify-center">
-        <button
-          className={`${!chapterLinks.prevPath && 'hidden'} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.prevPath ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          disabled={!chapterLinks.prevPath}
-          onClick={() =>
-            chapterLinks.prevPath && router.push(chapterLinks.prevPath || "")
-          }
-        >
-          Chương Trước
-        </button>
-        <button
-          className={`${!chapterLinks.nextPath && 'hidden '} w-48 py-2 border shadow bg-white text-gray-800 rounded cursor-pointer hover:bg-gray-200 hover:text-black ${!chapterLinks.nextPath ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          disabled={!chapterLinks.nextPath}
-          onClick={() =>
-            chapterLinks.nextPath && router.push(chapterLinks.nextPath || "")
-          }
-        >
-          Chương Sau
-        </button>
       </div>
     </Layout>
   );

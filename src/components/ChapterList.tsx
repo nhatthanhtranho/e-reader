@@ -27,14 +27,11 @@ export default function ChapterList({
   const [searchTerm, setSearchTerm] = useState("");
   const [readChapters, setReadChapters] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-
   const itemsPerPage = 10;
 
   useEffect(() => {
     const reads = getLocalStorageObjectValue<string[]>(slug, "read");
-    if (reads) {
-      setReadChapters(reads);
-    }
+    if (reads) setReadChapters(reads);
   }, [slug]);
 
   // Lọc chương theo từ khóa
@@ -48,37 +45,53 @@ export default function ChapterList({
     });
   }, [chapters, searchTerm]);
 
-  // Tính tổng số trang
   const totalPages = Math.ceil(filteredChapters.length / itemsPerPage);
-
-  // Lấy chương hiển thị cho trang hiện tại
   const paginatedChapters = filteredChapters.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Reset về trang đầu khi tìm kiếm thay đổi
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
 
   return (
-    <div className="bg-white">
+    <div
+      className="
+        bg-[rgb(var(--color-bg))] 
+        text-[rgb(var(--color-text))] 
+        rounded-xl 
+        shadow-sm 
+        border border-[rgb(var(--color-border))] 
+        p-4
+        transition-colors duration-300
+      "
+    >
       {/* Ô tìm kiếm */}
       <input
         type="text"
         placeholder="Tìm theo số chương, tên chương..."
         value={searchTerm}
         onChange={handleSearchChange}
-        className="w-full mb-4 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="
+          w-full mb-4 p-2 rounded-md
+          bg-[rgb(var(--color-bg)/0.9)]
+          text-[rgb(var(--color-text))]
+          border border-[rgb(var(--color-border))]
+          focus:outline-none focus:ring-2 
+          focus:ring-[rgb(var(--color-primary))]
+          transition
+        "
       />
 
       {/* Danh sách chương */}
       {paginatedChapters.length === 0 ? (
-        <p className="text-center text-gray-500">Không tìm thấy chương nào.</p>
+        <p className="text-center text-[rgb(var(--color-text)/0.6)]">
+          Không tìm thấy chương nào.
+        </p>
       ) : (
-        <div>
+        <div className="divide-y divide-[rgb(var(--color-border))]">
           {paginatedChapters.map((chapter, index) => {
             const isRead = readChapters.some(
               (ch) => chapter.link?.includes(ch) ?? false
@@ -86,7 +99,11 @@ export default function ChapterList({
             return (
               <div
                 key={index}
-                className="p-4 border-b border-gray-200 cursor-pointer relative hover:bg-gray-50 transition"
+                className="
+                  relative p-4 cursor-pointer
+                  hover:bg-[rgb(var(--color-primary)/0.1)]
+                  transition-colors duration-200
+                "
                 onClick={() => {
                   updateReadingBooks({
                     content: metadata?.content || "",
@@ -99,7 +116,7 @@ export default function ChapterList({
                   router.push(chapter.link || "#");
                 }}
               >
-                <div className="absolute right-2 w-[25px] h-[25px] text-black">
+                <div className="absolute right-2 w-[25px] h-[25px]">
                   <Image
                     fill
                     src={
@@ -110,7 +127,15 @@ export default function ChapterList({
                     alt="read status"
                   />
                 </div>
-                {chapter.name}
+                <span
+                  className={`${
+                    isRead
+                      ? "opacity-70 line-through"
+                      : "opacity-100"
+                  }`}
+                >
+                  {chapter.name}
+                </span>
               </div>
             );
           })}
@@ -123,27 +148,39 @@ export default function ChapterList({
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
-            className={`px-4 py-2 rounded border ${
-              currentPage === 1
-                ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                : "hover:bg-gray-100 border-gray-300 cursor-pointer"
-            }`}
+            className={`
+              px-4 py-2 rounded border
+              border-[rgb(var(--color-border))]
+              text-[rgb(var(--color-text))]
+              transition
+              ${
+                currentPage === 1
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-[rgb(var(--color-primary)/0.1)]"
+              }
+            `}
           >
             Trang trước
           </button>
 
-          <span className="text-gray-600">
+          <span className="text-[rgb(var(--color-text)/0.7)]">
             Trang {currentPage} / {totalPages}
           </span>
 
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded border ${
-              currentPage === totalPages
-                ? "text-gray-400 border-gray-200 cursor-not-allowed"
-                : "hover:bg-gray-100 border-gray-300 cursor-pointer"
-            }`}
+            className={`
+              px-4 py-2 rounded border
+              border-[rgb(var(--color-border))]
+              text-[rgb(var(--color-text))]
+              transition
+              ${
+                currentPage === totalPages
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-[rgb(var(--color-primary)/0.1)]"
+              }
+            `}
           >
             Trang sau
           </button>
