@@ -1,4 +1,3 @@
-// components/PostDetailLayout.tsx
 "use client";
 
 import Image from "next/image";
@@ -19,83 +18,94 @@ import Footer from "./Footer";
 import BackToHomeButton from "./BackToHomeButton";
 
 export default function PostDetailLayout() {
-  const { slug } = useParams(); // Lấy slug từ URL
+  const { slug } = useParams();
   const router = useRouter();
 
   const [metadata, setMetadata] = useState<Metadata | null>(null);
   const [latestRead, setLatestRead] = useState<string | null>(null);
 
-  // Fetch metadata từ public/kinh-phat/[slug]/metadata.json
+  // ✅ Fetch metadata
   useEffect(() => {
     if (!slug) return;
     fetchMetadata(slug as string, setMetadata);
   }, [slug]);
 
-  // Lấy latestRead từ localStorage (chỉ client-side)
+  // ✅ Get latestRead from localStorage
   useEffect(() => {
-    if (!slug) return;
-    if (typeof window === "undefined") return;
-    const latestRead = getLocalStorageObjectValue(slug as string, "latestRead");
-    setLatestRead(latestRead as string);
+    if (!slug || typeof window === "undefined") return;
+    const latest = getLocalStorageObjectValue(slug as string, "latestRead");
+    setLatestRead(latest as string);
   }, [slug]);
 
+  if (!metadata) return null;
+
   return (
-    <div className="flex flex-col bg-white">
+    <div className="flex flex-col bg-[rgb(var(--color-bg))] text-[rgb(var(--color-text))] transition-colors duration-300">
       <div className="flex flex-col container mx-auto">
-        <div className="flex flex-col md:flex-row md:shadow-lg rounded-lg overflow-hidden min-h-[50vh]">
-          {/* Hình ảnh bên trái */}
+        {/* Thẻ thông tin tổng */}
+        <div className="flex flex-col md:flex-row md:shadow-lg rounded-lg overflow-hidden min-h-[50vh] bg-[rgb(var(--card-bg))] transition-colors">
+          {/* Ảnh minh họa */}
           <div className="md:w-1/3 w-full">
             <Image
-              src={formatLink(`/assets${metadata?.slug}/banner.webp`)}
-              alt={metadata?.title ?? "Kinh Phật"}
+              src={formatLink(`/assets${metadata.slug}/banner.webp`)}
+              alt={metadata.title ?? "Kinh Phật"}
               width={800}
               height={600}
               className="w-full h-auto object-contain"
             />
           </div>
 
-
           {/* Nội dung bên phải */}
           <div className="md:w-2/3 w-full p-6 px-4 flex flex-col gap-3 md:gap-4">
-            {/* Tag */}
+            {/* ✅ Tag list theo theme */}
             <div className="flex flex-wrap gap-2">
-              {metadata?.tags?.map((tag, index) => (
+              {metadata.tags?.map((tag, index) => (
                 <span
                   key={index}
-                  className="bg-blue-200 text-blue-800 text-xs font-semibold px-2 py-1 rounded"
+                  className="inline-block px-3 py-1 rounded-full text-xs font-medium
+                             bg-[rgb(var(--tag-bg))] text-[rgb(var(--tag-text-color))]
+                             border border-[rgb(var(--border-color))]
+                             hover:bg-[rgb(var(--accent)/0.1)] hover:text-[rgb(var(--accent))]
+                             transition-all duration-200"
                 >
                   {tag}
                 </span>
               ))}
             </div>
 
-            {/* Tên truyện */}
-            <h2 className="text-2xl font-bold">{metadata?.title}</h2>
+            {/* Tiêu đề */}
+            <h2 className="text-2xl font-bold text-[rgb(var(--color-text))]">
+              {metadata.title}
+            </h2>
 
             {/* Dịch giả */}
-            <p className="text-gray-600">
+            <p className="text-[rgb(var(--card-text))]/80">
               <span className="font-semibold">Dịch giả:</span>{" "}
-              {metadata?.dichGia}
+              {metadata.dichGia}
             </p>
 
-            {/* Description */}
-            <p className="text-gray-700 max-w-4xl">{metadata?.content}</p>
+            {/* Mô tả */}
+            <p className="text-[rgb(var(--card-text))]/90 max-w-4xl">
+              {metadata.content}
+            </p>
 
             {/* Buttons */}
-            <div className="flex gap-2 mt-4">
+            <div className="flex flex-wrap gap-2 mt-4">
+              {/* Nút đọc từ đầu */}
               <button
-                className="bg-yellow-500 shadow text-gray-50 w-32 py-2 rounded hover:bg-yellow-600 transition cursor-pointer"
+                className="w-32 py-2 rounded shadow text-sm font-medium
+                           bg-[rgb(var(--accent))] text-white
+                           hover:opacity-90 transition"
                 onClick={() => {
                   updateReadingBooks({
-                    content: metadata?.content || "",
-                    dichGia: metadata?.dichGia || "",
-                    slug: metadata?.slug || "",
-                    title: metadata?.title || "",
-                    createdAt: metadata?.createdAt || "",
-                    maxChapter: metadata?.maxChapter || 1,
+                    content: metadata.content || "",
+                    dichGia: metadata.dichGia || "",
+                    slug: metadata.slug || "",
+                    title: metadata.title || "",
+                    createdAt: metadata.createdAt || "",
+                    maxChapter: metadata.maxChapter || 1,
                   });
-                  if (!metadata?.chapters) return;
-                  const firstChapter = metadata.chapters[0]?.fileName;
+                  const firstChapter = metadata.chapters?.[0]?.fileName;
                   if (firstChapter)
                     router.push(`/kinh-phat/${slug}/${firstChapter}`);
                 }}
@@ -103,36 +113,38 @@ export default function PostDetailLayout() {
                 Đọc từ đầu
               </button>
 
-              <button
-                className={`bg-red-600 text-white w-32 py-2 rounded hover:bg-red-700 shadow transition cursor-pointer ${latestRead == null ? "hidden" : ""
-                  }`}
-                onClick={() => {
-                  if (latestRead)
+              {/* Nút đọc tiếp */}
+              {latestRead && (
+                <button
+                  className="w-32 py-2 rounded shadow text-sm font-medium
+                             bg-[rgb(var(--color-secondary))] text-white
+                             hover:opacity-90 transition"
+                  onClick={() => {
                     updateReadingBooks({
-                      content: metadata?.content || "",
-                      dichGia: metadata?.dichGia || "",
-                      slug: metadata?.slug || "",
-                      title: metadata?.title || "",
-                      createdAt: metadata?.createdAt || "",
-                      maxChapter: metadata?.maxChapter || 1,
+                      content: metadata.content || "",
+                      dichGia: metadata.dichGia || "",
+                      slug: metadata.slug || "",
+                      title: metadata.title || "",
+                      createdAt: metadata.createdAt || "",
+                      maxChapter: metadata.maxChapter || 1,
                     });
-                  router.push(`/kinh-phat/${slug}/${latestRead}`);
-                }}
-              >
-                Đọc tiếp
-              </button>
+                    router.push(`/kinh-phat/${slug}/${latestRead}`);
+                  }}
+                >
+                  Đọc tiếp
+                </button>
+              )}
 
               <BackToHomeButton />
-
             </div>
           </div>
         </div>
 
         {/* Danh sách chương */}
         <div className="md:mt-10 px-4">
-          <h2 className="uppercase text-xl">DANH SÁCH CHƯƠNG</h2>
-          <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
-          {metadata?.chapters && metadata.chapters.length > 0 && (
+          <h2 className="uppercase text-xl font-semibold">DANH SÁCH CHƯƠNG</h2>
+          <div className="border-2 w-12 mt-2 mb-6 border-[rgb(var(--accent))]" />
+          {metadata.chapters?.length ? (
             <ChapterList
               slug={slug as string}
               chapters={metadata.chapters.map((item) => ({
@@ -140,15 +152,15 @@ export default function PostDetailLayout() {
                 link: `/kinh-phat/${slug}/${item.fileName}`,
               }))}
             />
-          )}
+          ) : null}
         </div>
 
-        {/* Series / tuyển tập */}
-        {metadata?.series && metadata.series.length > 0 && (
+        {/* Tuyển tập */}
+        {metadata.series?.length ? (
           <div className="container mx-auto px-4">
             <div className="mt-8">
               <h2 className="uppercase text-xl font-bold">TUYỂN TẬP</h2>
-              <div className="border-2 border-red-700 w-12 mt-2 mb-6" />
+              <div className="border-2 w-12 mt-2 mb-6 border-[rgb(var(--accent))]" />
               <div className="grid lg:grid-cols-4 gap-12">
                 {metadata.series.map((article: Article, id) => (
                   <div className="lg:col-span-1" key={article.slug + id}>
@@ -165,8 +177,9 @@ export default function PostDetailLayout() {
               </div>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
+
       <Footer />
     </div>
   );
