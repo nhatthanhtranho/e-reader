@@ -9,7 +9,7 @@ import { useSettings } from "@/context/SettingContext";
 import Settings from "@/components/Settings";
 import ListOfChapter from "@/components/ListOfChapter";
 import { ProgressBar } from "@/components/ProgressBar";
-import ChapterNavigation from "./ChapterNavigation";
+import ChapterNavigation from "../ChapterNavigation";
 import {
   addToLocalStorageArray,
   fetchMetadata,

@@ -1,4 +1,4 @@
-import ChapterContentLayout from "@/components/ChapterContentLayout";
+import ChapterContentLayout from "@/components/ChapterContentLayout/ChapterContentLayout";
 
 export function generateStaticParams() {
   const data = [
