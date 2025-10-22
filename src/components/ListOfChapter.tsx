@@ -6,6 +6,7 @@ interface ListOfChapterProps {
   slug: string;
   chapters: Array<{ name: string; fileName: string }>;
   isOpen: boolean;
+  prefix?: string;
   setIsOpen: Function;
 }
 
@@ -14,6 +15,7 @@ export default function ListOfChapter({
   slug,
   isOpen,
   setIsOpen,
+  prefix = '/kinh-phat'
 }: ListOfChapterProps) {
   return (
     <div
@@ -44,7 +46,7 @@ export default function ListOfChapter({
               chapters?.map((item) => {
                 return {
                   name: item.name,
-                  link: `/kinh-phat/${slug}/${item.fileName}`,
+                  link: `${prefix}/${slug}/${item.fileName}`,
                 };
               }) || []
             }
