@@ -8,19 +8,20 @@ const Content = styled.div<{ fontSize: number; width: number }>`
   font-size: ${(props) => props.fontSize}px;
   outline: none;
   white-space: pre-wrap;
-  cursor: text;
   transition: color 0.3s ease;
 `;
 
 interface Props {
+  isEditMode: boolean;
   contentRef: React.RefObject<HTMLDivElement> | null;
-  contentHTML: React.MutableRefObject<string>;
+  contentHTML: React.RefObject<string>;
   fontSize: number;
   width: number;
   fontFamily: string;
 }
 
 export default function ContentEditableSection({
+  isEditMode,
   contentRef,
   contentHTML,
   fontSize,
@@ -35,7 +36,7 @@ export default function ContentEditableSection({
     setIsModified(true);
   };
 
-  const handleExport: Function = () => {
+  const handleExport = () => {
     const text = contentHTML.current
       .replace(/<p>/g, "")
       .replace(/<\/p>/g, "\n\n")
@@ -55,18 +56,20 @@ export default function ContentEditableSection({
     <>
       <Content
         ref={contentRef}
-        contentEditable
+        contentEditable={isEditMode} // ✅ chỉ cho edit khi bật edit mode
         suppressContentEditableWarning
-        className={`py-12 prose max-w-none ${fontFamily}`}
+        className={`py-12 prose max-w-none ${fontFamily} ${
+          isEditMode ? "cursor-text" : "cursor-default select-none"
+        }`}
         fontSize={fontSize}
         width={width}
-        onInput={handleInput}
+        onInput={isEditMode ? handleInput : undefined} // ✅ chỉ lắng nghe khi đang edit
       />
-      {isModified && (
+      {isEditMode && isModified && (
         <div className="flex justify-center my-10">
           <button
             className="w-48 py-2 rounded shadow border border-[rgb(var(--color-border))] cursor-pointer bg-[rgb(var(--color-primary))] text-white hover:bg-[rgb(var(--color-accent))]"
-            onClick={() => handleExport()}
+            onClick={handleExport}
           >
             Export TXT
           </button>

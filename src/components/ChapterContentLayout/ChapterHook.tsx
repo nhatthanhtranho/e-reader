@@ -25,6 +25,55 @@ export function useChapterLinks(slug: string, metadata: Metadata | null, current
   );
 }
 
+export function useTapContinue(
+  targetRef: React.RefObject<HTMLElement>,
+  onTripleTap: () => void,
+  tapDelay = 400
+) {
+  const tapCount = useRef(0);
+  const lastTapTime = useRef(0);
+  const resetTimer = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const handleTap = () => {
+      const now = Date.now();
+      const diff = now - lastTapTime.current;
+
+      if (diff < tapDelay) {
+        tapCount.current += 1;
+      } else {
+        tapCount.current = 1;
+      }
+      lastTapTime.current = now;
+
+      if (tapCount.current >= 3) {
+        tapCount.current = 0;
+        onTripleTap();
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      clearTimeout(resetTimer.current as any);
+      resetTimer.current = setTimeout(() => {
+        tapCount.current = 0;
+      }, tapDelay);
+    };
+
+    const node = targetRef.current;
+    if (!node) return;
+
+    node.addEventListener("click", handleTap);
+    node.addEventListener("touchend", handleTap);
+
+    return () => {
+      node.removeEventListener("click", handleTap);
+      node.removeEventListener("touchend", handleTap);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      clearTimeout(resetTimer.current as any);
+    };
+  }, [onTripleTap, tapDelay, targetRef]);
+}
+
+
 export function useChapterContent(chapterPath?: string) {
   const contentRef = useRef<HTMLDivElement>(null);
   const contentHTML = useRef<string>("");

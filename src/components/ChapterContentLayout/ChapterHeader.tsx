@@ -9,6 +9,8 @@ interface Props {
   metadata: Metadata | null;
   isOpenList: boolean;
   setIsOpenList: (v: boolean) => void;
+  isEditMode?: boolean
+  setIsEditMode?: (v: boolean) => void;
 }
 
 export default function ChapterHeader({
@@ -17,6 +19,8 @@ export default function ChapterHeader({
   metadata,
   isOpenList,
   setIsOpenList,
+  isEditMode,
+  setIsEditMode
 }: Props) {
   return (
     <>
@@ -24,6 +28,8 @@ export default function ChapterHeader({
         nextLink={nextPath}
         prevLink={prevPath}
         setIsOpenListOfChapter={setIsOpenList}
+        isEditMode={isEditMode}
+        setIsEditMode={setIsEditMode}
       />
       <ListOfChapter
         chapters={metadata?.chapters || []}
