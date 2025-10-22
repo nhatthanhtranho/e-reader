@@ -17,7 +17,11 @@ import { formatLink } from '../../utils/formatLink';
 import Footer from './Footer';
 import BackToHomeButton from './BackToHomeButton';
 
-export default function PostDetailLayout() {
+interface PostDetailLayoutProp {
+  prefix?: string;
+};
+
+export default function PostDetailLayout({prefix = '/kinh-phat'}: PostDetailLayoutProp) {
   const { slug } = useParams();
   const router = useRouter();
 
@@ -106,7 +110,7 @@ export default function PostDetailLayout() {
                   });
                   const firstChapter = metadata.chapters?.[0]?.fileName;
                   if (firstChapter)
-                    router.push(`/kinh-phat/${slug}/${firstChapter}`);
+                    router.push(`${prefix}/${slug}/${firstChapter}`);
                 }}
               >
                 Đọc từ đầu
@@ -127,7 +131,7 @@ export default function PostDetailLayout() {
                       createdAt: metadata.createdAt || '',
                       maxChapter: metadata.maxChapter || 1,
                     });
-                    router.push(`/kinh-phat/${slug}/${latestRead}`);
+                    router.push(`${prefix}/${slug}/${latestRead}`);
                   }}
                 >
                   Đọc tiếp
@@ -150,7 +154,7 @@ export default function PostDetailLayout() {
               slug={slug as string}
               chapters={metadata.chapters.map((item) => ({
                 name: item.name,
-                link: `/kinh-phat/${slug}/${item.fileName}`,
+                link: `${prefix}/${slug}/${item.fileName}`,
               }))}
             />
           ) : null}
@@ -168,7 +172,7 @@ export default function PostDetailLayout() {
                 {metadata.series.map((article: Article, id) => (
                   <div className="lg:col-span-1" key={article.slug + id}>
                     <PostCardWithDescription
-                      urlPrefix="/kinh-phat"
+                      urlPrefix={prefix}
                       title={article.title}
                       url={article.slug}
                       content={article.content}
