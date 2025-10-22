@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useMemo, useState, useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
+import { useParams } from "next/navigation";
 import styled from "styled-components";
 
 import { useSettings } from "@/context/SettingContext";
 import Settings from "@/components/Settings";
 import ListOfChapter from "@/components/ListOfChapter";
 import { ProgressBar } from "@/components/ProgressBar";
+import ChapterNavigation from "./ChapterNavigation";
 import {
   addToLocalStorageArray,
   fetchMetadata,
@@ -16,9 +17,8 @@ import {
   saveObjectKeyToLocalStorage,
 } from "@/utils";
 
-const threshold = 200;
+const SCROLL_THRESHOLD = 200;
 
-// === Layout container theme-aware
 const Layout = styled.div`
   margin: 0 auto;
   background-color: rgb(var(--color-bg));
@@ -26,7 +26,6 @@ const Layout = styled.div`
   transition: background-color 0.3s ease, color 0.3s ease;
 `;
 
-// === Content editable theme-aware
 const Content = styled.div<{ fontSize: number; width: number }>`
   width: ${(props) => props.width}%;
   margin: 0 auto;
@@ -37,158 +36,119 @@ const Content = styled.div<{ fontSize: number; width: number }>`
   transition: color 0.3s ease;
 `;
 
-interface ChapterContentLayoutProps {
-  isEdit?: boolean;
-}
-
-export default function ChapterContentLayout({
-  isEdit = true,
-}: ChapterContentLayoutProps) {
+export default function ChapterContentLayout() {
   const params = useParams();
-  const chapter = params?.chapter as string;
   const slug = params?.slug as string;
+  const chapter = params?.chapter as string;
   const match = chapter?.match(/(\d+)$/);
   const currentChapter = match ? Number(match[1]) : null;
 
-  const [content, setContent] = useState<string[]>([]);
-  const [isOpenListOfChapter, setIsOpenListOfChapter] = useState(false);
+  const { fontSize, width, fontFamily } = useSettings();
+
   const [metadata, setMetadata] = useState<any>(null);
-  const [progress, setProgress] = useState<number>(0);
+  const [progress, setProgress] = useState(0);
   const [isModified, setIsModified] = useState(false);
+  const [isOpenList, setIsOpenList] = useState(false);
 
   const contentRef = useRef<HTMLDivElement>(null);
+  const contentHTML = useRef<string>("");
 
-  const { fontSize, width, fontFamily } = useSettings();
-  const router = useRouter();
-
-  // --- Fetch metadata ---
+  // ===== fetch metadata =====
   useEffect(() => {
+    if (!slug) return;
     setProgress(0);
     fetchMetadata(slug, setMetadata);
   }, [slug]);
 
-  // --- Compute chapter links ---
-  const chapterLinks = useMemo(() => {
-    return getChapterPath(
-      slug,
-      metadata?.chapters?.length || 1,
-      currentChapter || 0
-    );
-  }, [slug, metadata?.chapters?.length, currentChapter]);
+  const chapterLinks = useMemo(
+    () =>
+      getChapterPath(slug, metadata?.chapters?.length || 1, currentChapter || 0),
+    [slug, metadata?.chapters?.length, currentChapter]
+  );
 
-  // --- Save latest read chapter ---
+  // ===== save last read =====
   useEffect(() => {
-    saveObjectKeyToLocalStorage(slug, "latestRead", `chuong-${currentChapter}`);
+    if (slug && currentChapter)
+      saveObjectKeyToLocalStorage(slug, "latestRead", `chuong-${currentChapter}`);
   }, [slug, currentChapter]);
 
-  // --- Scroll & progress handling ---
+  // ===== fetch chapter =====
+  const fetchChapterContent = useCallback(async () => {
+    if (!chapterLinks.currentPath) return;
+    try {
+      const res = await fetch(chapterLinks.currentPath);
+      if (!res.ok) throw new Error("Chapter not found");
+      const text = await res.text();
+      const cleaned = text
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .map((p) => `<p>${p}</p>`)
+        .join("");
+      contentHTML.current = cleaned;
+      if (contentRef.current) contentRef.current.innerHTML = cleaned;
+    } catch (err) {
+      console.error(err);
+    }
+  }, [chapterLinks.currentPath]);
+
+  useEffect(() => {
+    fetchChapterContent();
+  }, [fetchChapterContent]);
+
+  // ===== scroll save/restore =====
   useEffect(() => {
     if (!slug) return;
-
-    let scrollTimer: NodeJS.Timeout;
-
+    let timer: NodeJS.Timeout;
     const handleScroll = () => {
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
         const scrollTop = window.scrollY;
-        const viewportHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        const scrollableHeight = documentHeight - viewportHeight;
+        const viewport = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        const scrollable = docHeight - viewport;
 
-        saveObjectKeyToLocalStorage(
-          slug,
-          `chuong-${currentChapter}`,
-          scrollTop
-        );
-
-        if (scrollableHeight - scrollTop < threshold) {
+        saveObjectKeyToLocalStorage(slug, `chuong-${currentChapter}`, scrollTop);
+        if (scrollable - scrollTop < SCROLL_THRESHOLD)
           addToLocalStorageArray(slug, "read", `chuong-${currentChapter}`);
-        }
 
-        const chapterProgress =
-          scrollableHeight > 0
-            ? Math.round((scrollTop / scrollableHeight) * 100)
-            : 100;
-        setProgress(chapterProgress);
+        setProgress(scrollable > 0 ? Math.round((scrollTop / scrollable) * 100) : 100);
       }, 50);
     };
-
     window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [slug, currentChapter]);
 
-    fetch(chapterLinks.currentPath)
-      .then((res) => {
-        if (!res.ok) throw new Error("Chapter not found");
-        return res.text();
-      })
-      .then((text) => {
-        if (typeof text !== "string") return setContent([]);
-
-        const cleaned = text
-          .split("\n")
-          .map((line) => line.trim())
-          .filter((line) => line.length > 0);
-
-        setContent(cleaned);
-      })
-      .catch((err) => {
-        console.error(err);
-        setContent([]); // fallback an toàn
-      });
-  }, [chapterLinks.currentPath, slug, currentChapter]);
-
-  // --- Restore scroll position & progress ---
   useEffect(() => {
-    if (!content) return;
     const saved = localStorage.getItem("readPositions");
     const obj = saved ? JSON.parse(saved) : {};
     const scrollY = obj[slug] || 0;
+    requestAnimationFrame(() => window.scrollTo(0, scrollY));
+  }, [slug]);
 
-    requestAnimationFrame(() => {
-      window.scrollTo(0, scrollY);
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollableHeight = documentHeight - window.innerHeight;
-      setProgress(
-        scrollableHeight > 0
-          ? Math.round((scrollY / scrollableHeight) * 100)
-          : 100
-      );
-    });
-  }, [slug, content]);
-
-  // --- Detect content changes (editable text) ---
-  const handleInputChange = () => {
+  // ===== handle input =====
+  const handleInput = () => {
     if (!contentRef.current) return;
-
-    // Lấy toàn bộ <p> bên trong Content
-    const paragraphs = Array.from(contentRef.current.querySelectorAll("p"));
-    const updated = paragraphs
-      .map((p) => p.innerText.trim())
-      .filter((t) => t.length > 0);
-
-    setContent(updated);
-    if (!isModified) setIsModified(true);
+    contentHTML.current = contentRef.current.innerHTML;
+    setIsModified(true);
   };
 
-  // --- Export to .txt ---
+  // ===== export TXT =====
   const handleExport = () => {
-    const text =
-      Array.isArray(content) && content.length > 0
-        ? content.join("\n\n")
-        : "Không có nội dung";
-
+    const text = contentHTML.current
+      .replace(/<p>/g, "")
+      .replace(/<\/p>/g, "\n\n")
+      .replace(/<br\s*\/?>/g, "\n");
     const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement("a");
     a.href = url;
     a.download = `${slug}-chuong-${currentChapter}.txt`;
     a.click();
-
     URL.revokeObjectURL(url);
     setIsModified(false);
   };
 
-  // === Theme-aware button classes ===
   const buttonClass =
     "w-48 py-2 rounded shadow border border-[rgb(var(--color-border))] cursor-pointer transition-colors duration-200 " +
     "bg-[rgb(var(--color-primary))] text-white hover:bg-[rgb(var(--color-accent))]";
@@ -198,80 +158,37 @@ export default function ChapterContentLayout({
       <Settings
         nextLink={chapterLinks.nextPath}
         prevLink={chapterLinks.prevPath}
-        setIsOpenListOfChapter={setIsOpenListOfChapter}
+        setIsOpenListOfChapter={setIsOpenList}
       />
       <ListOfChapter
         chapters={metadata?.chapters}
         slug={metadata?.slug}
-        isOpen={isOpenListOfChapter}
-        setIsOpen={setIsOpenListOfChapter}
+        isOpen={isOpenList}
+        setIsOpen={setIsOpenList}
       />
 
-      <div className="mx-auto flex gap-4 items-center justify-center py-12 flex-wrap">
-        <button className={buttonClass} onClick={() => router.push("/")}>
-          Trang chủ
-        </button>
+      <ChapterNavigation
+        nextPath={chapterLinks.nextPath}
+        prevPath={chapterLinks.prevPath}
+        buttonClass={buttonClass}
+      />
 
-        {chapterLinks.prevPath && (
-          <button
-            className={buttonClass}
-            onClick={() => router.push(chapterLinks.prevPath as any)}
-          >
-            Chương Trước
-          </button>
-        )}
-
-        {chapterLinks.nextPath && (
-          <button
-            className={buttonClass}
-            onClick={() => router.push(chapterLinks.nextPath as any)}
-          >
-            Chương Sau
-          </button>
-        )}
-      </div>
-
-      {/* Chapter Content */}
       <Content
         ref={contentRef}
-        className={`py-12 prose max-w-none ${fontFamily} text-[rgb(var(--color-text))]`}
-        fontSize={fontSize}
-        width={width}
         contentEditable
         suppressContentEditableWarning
-        onInput={handleInputChange}
-      >
-        {content.map((line, index) => (
-          <p key={index}>{line}</p>
-        ))}
-      </Content>
+        className={`py-12 prose max-w-none ${fontFamily}`}
+        fontSize={fontSize}
+        width={width}
+        onInput={handleInput}
+      />
 
-      {/* Buttons dưới content */}
-      <div className="mx-auto flex gap-4 items-center justify-center pb-12 flex-wrap">
-        <button className={buttonClass} onClick={() => router.push("/")}>
-          Trang chủ
-        </button>
+      <ChapterNavigation
+        nextPath={chapterLinks.nextPath}
+        prevPath={chapterLinks.prevPath}
+        buttonClass={buttonClass}
+      />
 
-        {chapterLinks.prevPath && (
-          <button
-            className={buttonClass}
-            onClick={() => router.push(chapterLinks.prevPath as any)}
-          >
-            Chương Trước
-          </button>
-        )}
-
-        {chapterLinks.nextPath && (
-          <button
-            className={buttonClass}
-            onClick={() => router.push(chapterLinks.nextPath as any)}
-          >
-            Chương Sau
-          </button>
-        )}
-      </div>
-
-      {/* Export button */}
       {isModified && (
         <div className="flex justify-center my-10">
           <button className={buttonClass} onClick={handleExport}>
@@ -280,7 +197,6 @@ export default function ChapterContentLayout({
         </div>
       )}
 
-      {/* Progress Bar */}
       <div className="w-36 fixed top-3 right-3">
         <ProgressBar progress={progress} />
       </div>
