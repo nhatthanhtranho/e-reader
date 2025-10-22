@@ -1,10 +1,8 @@
 "use client";
 
 import { useSettings } from "@/context/SettingContext";
-import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { formatLink } from "../../utils/formatLink";
 import { useTheme } from "next-themes";
 import ThemedIcon from "./ThemeIcon";
 
