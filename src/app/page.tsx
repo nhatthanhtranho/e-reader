@@ -11,14 +11,16 @@ import ThemeToggle from "@/components/ThemeToggle";
 export default function Home() {
 
   return (
-    <>
+    <div className="relative">
       <Banner
         backgroundUrl={formatLink("/banner.jpg")}
         title="Thanh Tịnh Tạng"
         subtitle="Kho Lưu Trữ Kinh Điển Phật Giáo"
       />
 
-      <ThemeToggle />
+      <div className="absolute top-0 right-0 p-5">
+        <ThemeToggle />
+      </div>
 
 
       {/* 🔍 Thanh tìm kiếm */}
@@ -33,6 +35,6 @@ export default function Home() {
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }

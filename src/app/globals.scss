@@ -8,32 +8,95 @@
 
 /* === THEME VARIABLES === */
 
-/* Light (mặc định) */
+/* Light (mặc định): nhẹ nhàng, hiện đại */
+:root,
 :root,
 [data-theme="light"] {
-  --color-bg: 255 255 255;       /* trắng */
-  --color-text: 17 24 39;        /* đen */
-  --color-primary: 37 99 235;    /* xanh dương */
+  --color-bg: 248 250 252;
+  /* slate-50 */
+  --color-text: 15 23 42;
+  /* slate-900 */
+  --color-primary: 37 99 235;
+  /* blue-600 */
+  --color-secondary: 99 102 241;
+  /* indigo-500 */
+
+  --card-bg: 255 255 255;
+  /* white */
+  --card-text: 17 24 39;
+  /* slate-900 */
+  --accent: 59 130 246;
+  /* blue-500 */
+  --border-color: 226 232 240;
+  /* slate-200 */
+
+  /* ✅ Tag colors (light - fixed for readability) */
+  --tag-bg: 226 232 240;
+  /* slate-200: nhẹ nhưng rõ trên nền trắng */
+  --tag-text-color: 30 41 59;
+  /* slate-800: chữ rõ nét, dễ đọc */
 }
 
-/* Dark */
+
+/* Dark: trung tính, sang trọng, dễ đọc */
 [data-theme="dark"] {
-  --color-bg: 17 24 39;          /* đen */
-  --color-text: 255 255 255;     /* trắng */
-  --color-primary: 147 197 253;  /* xanh nhạt */
+  --color-bg: 17 24 39;
+  /* slate-900 */
+  --color-text: 243 244 246;
+  /* gray-100 */
+  --color-primary: 147 197 253;
+  /* blue-300 */
+  --color-secondary: 165 180 252;
+  /* indigo-300 */
+
+  --card-bg: 30 41 59;
+  /* slate-800 */
+  --card-text: 243 244 246;
+  /* gray-100 */
+  --accent: 96 165 250;
+  /* blue-400 */
+  --border-color: 55 65 81;
+  /* gray-700 */
+
+  /* ✅ Tag colors (dark) */
+  --tag-bg: 59 130 246;
+  /* blue-500 */
+  --tag-text-color: 255 255 255;
+  /* white */
 }
 
-/* Forest (theme thứ ba) */
+/* Forest: trầm ấm, tươi mát */
 [data-theme="forest"] {
-  --color-bg: 23 42 29;          /* xanh rừng */
-  --color-text: 229 229 229;     /* xám sáng */
-  --color-primary: 16 185 129;   /* xanh ngọc */
+  --color-bg: 19 38 28;
+  /* deep green forest tone */
+  --color-text: 236 253 245;
+  /* mint white */
+  --color-primary: 16 185 129;
+  /* emerald-500 */
+  --color-secondary: 34 197 94;
+  /* green-500 */
+
+  --card-bg: 6 78 59;
+  /* emerald-900 */
+  --card-text: 236 253 245;
+  /* mint white */
+  --accent: 16 185 129;
+  /* emerald-500 */
+  --border-color: 4 120 87;
+  /* emerald-700 */
+
+  /* ✅ Tag colors (forest) */
+  --tag-bg: 21 128 61;
+  /* green-700 */
+  --tag-text-color: 236 253 245;
+  /* mint white */
 }
 
 /* === Tailwind Theme Mapping === */
 @theme inline {
   --color-background: rgb(var(--color-bg));
   --color-foreground: rgb(var(--color-text));
+  --color-border: rgb(var(--border-color));
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -43,7 +106,29 @@ body {
   background-color: rgb(var(--color-bg));
   color: rgb(var(--color-text));
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.3s ease;
+}
+
+/* === CARD === */
+.card {
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  border: 1px solid rgb(var(--border-color));
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.05);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
 }
 
 /* === SWIPER PAGINATION === */
@@ -56,9 +141,9 @@ body {
 .swiper-pagination .custom-dot {
   width: 5px;
   height: 5px;
-  background-color: #cfd6db;
+  background-color: rgb(var(--color-border));
   border-radius: 50%;
-  opacity: 0.5;
+  opacity: 0.6;
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -68,7 +153,7 @@ body {
   height: 8px;
   background-color: rgb(var(--color-primary));
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 /* === ANIMATION === */
@@ -78,25 +163,31 @@ body {
   will-change: transform;
 }
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* === FONT HELPERS === */
 .open-sans-unique {
   font-family: "Open Sans", sans-serif;
-  font-style: normal;
 }
 
 .playfair-display-regular {
   font-family: "Playfair Display", serif;
-  font-style: normal;
 }
 
 .montserrat-unique {
   font-family: "Montserrat", sans-serif;
-  font-style: normal;
 }
 
 .raleway-unique {
   font-family: "Raleway", sans-serif;
-  font-style: normal;
 }
 
 /* === CUSTOM SCOPED COMPONENTS === */
@@ -104,5 +195,9 @@ body {
   background-color: rgb(var(--color-bg));
   color: rgb(var(--color-text));
   border: 1px solid rgb(var(--color-primary) / 0.3);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 0.75rem;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease;
 }

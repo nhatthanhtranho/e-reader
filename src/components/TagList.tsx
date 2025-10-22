@@ -18,7 +18,7 @@ const TagList: React.FC<TagListProps> = ({
   const visibleTags = tags.slice(0, maxVisible);
   const hiddenTags = tags.slice(maxVisible);
 
-  // ✅ Click ra ngoài để đóng popup
+  // ✅ Đóng popup khi click ra ngoài
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
@@ -33,15 +33,21 @@ const TagList: React.FC<TagListProps> = ({
 
   return (
     <div className={`relative inline-flex flex-wrap items-center ${className}`}>
+      {/* Tag hiển thị */}
       {visibleTags.map((tag, i) => (
         <span
           key={tag + i}
-          className="inline-block bg-sky-600 text-white px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2 shadow-sm"
+          className="inline-block px-3 py-1 rounded-full text-sm font-medium mr-2 mb-2
+                     bg-[rgb(var(--tag-bg))] text-[rgb(var(--tag-text-color))]
+                     shadow-sm border border-[rgb(var(--border-color))]
+                     transition-transform hover:scale-105 hover:shadow-md
+                     hover:bg-[rgb(var(--accent)/0.1)] hover:text-[rgb(var(--accent))]"
         >
           {tag}
         </span>
       ))}
 
+      {/* Nút +X */}
       {hiddenTags.length > 0 && (
         <div ref={popupRef} className="relative">
           <button
@@ -49,26 +55,33 @@ const TagList: React.FC<TagListProps> = ({
               e.stopPropagation();
               setShowMore((prev) => !prev);
             }}
-            className={`inline-flex items-center justify-center bg-sky-100 text-sky-700 
-                       border border-sky-200 rounded-full text-sm font-semibold 
-                       px-3 py-1 mr-2 mb-2 shadow-sm hover:bg-sky-200 
-                       transition-colors duration-200`}
+            className="inline-flex items-center justify-center px-3 py-1 mr-2 mb-2
+                       rounded-full text-sm font-semibold border shadow-sm
+                       border-[rgb(var(--border-color))]
+                       bg-[rgb(var(--tag-bg))] text-[rgb(var(--tag-text-color))]
+                       hover:bg-[rgb(var(--accent)/0.1)] hover:text-[rgb(var(--accent))]
+                       transition-all duration-200"
           >
             +{hiddenTags.length}
           </button>
 
+          {/* Popup tag ẩn */}
           {showMore && (
             <div
               className="absolute left-1/2 -translate-x-1/2 top-[110%] z-30
-                         bg-white border border-gray-200 rounded-xl shadow-lg 
-                         p-3 min-w-[200px] max-w-[260px] 
-                         animate-fade-in whitespace-normal"
+                         bg-[rgb(var(--card-bg))] text-[rgb(var(--card-text))]
+                         border border-[rgb(var(--border-color))] rounded-xl shadow-lg
+                         p-3 min-w-[200px] max-w-[260px] animate-fade-in whitespace-normal"
             >
               <div className="flex flex-wrap gap-2">
                 {hiddenTags.map((tag, i) => (
                   <span
                     key={tag + i}
-                    className="inline-block bg-sky-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm"
+                    className="inline-block px-3 py-1 rounded-full text-sm font-medium
+                               bg-[rgb(var(--tag-bg))] text-[rgb(var(--tag-text-color))]
+                               border border-[rgb(var(--border-color))]
+                               hover:bg-[rgb(var(--accent)/0.1)] hover:text-[rgb(var(--accent))]
+                               transition-transform duration-200"
                   >
                     {tag}
                   </span>
