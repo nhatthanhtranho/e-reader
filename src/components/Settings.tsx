@@ -6,6 +6,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { formatLink } from "../../utils/formatLink";
 import { useTheme } from "next-themes";
+import ThemedIcon from "./ThemeIcon";
 
 const iconSize = 25;
 
@@ -72,60 +73,54 @@ export default function Settings({
         className={`settings rounded-r-2xl gap-6 items-center justify-center px-3 py-4 shadow flex flex-col lg:w-auto cursor-pointer fixed z-20 left-0 top-1/2 -translate-y-1/2 transform transition-transform duration-300 ${showToolbar ? "translate-x-0" : "-translate-x-10"
           }`}
         style={{
-          backgroundColor: "rgb(var(--color-bg))",
+          backgroundColor: "rgb(var(--color-primary))",
           color: "rgb(var(--color-text))",
         }}
       >
         {/* Close */}
         <div
-          className="p-2 rounded relative hover:bg-[rgba(var(--color-text),0.1)] w-[25px] h-[25px]"
           onClick={(e) => {
             e.stopPropagation();
             setShowToolbar(false);
           }}
         >
-          <Image fill src={formatLink("/icons/close-square.svg")} alt="Close" />
+          <ThemedIcon name="CloseSquare" color="text" size={25} />
         </div>
 
         {/* Settings */}
         <div
-          className="p-2 rounded relative hover:bg-[rgba(var(--color-text),0.1)] w-[25px] h-[25px]"
           onClick={() => setIsOpenMainSettings(true)}
         >
-          <Image fill src={formatLink("/icons/settings.svg")} alt="Cài đặt" />
+          <ThemedIcon name="Setting2" color="text" size={25} />
         </div>
 
         {/* Home */}
         <div
-          className="p-2 rounded relative hover:bg-[rgba(var(--color-text),0.1)] w-[25px] h-[25px]"
           onClick={() => router.push("/")}
         >
-          <Image fill src={formatLink("/icons/home.svg")} alt="Trang chủ" />
+          <ThemedIcon name="Home3" color="text" size={25} />
         </div>
 
         {/* Episodes */}
         <div
-          className="p-2 rounded relative hover:bg-[rgba(var(--color-text),0.1)] w-[25px] h-[25px]"
           onClick={() => setIsOpenListOfChapter?.(true)}
         >
-          <Image fill src={formatLink("/icons/episodes.svg")} alt="Episodes" />
+          <ThemedIcon name="Book" color="text" size={25} />
         </div>
 
         {/* Next / Prev */}
         {nextLink && (
           <div
-            className="p-2 rounded relative hover:bg-[rgba(var(--color-text),0.1)] w-[25px] h-[25px]"
             onClick={() => router.push(nextLink)}
           >
-            <Image fill src={formatLink("/icons/right.svg")} alt="Next" />
+            <ThemedIcon name="ArrowRight" color="text" size={25} />
           </div>
         )}
         {prevLink && (
           <div
-            className="p-2 rounded relative hover:bg-[rgba(var(--color-text),0.1)] w-[25px] h-[25px]"
             onClick={() => router.push(prevLink)}
           >
-            <Image fill src={formatLink("/icons/left.svg")} alt="Prev" />
+            <ThemedIcon name="ArrowLeft" color="text" size={25} />
           </div>
         )}
       </div>
@@ -133,25 +128,20 @@ export default function Settings({
       {/* Panel */}
       <div
         ref={panelRef}
-        className={`fixed top-0 h-full left-0 w-80 pl-5 py-4 shadow-lg z-20 transform transition-transform duration-300 ease-in-out ${isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 h-full left-0 w-80 shadow-lg z-20 transform transition-transform duration-300 ease-in-out ${isOpenMainSettings ? "translate-x-0" : "-translate-x-full"
           }`}
         style={{
           backgroundColor: "rgb(var(--color-bg))",
           color: "rgb(var(--color-text))",
         }}
       >
-        <div className="relative overflow-y-auto h-full">
+        <div className={`relative overflow-y-auto h-full p-4 ${isOpenMainSettings && 'shadow-[0_0_10px_rgb(var(--color-secondary))]'}`}>
           <h2 className="text-3xl font-bold mb-4">Cài đặt</h2>
           <button
             onClick={() => setIsOpenMainSettings(false)}
-            className="absolute top-0 right-2 cursor-pointer transition hover:opacity-70"
+            className="absolute top-0 right-2 cursor-pointer transition hover:opacity-70 p-4"
           >
-            <Image
-              width={iconSize}
-              height={iconSize}
-              src={formatLink("/icons/close.svg")}
-              alt="Đóng"
-            />
+            <ThemedIcon name="CloseCircle" color="text" size={30} />
           </button>
 
           {/* Theme */}
@@ -161,32 +151,28 @@ export default function Settings({
               {themes.map((t) => (
                 <div
                   key={t}
-                  className="p-2 shadow rounded-full cursor-pointer border-3"
+                  onClick={() => setTheme(t)}
+                  className={`p-2 rounded-full cursor-pointer border-2 shadow transition-all flex items-center justify-center ${theme === t ? 'ring-2 ring-[rgb(var(--color-primary))]' : ''
+                    }`}
                   style={{
-                    backgroundColor:
-                      t === "light"
-                        ? "rgb(248 250 252)"
-                        : t === "dark"
-                          ? "rgb(17 24 39)"
-                          : "rgb(19 38 28)",
+                    backgroundColor: 'rgb(var(--color-bg))',
                     borderColor:
                       theme === t
-                        ? "rgb(var(--color-primary))"
-                        : "rgb(var(--color-border))",
+                        ? 'rgb(var(--color-primary))'
+                        : 'rgb(var(--color-border))',
                   }}
-                  onClick={() => setTheme(t)}
                 >
-                  <Image
-                    width={iconSize}
-                    height={iconSize}
-                    src={
-                      t === "light"
-                        ? formatLink("/icons/sun.svg")
-                        : t === "dark"
-                          ? formatLink("/icons/moon.svg")
-                          : formatLink("/icons/cloud.svg")
+                  <ThemedIcon
+                    size={iconSize}
+                    variant="Bold"
+                    color={theme === t ? 'primary' : 'text'}
+                    name={
+                      t === 'light'
+                        ? 'Sun1'
+                        : t === 'dark'
+                          ? 'Moon'
+                          : 'Cloud'
                     }
-                    alt={t}
                   />
                 </div>
               ))}
@@ -218,29 +204,19 @@ export default function Settings({
             <h3 className="text-lg font-bold mb-3">Cỡ chữ</h3>
             <div className="flex gap-2 items-center">
               <div
-                className="p-2 cursor-pointer shadow rounded hover:bg-[rgba(var(--color-text),0.1)]"
                 onClick={decreaseFont}
               >
-                <Image
-                  width={iconSize}
-                  height={iconSize}
-                  src={formatLink("/icons/minus.svg")}
-                  alt="Giảm"
-                />
+                <ThemedIcon name="Minus" color="primary" size={30} />
+
               </div>
               <div className="font-bold text-base px-4 py-3 bg-[rgba(var(--color-text),0.05)]">
                 {fontSize}
               </div>
               <div
-                className="p-2 cursor-pointer shadow rounded hover:bg-[rgba(var(--color-text),0.1)]"
                 onClick={increaseFont}
               >
-                <Image
-                  width={iconSize}
-                  height={iconSize}
-                  src={formatLink("/icons/add.svg")}
-                  alt="Tăng"
-                />
+                <ThemedIcon name="Add" color="primary" size={30} />
+
               </div>
             </div>
           </div>
@@ -257,7 +233,7 @@ export default function Settings({
                 className="absolute -top-3 font-bold text-sm px-1 bg-[rgba(var(--color-primary),0.8)] rounded text-white select-none"
                 style={{
                   left: `0px`,
-                  
+
                 }}
               >
                 {width}%
