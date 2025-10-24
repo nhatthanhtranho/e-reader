@@ -1,7 +1,8 @@
 "use client";
-import Settings from "@/components/Settings/Settings";
+import Settings from "@/components/Settings";
 import ListOfChapter from "@/components/ListOfChapter";
 import { Metadata } from "../../../types/Metadata";
+import ChapterNavigation from "../ChapterNavigation";
 
 interface Props {
   nextPath?: string | null;
@@ -30,6 +31,10 @@ export default function ChapterHeader({
         setIsOpenListOfChapter={setIsOpenList}
         isEditMode={isEditMode}
         setIsEditMode={setIsEditMode}
+      />
+      <ChapterNavigation
+        nextPath={nextPath}
+        prevPath={prevPath}
       />
       <ListOfChapter
         chapters={metadata?.chapters || []}

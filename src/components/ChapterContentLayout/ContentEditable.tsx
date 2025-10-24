@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const Content = styled.div<{ fontSize: number; width: number }>`
@@ -9,6 +9,7 @@ const Content = styled.div<{ fontSize: number; width: number }>`
   outline: none;
   white-space: pre-wrap;
   transition: color 0.3s ease;
+  min-height: 100vh; /* thêm chiều cao tối thiểu */
 `;
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
   fontSize: number;
   width: number;
   fontFamily: string;
+  defaultContent: string; // thêm prop nhận nội dung ban đầu
 }
 
 export default function ContentEditableSection({
@@ -27,8 +29,17 @@ export default function ContentEditableSection({
   fontSize,
   width,
   fontFamily,
+  defaultContent,
 }: Props) {
   const [isModified, setIsModified] = useState(false);
+
+  // Khi mount, gán nội dung ban đầu vào ref
+  useEffect(() => {
+    if (contentRef?.current) {
+      contentRef.current.innerHTML = defaultContent;
+      contentHTML.current = defaultContent;
+    }
+  }, [contentRef, defaultContent, contentHTML]);
 
   const handleInput = () => {
     if (!contentRef?.current) return;
@@ -56,14 +67,14 @@ export default function ContentEditableSection({
     <>
       <Content
         ref={contentRef}
-        contentEditable={isEditMode} // ✅ chỉ cho edit khi bật edit mode
+        contentEditable={isEditMode}
         suppressContentEditableWarning
         className={`py-12 prose max-w-none ${fontFamily} ${
           isEditMode ? "cursor-text" : "cursor-default select-none"
         }`}
         fontSize={fontSize}
         width={width}
-        onInput={isEditMode ? handleInput : undefined} // ✅ chỉ lắng nghe khi đang edit
+        onInput={isEditMode ? handleInput : undefined}
       />
       {isEditMode && isModified && (
         <div className="flex justify-center my-10">

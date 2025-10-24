@@ -68,6 +68,7 @@ export default function ChapterContentLayout() {
         fontSize={fontSize}
         width={width}
         fontFamily={fontFamily}
+        defaultContent={contentHTML as any}
       />
 
       <ChapterFooter
